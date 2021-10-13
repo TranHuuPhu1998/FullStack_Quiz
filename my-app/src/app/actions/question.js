@@ -21,6 +21,31 @@ export const getQuestionsError = () => {
     type: types.GET_QUESTIONS_ERROR
   };
 };
+// Get list question
+
+export const getQuestionByCategory = ({categoryId}) => {
+  return {
+    type : types.ACTION_GET_QUESTIONS_CATEGORY,
+    payload : {
+      categoryId
+    }
+  }
+}
+
+export const getQuestionByCategorySuccess = (data) => {
+  return {
+    type : types.GET_QUESTIONS_CATEGORY_SUCCESS,
+    payload : {
+      data
+    }
+  }
+}
+
+export const getQuestionByCategoryError = () => {
+  return {
+    type : types.GET_QUESTIONS_CATEGORY_ERROR
+  }
+}
 
 // Create A Question
 export const createQuestion = (data) => {

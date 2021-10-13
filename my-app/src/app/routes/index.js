@@ -4,10 +4,12 @@ const Categories = lazy(() => import('@App/pages/admin/categories'));
 const Users = lazy(() => import('@App/pages/admin/users'));
 const Course = lazy(() => import('@App/pages/admin/courses'));
 const Profile = lazy(() => import('@App/pages/profile'));
+const Exercise = lazy(() => import('@App/pages/exercise'));
+const CourseUser = lazy(() => import('@App/pages/courses'));
 
 export default [
   {
-    path: '/',
+    path: '/admin',
     exact: true,
     component: DashBoard
   },
@@ -30,5 +32,15 @@ export default [
     path: '/profile',
     exact: true,
     component: Profile
+  },
+  {
+    path: '/exercise',
+    exact: true,
+    component: Exercise
+  },
+  {
+    path: '/courses',
+    exact: true,
+    component: CourseUser
   },
 ];

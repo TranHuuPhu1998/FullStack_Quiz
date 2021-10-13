@@ -13,7 +13,7 @@ const courseCtrl = {
 
     try {
       const name = req.body.name.toLowerCase();
-      const {categoryId,released,descriptions} = req.body;
+      const {categoryId,released,descriptions,imageBanner} = req.body;
       const category = await Category.findById(categoryId);
       const categoryItem = {id : category?._id , name : category?.name};
 
@@ -23,7 +23,8 @@ const courseCtrl = {
         name: name,
         category : categoryItem,
         released : released,
-        descriptions : descriptions
+        descriptions : descriptions,
+        imageBanner : imageBanner,
       });
 
       await rows.save();
@@ -72,7 +73,7 @@ const courseCtrl = {
       let _id = req.params.id;
 
       const name = req.body.name.toLowerCase();
-      const {categoryId,released,descriptions} = req.body;
+      const {categoryId,released,descriptions,imageBanner} = req.body;
 
       await Course.findByIdAndUpdate(
         _id,
@@ -81,7 +82,8 @@ const courseCtrl = {
           name: name,
           categoryId : categoryId,
           released : released,
-          descriptions : descriptions
+          descriptions : descriptions,
+          imageBanner : imageBanner
         },
         { new: true }
       );

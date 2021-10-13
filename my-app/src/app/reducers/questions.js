@@ -35,7 +35,10 @@ const reducers = (state = initialState, action) => {
       state.splice(_index, 1);
       return [...state];
     }
-
+    case types.GET_QUESTIONS_CATEGORY_SUCCESS: {
+      const questions = action.payload.data.rows;
+      return [...questions];
+    }
     default:
       return state;
   }

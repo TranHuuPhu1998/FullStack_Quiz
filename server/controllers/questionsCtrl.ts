@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Question from "../models/questionsModal";
 import Category from "../models/categoryModal";
 import { IReqAuth } from "../config/interface";
+import mongoose from 'mongoose'
 
 
 const QuestionCtrl = {
@@ -44,6 +45,18 @@ const QuestionCtrl = {
   getQuestion: async (req: Request, res: Response) => {
     try {
       const rows = await Question.find().sort("-createdAt");
+      res.json({ rows });
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  getQuestionsByCategory: async (req: Request, res: Response) => {
+    try {
+      const _id = req.params.id;
+      const rows = await Question.aggregate([
+        { $match : { "category.id" : mongoose.Types.ObjectId(_id) } } 
+      ]);
+
       res.json({ rows });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });

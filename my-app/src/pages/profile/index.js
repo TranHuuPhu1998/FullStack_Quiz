@@ -27,9 +27,9 @@ const Profile = () => {
   const [logoImage, setLogoImage] = useState();
   const [socket , setSocket] = useState();
 
-  useEffect(() => {
-    setSocket(io.connect('http://localhost:5000'));
-  },[]);
+  // useEffect(() => {
+  //   setSocket(io.connect('http://localhost:5000'));
+  // },[]);
 
   useEffect(() => {
     if(socket){

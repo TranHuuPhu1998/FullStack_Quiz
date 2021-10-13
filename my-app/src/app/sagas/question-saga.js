@@ -2,7 +2,8 @@ import {
   getQuestions,
   createQuestion,
   updateQuestion,
-  deleteQuestion
+  deleteQuestion,
+  getQuestionsCategory
 } from '@App/app/apis/questions-service';
 import {
   getQuestionsSuccess,
@@ -12,7 +13,9 @@ import {
   updateQuestionSuccess,
   updateQuestionError,
   deleteQuestionSuccess,
-  deleteQuestionError
+  deleteQuestionError,
+  getQuestionByCategorySuccess,
+  getQuestionByCategoryError
 } from '@App/app/actions/question';
 import { hideLoading, showLoading } from '@App/app/actions/ui';
 import { call, takeLatest, put, delay } from 'redux-saga/effects';
@@ -26,6 +29,19 @@ function* processGetQuestion() {
     yield put(getQuestionsSuccess(resp.data));
   } catch (err) {
     yield put(getQuestionsError());
+  } finally {
+    yield put(hideLoading());
+  }
+}
+
+function* processGetQuestionCategory({payload}) {
+  const {categoryId} = payload;
+  yield put(showLoading());
+  try {
+    const resp = yield call(getQuestionsCategory , categoryId);
+    yield put(getQuestionByCategorySuccess(resp.data))
+  } catch (error) {
+    yield put(getQuestionByCategoryError());
   } finally {
     yield put(hideLoading());
   }
@@ -75,6 +91,7 @@ function* authSaga() {
   yield takeLatest(questionType.ACTION_CREATE_QUESTION, processCreateQuestion);
   yield takeLatest(questionType.ACTION_UPDATE_QUESTION, processUpdateQuestion);
   yield takeLatest(questionType.ACTION_DELETE_QUESTION, processDeleteQuestion);
+  yield takeLatest(questionType.ACTION_GET_QUESTIONS_CATEGORY, processGetQuestionCategory);
 }
 
 export default authSaga;

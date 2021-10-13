@@ -1,4 +1,4 @@
-import React , { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Label,
   ModalHeader,
@@ -8,17 +8,24 @@ import {
   Input,
   ModalFooter,
   ModalBody,
-  Button
+  Button,
+  CardBody
 } from '@App/components';
 import { createCourse } from '@App/app/actions/course';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
+import iconUpdate from '@App/assets/img/icon-upload.svg';
 import Select from 'react-select';
+import {imageUpload} from '@App/app/common/helpers/ImageUpload';
 import * as Yup from 'yup';
+import './styles.scoped.scss';
 
 const modalCourses = (props) => {
-  const { isShow, handleClose, courseDetail , categories } = props;
+  const { isShow, handleClose, courseDetail, categories } = props;
   const [listCategories, setListCategories] = useState([]);
+  const [loading , setLoading] = useState(false);
+  const [imageBanner, setImageBanner] = useState('');
+  console.log("🚀 ~ file: modalCourses.js ~ line 26 ~ modalCourses ~ imageBanner", imageBanner)
 
   const dispatch = useDispatch();
 
@@ -44,31 +51,65 @@ const modalCourses = (props) => {
     }
   };
 
+  const onChangeFile = (e) => {
+    const file = e.target.files[0];
+    const fileParts = file.name.split('.');
+    const fileName = fileParts[0];
+    const extension = fileParts[1];
+    // eslint-disable-next-line no-undef
+    const fileReader = new FileReader();
+    fileReader.onloadend = () => {
+      if (fileReader.result) {
+        const result = fileReader.result;
+        const base64 = result.split(',')[1];
+
+        setImageBanner({
+          name: fileName,
+          extension: extension,
+          base64: base64,
+          fileUpload : file
+        });
+      }
+    };
+    fileReader.readAsDataURL(file);
+  };
+
   const handleKeyDown = (e) => {
     e.target.style.height = 'inherit';
     e.target.style.height = `${e.target.scrollHeight}px`;
-  }
+  };
+
+  const RenderImage = () => {
+    const src = imageBanner.base64
+      ? `data: image/${imageBanner.extension};base64,${imageBanner.base64}`
+      : imageBanner;
+    return <img src={src} className='img-upload' />;
+  };
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       coursesName: courseDetail.name,
       categoryName: coverCategorySelect(courseDetail.category),
-      release :courseDetail.released,
-      descriptions:courseDetail.descriptions
+      release: courseDetail.released,
+      descriptions: courseDetail.descriptions
     },
     validationSchema: Yup.object({
       coursesName: Yup.string().required('required')
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
+      setLoading(true)
+      const response = await imageUpload(imageBanner.fileUpload)
       const data = {
-        name : values.coursesName,
-        descriptions : values.descriptions,
+        name: values.coursesName,
+        descriptions: values.descriptions,
         categoryId: values.categoryName.value,
-        released : values.release
-      }
-      dispatch(createCourse(data))
+        released: values.release,
+        imageBanner : response.url,
+      };
+      await dispatch(createCourse(data));
       handleClose();
+      setLoading(false)
     }
   });
 
@@ -77,8 +118,8 @@ const modalCourses = (props) => {
       <ModalHeader> {courseDetail ? 'Update' : 'Create'} a Courses</ModalHeader>
       <ModalBody>
         <Form onSubmit={formik.handleSubmit} id='courses'>
-        <FormGroup>
-          <Label>Import Category Name:</Label>
+          <FormGroup>
+            <Label>Import Category Name:</Label>
             <Select
               id='categoryName'
               classNamePrefix='filter__dropdown'
@@ -86,7 +127,9 @@ const modalCourses = (props) => {
               isClearable
               options={listCategories}
               value={formik.values.categoryName || ''}
-              onChange={(option) => formik.setFieldValue('categoryName', option)}
+              onChange={(option) =>
+                formik.setFieldValue('categoryName', option)
+              }
             />
           </FormGroup>
           <FormGroup>
@@ -100,26 +143,44 @@ const modalCourses = (props) => {
             />
           </FormGroup>
           <FormGroup>
-            <Label>Import Release:</Label>
+            <Label>Import Description:</Label>
             <Input
-                type='textarea'
-                name='descriptions'
-                id='descriptions'
-                onChange={formik.handleChange}
-                value={formik.values.descriptions}
-                onKeyDown={handleKeyDown}
-              />
+              type='textarea'
+              name='descriptions'
+              id='descriptions'
+              onChange={formik.handleChange}
+              value={formik.values.descriptions}
+              onKeyDown={handleKeyDown}
+            />
+          </FormGroup>
+          <FormGroup>
+            <div className='avatar__preview'>
+              {imageBanner.base64 ? (
+                <RenderImage />
+              ) : (
+                <Button tag={Label} className='button__img'>
+                  <Input
+                    type='file'
+                    hidden
+                    accept='.pdf, .png, .jpeg'
+                    onChange={(e) => onChangeFile(e)}
+                  />
+                  <img src={iconUpdate} />
+                  <p>.png / .jpeg / .pdf</p>
+                </Button>
+              )}
+            </div>
           </FormGroup>
           <FormGroup>
             <Label check>Import Release:</Label>
             <Input
-                type='checkbox'
-                name='release'
-                id='release'
-                defaultChecked={formik.values.release}
-                onChange={formik.handleChange}
-                value={formik.values.release}
-              />
+              type='checkbox'
+              name='release'
+              id='release'
+              defaultChecked={formik.values.release}
+              onChange={formik.handleChange}
+              value={formik.values.release}
+            />
           </FormGroup>
         </Form>
       </ModalBody>
@@ -137,6 +198,7 @@ const modalCourses = (props) => {
           className='text-capitalize w-25'
           type='submit'
           form='courses'
+          loading={loading}
         >
           {courseDetail ? 'Update' : 'Create'}
         </Button>

@@ -12,6 +12,12 @@
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. */
 
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+* {
+  font-family: 'Lato', sans-serif;
+}
+
 .tim-row {
   margin-bottom: 20px;
 }

@@ -56,6 +56,7 @@ const Courses = () => {
       <Table striped dark bordered>
         <thead>
           <tr>
+            <th>Banner</th>
             <th>Course Name</th>
             <th>Create By</th>
             <th>Category Name</th>
@@ -71,6 +72,7 @@ const Courses = () => {
           {
             course?.map((item,index) => (
               <tr key={index}>
+                <td width={200}><img src={item?.imageBanner}/></td>
                 <td>{item.name}</td>
                 <td>{item.createBy}</td>
                 <td>{item.category?.name}</td>

@@ -7,6 +7,11 @@ export const getQuestions = () => {
   return axiosService.get(`${API_ENDPOINT}/questions`);
 };
 
+export const getQuestionsCategory = (id) => {
+console.log("🚀 ~ file: questions-service.js ~ line 11 ~ getQuestionsCategory ~ id", id)
+  return axiosService.get(`${API_ENDPOINT}/question/category/${id}`);
+};
+
 export const createQuestion = (data) => {
   return axiosService.post(`${API_ENDPOINT}/question`, data, token);
 };

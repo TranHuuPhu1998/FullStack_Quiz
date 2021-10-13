@@ -28,7 +28,7 @@ const ModalCreateQuestion = (props) => {
   const [listAnswers, setListAnswers] = useState([]);
   const [firstAnswers, setFirstAnswers] = useState('');
   const [answerNew, setAnswerNew] = useState(1);
-  const [checkAnswer, setCheckAnswer] = useState(Number);
+  const [checkAnswer, setCheckAnswer] = useState(null);
   const [isAddLayoutAnswers, setIsLayoutAnswers] = useState(true);
   const [totalAddAnswer, setTotalAddAnswer] = useState(0);
   const [code, setCode] = useState('');
@@ -81,6 +81,13 @@ const ModalCreateQuestion = (props) => {
   const handleCloseResetFrom = () => {
     handleClose();
     formik.resetForm();
+    setCode('');
+    setListAnswers([]);
+    setAnswerNew(1);
+    setIsLayoutAnswers(true);
+    setFirstAnswers('');
+    setCheckAnswer(null);
+    setTotalAddAnswer(0)
   };
 
   const AddLayoutAnswer = () => {
@@ -139,7 +146,7 @@ const ModalCreateQuestion = (props) => {
       } else {
         dispatch(createQuestion(data));
       }
-      handleClose();
+      handleCloseResetFrom();
     }
   });
 
@@ -189,7 +196,7 @@ const ModalCreateQuestion = (props) => {
   );
 
   return (
-    <Modal centered isOpen={isShow} toggle={handleClose}>
+    <Modal centered isOpen={isShow} toggle={handleCloseResetFrom}>
       <ModalHeader>{questionDetail ? 'Update' :'Create'} a Question</ModalHeader>
       <ModalBody>
         <Form onSubmit={formik.handleSubmit} id='questions'>
@@ -218,8 +225,8 @@ const ModalCreateQuestion = (props) => {
                 border: '1px solid',
 
               }}
-            >
-            </Editor>
+            />
+
           </FormGroup>
           {RenderAnswer}
           <Row>

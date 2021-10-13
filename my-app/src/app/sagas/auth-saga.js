@@ -53,7 +53,12 @@ function* processLogin({ payload }) {
     yield put(loginSuccess(resp.data));
     const { access_token } = resp.data;
     yield localStorage.setItem(AUTHORIZATION_KEY, access_token);
-    document.location = '/admin';
+    yield localStorage.setItem('LOGIN_TYPE',resp.data.user.role)
+    if(resp.data.user.role === 'admin') {
+      document.location = '/admin';
+    }else {
+      document.location = '/exercise';
+    }
   } catch (error) {
     const details = _get(error, 'response.data.detail', {});
     yield put(loginFailed(details));
