@@ -8,7 +8,6 @@ export const getQuestions = () => {
 };
 
 export const getQuestionsCategory = (id) => {
-console.log("🚀 ~ file: questions-service.js ~ line 11 ~ getQuestionsCategory ~ id", id)
   return axiosService.get(`${API_ENDPOINT}/question/category/${id}`);
 };
 

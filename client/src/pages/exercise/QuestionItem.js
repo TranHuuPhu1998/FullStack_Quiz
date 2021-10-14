@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Badge} from '@App/components';
+import { Badge } from '@App/components';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import Editor from 'react-simple-code-editor';
 import './styles.scoped.scss';
@@ -11,7 +11,8 @@ const QuestionItem = ({
   currentQ,
   setYourAnswer,
   item,
-  yourAnswerSubmit
+  yourAnswerSubmit,
+  setIsSaveNext
 }) => {
   const [check, setCheck] = useState('');
 
@@ -20,6 +21,7 @@ const QuestionItem = ({
       answerSubmit: e.currentTarget.value,
       questionSubmit: item
     });
+    setIsSaveNext(true);
     setCheck(e.currentTarget.value);
   };
 
@@ -29,7 +31,9 @@ const QuestionItem = ({
         <>
           <div className='d-flex justify-content-between'>
             <h2 className='question-name'>Question {index + 1}</h2>
-            <h3><Badge color="secondary">{item.category.name}</Badge></h3>
+            <h3>
+              <Badge color='secondary'>{item.category.name}</Badge>
+            </h3>
           </div>
           <div className='question-content'>
             <Editor
@@ -47,7 +51,14 @@ const QuestionItem = ({
           <ul className='list-answer'>
             <p className='text'>Choose the correct answers:</p>
             {answers.map((item, index) => (
-              <li className={`answer-item ${yourAnswerSubmit && item.isCorrect ? 'user-submit' : 'user-submit-error'}`} key={index}>
+              <li
+                className={`answer-item ${
+                  yourAnswerSubmit && item.isCorrect
+                    ? 'user-submit'
+                    : 'user-submit-error'
+                }`}
+                key={index}
+              >
                 <input
                   onChange={handleSubmitAnswer}
                   value={item.content}

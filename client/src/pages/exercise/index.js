@@ -1,9 +1,10 @@
-import React, { useEffect, useState , useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { getQuestionByCategory } from '@App/app/actions/question';
 import { useDispatch, useSelector } from 'react-redux';
-import QuestionItem from './QuestionItem';
 import { useLocation } from 'react-router-dom';
+import {Alert} from '@App/components';
 import queryString from 'query-string';
+import QuestionItem from './QuestionItem';
 import './styles.scoped.scss';
 
 const Exercise = () => {
@@ -11,44 +12,70 @@ const Exercise = () => {
   const [yourAnswer, setYourAnswer] = useState('');
   const [yourAnswerSubmit, setYourAnswerSubmit] = useState([]);
   const [isSubmitQuestion, setIsSubmitQuestion] = useState(false);
+  const [numberSwapTab , setNumberSwapTab] = useState(0);
+  const [point , setPoint] = useState(0);
+  const [isSaveNext , setIsSaveNext] = useState(false);
+
   const dispatch = useDispatch();
   const location = useLocation();
-
   const questions = useSelector((state) => state.questionReducers);
-  console.log("🚀 ~ file: index.js ~ line 18 ~ Exercise ~ questions", questions)
 
   useEffect(() => {
     const categoryId = queryString.parse(location.search);
-    if(categoryId){
+    if (categoryId) {
       dispatch(getQuestionByCategory(categoryId));
     }
   }, [location.search]);
 
-  const handleNextSubmit = useCallback(() => {
-    setCurrentQ((prev) => prev + 1);
-    setYourAnswerSubmit((prev) => [...prev, yourAnswer]);
-    yourAnswerSubmit.map((item,index) => {
-      if(item.questionSubmit._id === yourAnswer.questionSubmit?._id) {
-        yourAnswerSubmit[index] = yourAnswer
-        setYourAnswerSubmit(yourAnswerSubmit);
-        return 0;
-      }
-    })
-  },[yourAnswer]);
+  useEffect(() => {
+    window.addEventListener('blur', onBlurFunction);
+    return () => {
+      onBlurFunction();
+      window.removeEventListener('blur', onBlurFunction);
+    };
+  }, []);
+
+  const onBlurFunction = () => {
+    setNumberSwapTab((prev) => prev + 1)
+  };
 
   const handlePrevious = () => {
     setCurrentQ((prev) => prev - 1);
   };
 
+  const handleNextSubmit = useCallback(() => {
+    setCurrentQ((prev) => prev + 1);
+    setIsSaveNext(false);    if(yourAnswer.answerSubmit.length > 0) {
+      setYourAnswerSubmit((prev) => [...prev, yourAnswer]);
+      yourAnswerSubmit.map((item, index) => {
+        if (item.questionSubmit._id === yourAnswer.questionSubmit?._id) {
+          yourAnswerSubmit[index] = yourAnswer;
+          setYourAnswerSubmit(yourAnswerSubmit);
+          return 0;
+        }
+      });
+    };
+  }, [yourAnswer]);
+
   const handleSubmitExercise = () => {
-    setYourAnswerSubmit((prev) => [...prev, yourAnswer]);
     setIsSubmitQuestion(true);
+    let _point = 0;
+    yourAnswerSubmit?.map((item) => {
+      item.questionSubmit.answers.map((ele) => {
+        if(item.answerSubmit === ele.content && ele.isCorrect === true) {
+          _point = _point + 1;
+        }
+      })
+    })
+    setPoint(_point);
   };
 
   return (
     <div className='main-div'>
       <div className='question-list'>
-        <h3 className='question-title'>Question List: <span className='text-blue'>{questions.length}</span></h3>
+        <h3 className='question-title'>
+          Question List: <span className='text-blue'>{questions.length}</span>
+        </h3>
         <div className='question-content'>
           <div className='create-test'>
             {questions.map((item, index) => (
@@ -67,7 +94,23 @@ const Exercise = () => {
           </div>
         </div>
       </div>
+
       <div className='inner-div'>
+        {
+          isSubmitQuestion === false && currentQ === questions.length && (
+            <Alert color="success">
+              <h2 className='d-flex align-items-center justify-content-center text-success-info'>Chúc mừng bạn kiểm tra thành công hãy submit để kiểm tra thành quả !</h2>
+            </Alert>
+          )
+        }
+        {
+          isSubmitQuestion && (
+            <Alert color="success">
+              <h2 className='d-flex align-items-center justify-content-center text-success-info'>Chúc mừng bạn kiểm tra thành công với <span className='text-blue'> {point +'/'+ questions.length} </span> điểm . </h2>
+              <h3 className='d-flex align-items-center justify-content-center'>Số lần chuyển Tab là : {numberSwapTab} lần</h3>
+            </Alert>
+          )
+        }
         {isSubmitQuestion === true ? (
           <>
             {yourAnswerSubmit.map((item, index) => (
@@ -79,6 +122,7 @@ const Exercise = () => {
                   content={item.questionSubmit.name}
                   answers={item.questionSubmit.answers}
                   currentQ={currentQ}
+                  setIsSaveNext={''}
                   setYourAnswer={setYourAnswer}
                 />
               </React.Fragment>
@@ -95,6 +139,7 @@ const Exercise = () => {
                   content={item.name}
                   answers={item.answers}
                   currentQ={currentQ}
+                  setIsSaveNext={setIsSaveNext}
                   setYourAnswer={setYourAnswer}
                 />
               </React.Fragment>
@@ -110,26 +155,21 @@ const Exercise = () => {
           >
             Go Back To Previous
           </button>
+          <button
+            className={`btn-custom save-question ${
+              isSaveNext === false && 'disabled'
+            }`}
+            disabled={isSaveNext === false}
+            onClick={() => handleNextSubmit(currentQ)}
+          >
+            Save & Next Question
+          </button>
             <button
-              className={`btn-custom save-question ${
-                currentQ === questions.length - 1 && 'disabled'
-              }`}
-              disabled={currentQ === questions.length - 1}
-              onClick={() => handleNextSubmit(currentQ)}
-              >
-              Save & Next Question
-            </button>
-          {
-            yourAnswerSubmit.length >= questions.length - 1 && (
-              <button
               onClick={handleSubmitExercise}
               className='btn-custom submit-question'
             >
               Submit
             </button>
-            )
-          }
-
         </div>
       </div>
     </div>

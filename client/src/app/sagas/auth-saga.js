@@ -57,7 +57,7 @@ function* processLogin({ payload }) {
     if(resp.data.user.role === 'admin') {
       document.location = '/admin';
     }else {
-      document.location = '/exercise';
+      document.location = '/courses';
     }
   } catch (error) {
     const details = _get(error, 'response.data.detail', {});

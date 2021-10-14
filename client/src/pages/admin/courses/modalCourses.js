@@ -9,7 +9,6 @@ import {
   ModalFooter,
   ModalBody,
   Button,
-  CardBody
 } from '@App/components';
 import { createCourse } from '@App/app/actions/course';
 import { useDispatch } from 'react-redux';
@@ -25,7 +24,6 @@ const modalCourses = (props) => {
   const [listCategories, setListCategories] = useState([]);
   const [loading , setLoading] = useState(false);
   const [imageBanner, setImageBanner] = useState('');
-  console.log("🚀 ~ file: modalCourses.js ~ line 26 ~ modalCourses ~ imageBanner", imageBanner)
 
   const dispatch = useDispatch();
 
@@ -99,13 +97,16 @@ const modalCourses = (props) => {
     }),
     onSubmit: async (values) => {
       setLoading(true)
-      const response = await imageUpload(imageBanner.fileUpload)
+      let response = '';
+      if(imageBanner.fileUpload){
+        response = await imageUpload(imageBanner.fileUpload)
+      }
       const data = {
         name: values.coursesName,
         descriptions: values.descriptions,
         categoryId: values.categoryName.value,
         released: values.release,
-        imageBanner : response.url,
+        imageBanner : response.url || '',
       };
       await dispatch(createCourse(data));
       handleClose();
@@ -162,7 +163,7 @@ const modalCourses = (props) => {
                   <Input
                     type='file'
                     hidden
-                    accept='.pdf, .png, .jpeg'
+                    accept='.pdf, .png, .jpeg, .jpg'
                     onChange={(e) => onChangeFile(e)}
                   />
                   <img src={iconUpdate} />
