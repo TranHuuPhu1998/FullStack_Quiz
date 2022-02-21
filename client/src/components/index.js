@@ -92,7 +92,7 @@ import * as Util from './reactstrap/utils';
 import * as Polyfill from './reactstrap/polyfill';
 import ContentWrapper from './ContentWrapper';
 import PageTitle from './PageTitle';
-
+import PaginationBar from './PaginationBar';
 export {
   Util,
   Polyfill,
@@ -187,5 +187,6 @@ export {
   UncontrolledTooltip,
   Spinner,
   ContentWrapper,
-  PageTitle
+  PageTitle,
+  PaginationBar
 };

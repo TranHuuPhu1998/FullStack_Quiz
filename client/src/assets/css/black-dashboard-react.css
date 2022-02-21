@@ -62,13 +62,6 @@
   box-sizing: border-box;
 }
 
-html {
-  font-family: sans-serif;
-  line-height: 1.15;
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: rgba(34, 42, 66, 0);
-}
-
 article,
 aside,
 figcaption,
@@ -84,7 +77,6 @@ section {
 
 body {
   margin: 0;
-  font-family: 'Poppins', sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
@@ -1983,6 +1975,7 @@ kbd kbd {
 }
 
 .form-control {
+  color: rgb(119, 92, 184);
   display: block;
   width: 100%;
   height: calc(2.25rem + 2px);
@@ -1993,7 +1986,7 @@ kbd kbd {
   /* color: white; */
   background-color: transparent;
   background-clip: padding-box;
-  border: 1px solid #cad1d7;
+  border: 1px solid #2b3035;
   border-radius: 0.25rem;
   box-shadow: none;
   transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -2080,6 +2073,7 @@ select.form-control[multiple] {
 
 textarea.form-control {
   height: auto;
+  outline: none;
 }
 
 .form-group {
@@ -6287,7 +6281,6 @@ a.close.disabled {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -6401,7 +6394,6 @@ a.close.disabled {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: 'Poppins', sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -13655,7 +13647,8 @@ fieldset[disabled] .btn-link.active {
 }
 
 .form-control {
-  border-color: #2b3553;
+  border-color: #0666c2;
+  text-indent: 10px;
   border-radius: 0.4285rem;
   font-size: 0.75rem;
   -webkit-transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out,
@@ -15902,14 +15895,6 @@ p {
   font-weight: 300;
 }
 
-button,
-input,
-optgroup,
-select,
-textarea {
-  font-family: 'Poppins', sans-serif;
-}
-
 .card h1,
 .card h2,
 .card h3,
@@ -16664,10 +16649,10 @@ hr {
 .sidebar,
 .off-canvas-sidebar {
   background: #ba54f5;
-  background: -webkit-linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
-  background: -o-linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
-  background: -moz-linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
-  background: linear-gradient(0deg, #ba54f5 0%, #e14eca 100%);
+  background: -webkit-linear-gradient(0deg, #f0f5f4e6 0%, #e14eca 100%);
+  background: -o-linear-gradient(0deg, #f0f5f4e6 0%, #e14eca 100%);
+  background: -moz-linear-gradient(0deg, #f0f5f4e6 0%, #e14eca 100%);
+  background: linear-gradient(0deg, #f0f5f4e6 0%, #e14eca 100%);
   height: calc(100vh - 90px);
   width: 230px;
   position: fixed;
@@ -17534,7 +17519,7 @@ hr {
 @media screen and (max-width: 991px) {
   .sidebar {
     position: fixed;
-    display: block;
+    display: none;
     top: 0;
     height: 100%;
     width: 260px;
@@ -18615,7 +18600,7 @@ fieldset[disabled] .form-control {
 
 textarea.form-control {
   max-width: 100%;
-  padding: 10px 10px 0 0;
+  padding: 10px 10px 0 10px;
   resize: none;
   line-height: 2;
 }

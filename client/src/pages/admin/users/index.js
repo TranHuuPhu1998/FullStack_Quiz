@@ -1,13 +1,16 @@
-import React , { useEffect } from 'react';
-import Avatar from 'react-avatar';
+import React , { useEffect , useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, PageTitle, Row, Col, Input, Button } from '@App/components';
 import { getListUser } from '@App/app/actions/user';
+import Avatar from 'react-avatar';
 import IconAdd from '@App/assets/img/icon-add.svg';
+import ModalCreateUser from './modalUser';
 
 const Users = () => {
+  const [isShowModal , setIsShowModal] = useState(false);
   const users = useSelector((state) => state.userReducers);
   const dispatch = useDispatch();
+
 
   useEffect(() => {
     dispatch(getListUser());
@@ -25,15 +28,6 @@ const Users = () => {
             placeholder='Search by User Name'
             defaultValue=''
           />
-        </Col>
-        <Col md='2'>
-          <Button
-            onClick={handleCreateUser}
-            color='primary'
-            className='text-uppercase-fl w-100'
-          >
-            Create a User <img className='ml-2' src={IconAdd} />
-          </Button>
         </Col>
       </Row>
       <Table striped dark bordered>
@@ -58,6 +52,10 @@ const Users = () => {
           ))}
         </tbody>
       </Table>
+      <ModalCreateUser
+        isShow={isShowModal}
+        handleClose={() => setIsShowModal(!isShowModal)}
+        />
     </>
   );
 };

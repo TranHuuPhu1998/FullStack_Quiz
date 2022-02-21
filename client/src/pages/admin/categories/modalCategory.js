@@ -40,7 +40,7 @@ const modalCreateCategory = (props) => {
       } else {
         dispatch(createCategory(values.categoryName));
       }
-      handleClose();
+      handleCloseResetFrom();
     }
   });
 

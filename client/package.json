@@ -63,7 +63,7 @@
     "redux-thunk": "^2.3.0",
     "regenerator-runtime": "^0.13.7",
     "scoped-css-loader": "^1.0.0",
-    "socket.io-client": "^3.0.1",
+    "socket.io-client": "^2.3.0",
     "yup": "^0.29.3"
   },
   "scripts": {
@@ -72,6 +72,7 @@
     "clean": "rm dist/bundle.js",
     "build:dev": "webpack -d --mode development",
     "build:prod": "webpack -p --mode production",
+    "lint":"eslint",
     "invalidation-dev": "aws cloudfront create-invalidation --distribution-id E1N9DOQ1X65OMP --paths '/*' --profile eddy-dev"
   },
   "devDependencies": {

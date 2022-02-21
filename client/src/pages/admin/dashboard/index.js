@@ -54,7 +54,7 @@ const DashBoard = () => {
             defaultValue=''
           />
         </Col>
-        <Col md='2'>
+        <Col md='3' className='text-right'>
           <Button
             onClick={handleNewQuestion}
             color='primary'
@@ -65,7 +65,7 @@ const DashBoard = () => {
         </Col>
       </Row>
       <div style={{ overflow: 'auto hidden' }}>
-        <Table striped dark bordered size={1500}>
+        <Table striped dark>
           <thead>
             <tr>
               <th width={300}>Question Name</th>

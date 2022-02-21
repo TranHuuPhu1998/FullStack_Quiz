@@ -36,7 +36,7 @@ const RTLNavbar = ({handleLogout}) => {
           <Collapse navbar>
             <Nav className='ml-auto align-items-center' navbar>
               <NavLink to='/courses'>
-                  <DropdownItem className='nav-item'>Courses</DropdownItem>
+                Courses
               </NavLink>
               <InputGroup className='search-bar'>
                 <Button color='link'>

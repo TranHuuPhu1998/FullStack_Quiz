@@ -1,9 +1,12 @@
 import * as types from '../constants/ActionTypes';
 
 // GET A CATEGORY
-export const getCategory = () => {
+export const getCategory = (pageInfo) => {
   return {
-    type: types.ACTION_GET_CATEGORIES
+    type: types.ACTION_GET_CATEGORIES,
+    payload : {
+      pageInfo
+    }
   };
 };
 

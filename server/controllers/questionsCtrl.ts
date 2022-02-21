@@ -54,7 +54,7 @@ const QuestionCtrl = {
     try {
       const _id = req.params.id;
       const rows = await Question.aggregate([
-        { $match : { "category.id" : mongoose.Types.ObjectId(_id) } } 
+        { $match : { "category.id" : mongoose.Types.ObjectId(_id) } }
       ]);
 
       res.json({ rows });

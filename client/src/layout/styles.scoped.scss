@@ -4,3 +4,8 @@
 .children-user{
   padding: 100px 30px 0 20px;
 }
+@media screen and (max-width: 991px) {
+  .content-wrapper {
+    padding: 100px 20px;
+  }
+}

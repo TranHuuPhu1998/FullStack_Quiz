@@ -32,6 +32,7 @@ function* processSignUp({ payload }) {
   try {
     const resp = yield call(signUp, data);
     yield put(signUpSuccess(resp.data));
+    //
     yield axiosService.redirectTo(
       document,
       authTypes.REDIRECT_AFTER_SIGN_UP_SUCCESS

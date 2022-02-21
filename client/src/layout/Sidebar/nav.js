@@ -29,5 +29,11 @@ export default function () {
       exact: true ,
       icon : iconQuestion
     },
+    {
+      title_const: 'Chat Room',
+      to: '/chat',
+      exact: true ,
+      icon : iconQuestion
+    },
   ];
 }

@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { Table, PageTitle, Row, Col, Input, Button } from '@App/components';
+import { Table, PageTitle, Row, Col, Input, Button , PaginationBar } from '@App/components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategory } from '@App/app/actions/category';
 import { deleteCategory } from '@App/app/actions/category';
+import { PAGE_INFO } from '@App/app/constants';
 import ModalCreateCategory from './modalCategory';
 import IconDelete from '@App/assets/img/icon-delete.svg';
 import IconEdit from '@App/assets/img/icon-edit.svg';
 import IconAdd from '@App/assets/img/icon-add.svg';
 
+
 const Category = () => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [categoryDetails, setCategoryDetails] = useState('');
+  const [pageInfo, setPageInfo] = useState(PAGE_INFO);
+  const [count,setCount] = useState(0);
+
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoryReducers);
 
   useEffect(() => {
-    dispatch(getCategory());
-  }, []);
+    dispatch(getCategory(pageInfo));
+  }, [pageInfo]);
 
   const handleCreateCategory = () => {
     setIsShowModal(true);
@@ -32,6 +37,23 @@ const Category = () => {
     dispatch(deleteCategory(id));
   };
 
+  const handleKeyPressSearch = (e) => {
+    if(e.key === 'Enter'){
+      dispatch(getCategory(pageInfo));
+    }
+  }
+
+  const onChangeSearch = (e) => {
+    setPageInfo({
+      ...pageInfo,
+      text_search: e.target.value,
+    });
+  }
+
+  const onChangePage = (number) => {
+    setPageInfo({ ...pageInfo, page: Number(number) });
+  };
+
   return (
     <>
       <PageTitle>CATEGORY MANAGEMENT</PageTitle>
@@ -39,8 +61,10 @@ const Category = () => {
         <Col md='3'>
           <Input
             className='border w-md mr-3'
-            placeholder='Search by Question Name'
+            placeholder='Search by category name'
             defaultValue=''
+            onKeyPress={handleKeyPressSearch}
+            onChange={onChangeSearch}
           />
         </Col>
         <Col md='2'>
@@ -66,7 +90,7 @@ const Category = () => {
           </tr>
         </thead>
         <tbody>
-          {categories?.map((item, index) => (
+          {categories?.rows?.map((item, index) => (
             <tr key={index}>
               <td>{item.name}</td>
               <td>{item.user}</td>
@@ -90,6 +114,12 @@ const Category = () => {
           ))}
         </tbody>
       </Table>
+      <PaginationBar
+        totalItems={categories?.count}
+        itemsPerPage={PAGE_INFO.limit}
+        currentPage={pageInfo.page}
+        onChangePage={onChangePage}
+      />
       <ModalCreateCategory
         isShow={isShowModal}
         categoryDetails={categoryDetails}

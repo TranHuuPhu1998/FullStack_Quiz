@@ -12,22 +12,6 @@ const app = express()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
 
-// socket io
-
-io.on("connection", (socket : any) => {
-  console.log("connection--------------------------------------");
-
-  socket.on('joinRoom', (id : any) => {
-    console.log("-----------joinRoom---------",id);
-  });
-
-  socket.on('disconnect', () => {
-    console.log(socket.id + 'disconnected')
-  });
-
-});
-
-
 app.use(express.json())
 app.use(express.urlencoded({extended : false}))
 app.use(cors())
@@ -42,6 +26,19 @@ app.use('/api' , routes.questionRouter)
 app.use('/api' , routes.courseRouter)
 
 import './config/database'
+
+// socket io
+
+io.on("connection", (socket : any) => {
+
+  socket.on("sendDataClient", function(data:any) { // Handle khi có sự kiện tên là sendDataClient từ phía client
+    io.emit("sendDataServer", { data });// phát sự kiện  có tên sendDataServer cùng với dữ liệu tin nhắn từ phía server
+  })
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected"); // Khi client disconnect thì log ra terminal.
+  });
+});
 
 
 

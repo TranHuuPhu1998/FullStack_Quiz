@@ -3,7 +3,7 @@ import Users from '../models/userModel'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { generateActiveToken, generateAccessToken, generateRefreshToken } from '../config/generateToken'
-import sendMail from '../config/sendMail'
+// import sendMail from '../config/sendMail'
 import { validateEmail, validPhone } from '../middleware/vaild'
 import { sendSms } from '../config/sendSMS'
 import { IDecodedToken, IUser , IGgPayload ,IUserParams} from '../config/interface'
@@ -26,13 +26,13 @@ const authCtrl = {
       const passwordHash = await bcrypt.hash(password, 12)
 
       const newUser = { name, account, password: passwordHash }
-      
+
       const active_token = generateActiveToken({newUser})
 
       const url = `${CLIENT_URL}/active/${active_token}`
 
       if(validateEmail(account)){
-        // sendMail(account, url, "Verify your email address")  
+        // sendMail(account, url, "Verify your email address")
         // return res.json({ msg: "Success! Please check your email." })
         // -----------
         const _user = new Users(newUser)
@@ -54,10 +54,10 @@ const authCtrl = {
 
       const decoded = <IDecodedToken>jwt.verify(active_token, `${process.env.ACTIVE_TOKEN_SECRET}`)
 
-      const { newUser } = decoded 
+      const { newUser } = decoded
 
       if(!newUser) return res.status(400).json({msg: "Invalid authentication."})
-      
+
       const user = await Users.findOne({account: newUser.account})
       if(user) return res.status(400).json({msg: "Account already exists."})
 
@@ -117,7 +117,7 @@ const authCtrl = {
       const access_token = generateAccessToken({id: user._id})
 
       res.json({access_token , user })
-      
+
     } catch (error: any) {
       return res.status(500).json({msg: error.message})
     }
@@ -128,7 +128,7 @@ const authCtrl = {
       const verify = await client.verifyIdToken({
         idToken: id_token, audience: `${process.env.MAIL_CLIENT_ID}`
       })
-      
+
       const {email, email_verified, name, picture} = <IGgPayload>verify.getPayload()
 
       if(!email_verified)
@@ -138,21 +138,21 @@ const authCtrl = {
       const passwordHash = await bcrypt.hash(password, 12)
 
       const user = await Users.findOne({account: email})
-      
+
 
       if(user){
         loginUser(user, password, res)
       }else{
         const user = {
-          name, 
-          account: email, 
-          password: passwordHash, 
+          name,
+          account: email,
+          password: passwordHash,
           avatar: picture,
           type: 'google'
         }
         registerUser(user, res)
       }
-      
+
     } catch (error: any) {
       return res.status(500).json({msg: error.message})
     }
@@ -178,15 +178,15 @@ const authCtrl = {
         loginUser(user, password, res)
       }else{
         const user = {
-          name, 
-          account: email, 
-          password: passwordHash, 
+          name,
+          account: email,
+          password: passwordHash,
           avatar: picture.data.url,
           type: 'facebook'
         }
         registerUser(user, res)
-      } 
-      
+      }
+
     } catch (error: any) {
       return res.status(500).json({msg: error.message})
     }
@@ -195,25 +195,25 @@ const authCtrl = {
 
 const loginUser = async (user: IUser, password: string, res: Response) => {
   const isMatch = await bcrypt.compare(password, user.password)
-  
+
   try {
     if(!isMatch) {
       let msgError = user.type === 'register'
-        ? 'Password is incorect'
-        : `Password is incorect . This account login with ${user.type}`
-  
+        ? 'Password is inCorrect'
+        : `Password is inCorrect . This account login with ${user.type}`
+
       return res.status(400).json({msg:msgError })
       }
-  
+
     const access_token = generateAccessToken({id: user._id})
     const refresh_token = generateRefreshToken({id: user._id})
-  
+
     res.cookie('refreshtoken', refresh_token, {
       httpOnly: true,
       path: `/api/refresh_token`,
       maxAge: 30*24*60*60*1000 // 30days
     })
-  
+
     res.json({
       msg: 'Login Success!',
       access_token,
@@ -231,16 +231,16 @@ const registerUser = async (user: IUserParams, res: Response) => {
   try {
     const newUser = new Users(user)
     await newUser.save()
-  
+
     const access_token = generateAccessToken({id: newUser._id})
     const refresh_token = generateRefreshToken({id: newUser._id})
-  
+
     res.cookie('refreshtoken', refresh_token, {
       httpOnly: true,
       path: `/api/refresh_token`,
       maxAge: 30*24*60*60*1000 // 30days
     })
-  
+
     res.json({
       msg: 'Login Success!',
       access_token,

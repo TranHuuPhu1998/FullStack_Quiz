@@ -18,11 +18,12 @@ import { hideLoading, showLoading } from '@App/app/actions/ui';
 import { call, takeLatest, put } from 'redux-saga/effects';
 import * as categoryType from '@App/app/constants/ActionTypes';
 
-function* processGetCategories() {
+function* processGetCategories({payload}) {
+  const data = payload;
   yield put(showLoading());
 
   try {
-    const resp = yield call(getCategories);
+    const resp = yield call(getCategories, data);
     yield put(getCategoriesSuccess(resp.data));
   } catch (error) {
     yield put(getCategoriesError(error));

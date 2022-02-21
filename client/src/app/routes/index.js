@@ -6,6 +6,7 @@ const Course = lazy(() => import('@App/pages/admin/courses'));
 const Profile = lazy(() => import('@App/pages/profile'));
 const Exercise = lazy(() => import('@App/pages/exercise'));
 const CourseUser = lazy(() => import('@App/pages/courses'));
+const Chat = lazy(() => import('@App/pages/chat'));
 
 export default [
   {
@@ -42,5 +43,10 @@ export default [
     path: '/courses',
     exact: true,
     component: CourseUser
+  },
+  {
+    path: '/chat',
+    exact: true,
+    component: Chat
   },
 ];

@@ -45,7 +45,8 @@ const Exercise = () => {
 
   const handleNextSubmit = useCallback(() => {
     setCurrentQ((prev) => prev + 1);
-    setIsSaveNext(false);    if(yourAnswer.answerSubmit.length > 0) {
+    setIsSaveNext(false);    
+    if(yourAnswer.answerSubmit.length > 0) {
       setYourAnswerSubmit((prev) => [...prev, yourAnswer]);
       yourAnswerSubmit.map((item, index) => {
         if (item.questionSubmit._id === yourAnswer.questionSubmit?._id) {
@@ -106,7 +107,7 @@ const Exercise = () => {
         {
           isSubmitQuestion && (
             <Alert color="success">
-              <h2 className='d-flex align-items-center justify-content-center text-success-info'>Chúc mừng bạn kiểm tra thành công với <span className='text-blue'> {point +'/'+ questions.length} </span> điểm . </h2>
+              <h2 className='d-flex align-items-center justify-content-center text-success-info'>Chúc mừng bạn kiểm tra thành công với&nbsp;<span className='text-blue'> {point +'/'+ questions.length} </span>&nbsp;điểm . </h2>
               <h3 className='d-flex align-items-center justify-content-center'>Số lần chuyển Tab là : {numberSwapTab} lần</h3>
             </Alert>
           )

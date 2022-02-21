@@ -27,7 +27,6 @@ function* processGetListUser() {
     yield put(hideLoading());
   }
 }
-
 function* processUpdateUserAvatar({ payload }) {
   const avatar = payload;
   yield put(showLoading());

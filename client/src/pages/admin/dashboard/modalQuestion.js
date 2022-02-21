@@ -35,7 +35,7 @@ const ModalCreateQuestion = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const resp = categories.map((item) => ({
+    const resp = categories.rows?.map((item) => ({
       label: item.name,
       value: item._id
     }));

@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState , useEffect , useRef } from 'react';
 import {
   Form,
   FormGroup,
@@ -15,30 +15,13 @@ import { useDispatch , useSelector } from 'react-redux'
 import { imageUpload } from '@App/app/common/helpers/ImageUpload';
 import { updateUserAvatar , getOneUser } from '@App/app/actions/user';
 import { useFormik } from 'formik';
-import { API_ENDPOINT } from '@App/app/constants'
 import * as Yup from 'yup';
-import io from 'socket.io-client';
-
 
 const Profile = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducers)
   const [loadImages , setLoadImages] = useState('');
   const [logoImage, setLogoImage] = useState();
-  const [socket , setSocket] = useState();
-
-  // useEffect(() => {
-  //   setSocket(io.connect('http://localhost:5000'));
-  // },[]);
-
-  useEffect(() => {
-    if(socket){
-      console.log("🚀 ~ file: index.js ~ line 36 ~ useEffect ~ socket", socket)
-      socket.on('joinRoom', 1)
-
-      return () => socket.off('joinRoom')
-    }
-  },[socket])
 
   useEffect(() => {
     dispatch(getOneUser())

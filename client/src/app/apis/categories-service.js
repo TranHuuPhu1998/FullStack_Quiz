@@ -3,8 +3,8 @@ import { API_ENDPOINT } from '@App/app/constants';
 
 const token = localStorage.getItem('TOKEN');
 
-export const getCategories = () => {
-  return axiosService.get(`${API_ENDPOINT}/categories`);
+export const getCategories = ({pageInfo}) => {
+  return axiosService.get(`${API_ENDPOINT}/categories?page=${pageInfo?.page}&limit=${pageInfo?.limit}${pageInfo?.text_search ? `&name=${pageInfo?.text_search}` : ''}`);
 };
 
 export const createCategory = (data) => {

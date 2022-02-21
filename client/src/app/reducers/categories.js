@@ -6,8 +6,7 @@ const initialState = [];
 const reducers = (state = initialState, action) => {
   switch (action.type) {
     case types.GET_CATEGORY_SUCCESS: {
-      const categories = action.payload.data.rows;
-      return [...categories];
+      return action.payload.data;
     }
     case types.GET_CATEGORY_ERROR: {
       toastError('Get Category Error');

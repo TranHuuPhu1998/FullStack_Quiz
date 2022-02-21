@@ -33,12 +33,12 @@ const modalCourses = (props) => {
   };
 
   useEffect(() => {
-    const resp = categories.map((item) => ({
+    const resp = categories.rows?.map((item) => ({
       label: item.name,
       value: item._id
     }));
     setListCategories(resp);
-  }, [categories]);
+  }, [categories.rows]);
 
   const coverCategorySelect = (category) => {
     if (category) {
