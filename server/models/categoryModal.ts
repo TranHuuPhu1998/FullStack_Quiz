@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { ICategory } from "../config/interface";
+var aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const categorySchema = new mongoose.Schema(
   {
@@ -18,5 +19,6 @@ const categorySchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+categorySchema.plugin(aggregatePaginate)
 
-export default mongoose.model<ICategory>("category", categorySchema);
+export default mongoose.model("category", categorySchema);

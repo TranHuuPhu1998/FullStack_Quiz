@@ -16,11 +16,6 @@ const Header = () => {
         <div className='collapse navbar-collapse'>
           <ul className='ml-auto navbar-nav'>
             <li className='nav-item'>
-              <NavLink className='nav-link text-primary' to='/admin/dashboard'>
-                <i className='tim-icons icon-minimal-left' /> Back to Dashboard
-              </NavLink>
-            </li>
-            <li className='nav-item'>
               <NavLink className='nav-link' to='/register'>
                 <i className='tim-icons icon-laptop' /> Register
               </NavLink>

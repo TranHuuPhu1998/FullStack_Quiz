@@ -38,6 +38,9 @@ const RTLNavbar = ({handleLogout}) => {
               <NavLink to='/courses'>
                 Courses
               </NavLink>
+              <NavLink className="ml-4" to='/chat'>
+                Chat
+              </NavLink>
               <InputGroup className='search-bar'>
                 <Button color='link'>
                   <i className='tim-icons icon-zoom-split' />

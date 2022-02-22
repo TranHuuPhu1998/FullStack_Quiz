@@ -14,7 +14,6 @@ const Category = () => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [categoryDetails, setCategoryDetails] = useState('');
   const [pageInfo, setPageInfo] = useState(PAGE_INFO);
-  const [count,setCount] = useState(0);
 
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categoryReducers);
@@ -46,6 +45,7 @@ const Category = () => {
   const onChangeSearch = (e) => {
     setPageInfo({
       ...pageInfo,
+      page:1,
       text_search: e.target.value,
     });
   }
@@ -67,7 +67,7 @@ const Category = () => {
             onChange={onChangeSearch}
           />
         </Col>
-        <Col md='2'>
+        <Col xs='12' sm='4' md='4'>
           <Button
             onClick={handleCreateCategory}
             color='primary'
@@ -90,10 +90,10 @@ const Category = () => {
           </tr>
         </thead>
         <tbody>
-          {categories?.rows?.map((item, index) => (
+          {categories?.rows?.docs.map((item, index) => (
             <tr key={index}>
               <td>{item.name}</td>
-              <td>{item.user}</td>
+              <td>{item.userName}</td>
               <td>{new Date(item.createdAt).toLocaleString()}</td>
               <td>{new Date(item.updatedAt).toLocaleString()}</td>
               <td className='text-center'>
@@ -115,7 +115,7 @@ const Category = () => {
         </tbody>
       </Table>
       <PaginationBar
-        totalItems={categories?.count}
+        totalItems={categories?.rows?.totalDocs}
         itemsPerPage={PAGE_INFO.limit}
         currentPage={pageInfo.page}
         onChangePage={onChangePage}

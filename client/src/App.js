@@ -11,7 +11,9 @@ import routesUnauth from './app/routes/routesUnath';
 import LayoutAuth from './layout';
 import LoadingTop from '@App/layout/Loading/LoadingTop';
 import LoadingSpin from '@App/layout/Loading/LoadingSpin';
-
+import jwt_decode from "jwt-decode";
+import { logout } from '@App/app/actions/auth';
+import { useDispatch , useSelector } from 'react-redux';
 import './assets/css/black-dashboard-react.css';
 import './assets/css/nucleo-icons.css';
 import './assets/css/common.css';
@@ -35,7 +37,6 @@ const RenderApp = ({ authenticated }) => {
   const appRoutes = authenticated ? routes : routesUnauth;
 
   return (
-    <LayoutAuth authenticated={authenticated}>
       <React.Suspense fallback={<DelayedFallback />}>
         <Switch>
           {appRoutes?.map((route, index) => {
@@ -53,14 +54,22 @@ const RenderApp = ({ authenticated }) => {
           <Redirect to='/' />
         </Switch>
       </React.Suspense>
-    </LayoutAuth>
   );
 };
 
 const App = () => {
   const token = localStorage.getItem(AUTHORIZATION_KEY);
-  // const tokenRedux = useSelector((state) => state.authReducers);
-
+  const dispatch = useDispatch();
+ 
+  useEffect(() => {
+    if(token) {
+      const exp = jwt_decode(token).exp;
+      if(exp < Date.now() / 1000) {
+        dispatch(logout(exp));
+      }
+    }
+  },[]);
+  
   return (
     <Router>
       <RenderApp authenticated={token} />

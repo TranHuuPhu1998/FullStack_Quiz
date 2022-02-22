@@ -11,6 +11,7 @@ import {
 import { getListCourse } from '@App/app/actions/course';
 import { useHistory } from 'react-router-dom';
 import { useSelector , useDispatch } from 'react-redux';
+import UserLayout from '@App/layout/UserLayout';
 import './styles.scoped.scss';
 
 const Courses = () => {
@@ -28,7 +29,7 @@ const Courses = () => {
   }
 
   return (
-    <div>
+    <UserLayout>
       {
         course.map((item,index) => {
           return (
@@ -53,8 +54,7 @@ const Courses = () => {
           )
         })
       }
-
-    </div>
+    </UserLayout>
   );
 };
 

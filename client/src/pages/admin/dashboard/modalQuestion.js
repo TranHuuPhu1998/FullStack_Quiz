@@ -35,7 +35,7 @@ const ModalCreateQuestion = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const resp = categories.rows?.map((item) => ({
+    const resp = categories.rows?.docs.map((item) => ({
       label: item.name,
       value: item._id
     }));
@@ -130,18 +130,21 @@ const ModalCreateQuestion = (props) => {
       category: Yup.object().required('required')
     }),
     onSubmit: async (values) => {
-      const _isCheckIndex = checkAnswer.id;
+      const _isCheckIndex = checkAnswer && checkAnswer.id;
       const res = listAnswers.map((item) => ({
         content: item.content,
         isCorrect: Number(item.id) === Number(_isCheckIndex),
         id: item.id
       }));
+     
       const data = {
         name: code,
         categoryId: values.category.value,
         answers: res
       };
+      console.log(data,questionDetail._id);
       if (questionDetail._id) {
+        console.log(data,questionDetail._id);
         dispatch(updateQuestion(data, questionDetail._id));
       } else {
         dispatch(createQuestion(data));

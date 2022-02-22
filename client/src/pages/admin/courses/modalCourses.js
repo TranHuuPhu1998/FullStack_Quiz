@@ -33,7 +33,7 @@ const modalCourses = (props) => {
   };
 
   useEffect(() => {
-    const resp = categories.rows?.map((item) => ({
+    const resp = categories.rows?.docs.map((item) => ({
       label: item.name,
       value: item._id
     }));

@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import {Alert} from '@App/components';
 import queryString from 'query-string';
 import QuestionItem from './QuestionItem';
+import UserLayout from '@App/layout/UserLayout';
 import './styles.scoped.scss';
 
 const Exercise = () => {
@@ -72,6 +73,7 @@ const Exercise = () => {
   };
 
   return (
+    <UserLayout>
     <div className='main-div'>
       <div className='question-list'>
         <h3 className='question-title'>
@@ -174,6 +176,7 @@ const Exercise = () => {
         </div>
       </div>
     </div>
+    </UserLayout>
   );
 };
 

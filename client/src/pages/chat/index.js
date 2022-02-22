@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch , useSelector } from 'react-redux'
+import { getOneUser } from '@App/app/actions/user';
+import UserLayout from '@App/layout/UserLayout';
 import io from 'socket.io-client';
 import './chat.scoped.scss';
-import { getOneUser } from '@App/app/actions/user';
 
 const chatPage = () => {
   const [mess, setMess] = useState([]);
@@ -21,7 +22,7 @@ const chatPage = () => {
 
   useEffect(() => {
     socketRef.current = io.connect('http://localhost:5000');
-
+    // get data from server
     socketRef.current.on('getId', (data) => {
       setId(data);
     });
@@ -49,6 +50,7 @@ const chatPage = () => {
         user : user[0].name,
         idUser: user[0]._id,
       };
+      // send message to server
       socketRef.current.emit('sendDataClient', msg);
 
       setMessage('');
@@ -75,6 +77,11 @@ const chatPage = () => {
     ));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendMessage();
+  }
+
   useEffect(() => {
     // scroll to bottom after message changed
     if (messageListRef?.current) {
@@ -83,25 +90,28 @@ const chatPage = () => {
   }, [message]);
 
   return (
-    <div className='card'>
-      <h1 className='p-2'>Chat form</h1>
-      <div className='render-chat' ref={messageListRef} >
-        {renderChat()}
-      </div>
-      <div>
-        <div className='d-flex'>
-          <textarea
-            className='form-control'
-            value={message}
-            onKeyDown={onEnterPress}
-            onChange={handleChange}
-            placeholder='Nhập tin nhắn ...'
-          />
-          <button type='submit' className='btn w-100 mt-0 mb-0'>Send</button>
+    <UserLayout>
+      <div className='card'>
+        <h1 className='p-2'>Chat form</h1>
+        <div className='render-chat' ref={messageListRef} >
+          {renderChat()}
+        </div>
+        <div>
+          <div className='d-flex'>
+            <form className='d-flex w-100' onSubmit={handleSubmit}>
+              <textarea
+                className='form-control'
+                value={message}
+                onKeyDown={onEnterPress}
+                onChange={handleChange}
+                placeholder='Nhập tin nhắn ...'
+              />
+              <button type='submit' className='btn w-100 mt-0 mb-0'>Send</button>
+            </form>
+          </div>
         </div>
       </div>
-
-    </div>
+      </UserLayout>
   );
 };
 

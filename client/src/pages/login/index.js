@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { login } from '@App/app/actions/auth';
 import { useDispatch } from 'react-redux';
 import CardPrimary from '@App/assets/img/card-primary.png';
+import AuthLayout from '@App/layout/AuthLayout';
 import * as Yup from 'yup';
 
 const SignIn = () => {
@@ -31,6 +32,7 @@ const SignIn = () => {
   });
 
   return (
+    <AuthLayout>
     <div className='container box-center'>
       <div className='ml-auto mr-auto col-md-6 col-lg-4'>
         <Form onSubmit={formik.handleSubmit} id='login' className='form'>
@@ -102,6 +104,7 @@ const SignIn = () => {
         </Form>
       </div>
     </div>
+    </AuthLayout>
   );
 };
 

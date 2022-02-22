@@ -56,9 +56,9 @@ function* processLogin({ payload }) {
     yield localStorage.setItem(AUTHORIZATION_KEY, access_token);
     yield localStorage.setItem('LOGIN_TYPE',resp.data.user.role)
     if(resp.data.user.role === 'admin') {
-      document.location = '/admin';
+      yield axiosService.redirectTo(document,'/admin');
     }else {
-      document.location = '/courses';
+      yield axiosService.redirectTo(document,'/courses');
     }
   } catch (error) {
     const details = _get(error, 'response.data.detail', {});
@@ -74,7 +74,7 @@ function* processLogout({ payload }) {
   try {
     const resp = yield call(logout, { token });
     yield put(logoutSuccess(resp.data));
-    document.location = '/';
+    yield axiosService.redirectTo(document,'/');
   } catch (error) {
     const details = _get(error, 'response.data.detail', {});
     yield put(logoutFailed(details));

@@ -2,25 +2,13 @@ import { Request, Response } from "express";
 import Category from "../models/categoryModal";
 import { IReqAuth } from "../config/interface";
 
-class APIfeatures{
-  query : any;
-  queryString : any;
-  constructor(query : any, queryString : any){
-      this.query = query;
-      this.queryString = queryString;
-  }
-  sorting(){
-      this.query = this.query.sort('-createdAt')
-      return this;
-  }
-  paginating(){
-      const page = this.queryString.page * 1 || 1
-      const limit = this.queryString.limit * 1 || 5
-      const skip = (page - 1) * limit
-      this.query = this.query.skip(skip).limit(limit)
-      return this;
-  }
-}
+const Pagination = (req: IReqAuth) => {
+  let page = Number(req.query.page) * 1 || 1;
+  let limit = Number(req.query.limit) * 1 || 4;
+  let skip = (page - 1) * limit;
+
+  return { page, limit, skip };
+};
 
 const categoryCtrl = {
   createCategory: async (req: IReqAuth, res: Response) => {
@@ -52,18 +40,40 @@ const categoryCtrl = {
     }
   },
   getCategories: async (req: Request | any, res: Response) => {
-    const { name } = req.query;
+    const { limit, skip, page } = Pagination(req);
+    const options = {
+      page: page,
+      limit: limit,
+      sort: { _id: 1, createdAt: -1 },
+    };
     try {
-      let query = Category.find();
-      const count = await Category.countDocuments();
-      if(name){
-        query = Category.find({name: { $regex: '.*' + name + '.*' } });
+      let query = [];
+      if (req.query.name) {
+        query.push({ name: { $regex: `.*${req.query.name}.*` } });
+      } else {
+        query = [{ _id: { $exists: true } }];
       }
-      const features = new APIfeatures(query, req.query).sorting().paginating();
 
-      const categories = await features.query;
-
-      res.json({ rows : categories , count : count });
+      const condition = Category.aggregate([
+        { $match: { $and: query } },
+        {
+          $lookup: {
+            from: "users",
+            localField: "user",
+            foreignField: "_id",
+            as: "userName",
+          },
+        },
+        {
+          $addFields: {
+            userName:  { $arrayElemAt: ["$userName.name", 0] }
+          }
+        },
+      ]);
+      const categories = await Category.aggregatePaginate(condition, options);
+      return res.json({
+        rows: categories,
+      });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }
