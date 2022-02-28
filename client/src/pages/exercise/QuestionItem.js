@@ -52,7 +52,7 @@ const QuestionItem = ({
             <p className='text'>Choose the correct answers:</p>
             {answers.map((item, index) => (
               <li
-                className={`answer-item ${
+                className={`answer-item cursor-pointer ${
                   yourAnswerSubmit && item.isCorrect
                     ? 'user-submit'
                     : 'user-submit-error'

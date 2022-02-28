@@ -21,11 +21,12 @@ import { hideLoading, showLoading } from '@App/app/actions/ui';
 import { call, takeLatest, put, delay } from 'redux-saga/effects';
 import * as questionType from '@App/app/constants/ActionTypes';
 
-function* processGetQuestion() {
+function* processGetQuestion({payload}) {
+  const data = payload;
   yield put(showLoading());
 
   try {
-    const resp = yield call(getQuestions);
+    const resp = yield call(getQuestions, data);
     yield put(getQuestionsSuccess(resp.data));
   } catch (err) {
     yield put(getQuestionsError());

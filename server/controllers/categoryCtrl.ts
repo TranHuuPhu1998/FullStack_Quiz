@@ -40,7 +40,7 @@ const categoryCtrl = {
     }
   },
   getCategories: async (req: Request | any, res: Response) => {
-    const { limit, skip, page } = Pagination(req);
+    const { limit, page } = Pagination(req);
     const options = {
       page: page,
       limit: limit,
@@ -49,7 +49,7 @@ const categoryCtrl = {
     try {
       let query = [];
       if (req.query.name) {
-        query.push({ name: { $regex: `.*${req.query.name}.*` } });
+        query.push({ name: { $regex: `.*${req.query.name}.*`, $options : 'i' } });
       } else {
         query = [{ _id: { $exists: true } }];
       }

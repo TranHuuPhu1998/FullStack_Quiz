@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCategory } from '@App/app/actions/category';
 import { deleteCategory } from '@App/app/actions/category';
 import { PAGE_INFO } from '@App/app/constants';
+import AdminLayout from '@App/layout/AdminLayout';
 import ModalCreateCategory from './modalCategory';
 import IconDelete from '@App/assets/img/icon-delete.svg';
 import IconEdit from '@App/assets/img/icon-edit.svg';
@@ -55,7 +56,7 @@ const Category = () => {
   };
 
   return (
-    <>
+    <AdminLayout>
       <PageTitle>CATEGORY MANAGEMENT</PageTitle>
       <Row className='d-flex justify-content-between mb-3'>
         <Col md='3'>
@@ -125,7 +126,7 @@ const Category = () => {
         categoryDetails={categoryDetails}
         handleClose={() => setIsShowModal(!isShowModal)}
       />
-    </>
+    </AdminLayout>
   );
 };
 

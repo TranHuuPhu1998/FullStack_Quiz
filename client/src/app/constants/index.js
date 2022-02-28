@@ -5,3 +5,8 @@ export const PAGE_INFO = {
   limit: 8,
   text_search: null
 };
+export const PAGE_INFO_CATEGORY = {
+  page: 1,
+  limit: 100,
+  text_search: null
+};

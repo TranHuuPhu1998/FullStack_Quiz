@@ -4,6 +4,13 @@ import Category from "../models/categoryModal";
 import { IReqAuth } from "../config/interface";
 import mongoose from 'mongoose'
 
+const Pagination = (req: IReqAuth) => {
+  let page = Number(req.query.page) * 1 || 1;
+  let limit = Number(req.query.limit) * 1 || 4;
+  let skip = (page - 1) * limit;
+
+  return { page, limit, skip };
+};
 
 const QuestionCtrl = {
   createQuestion: async (req: IReqAuth, res: Response) => {
@@ -43,9 +50,27 @@ const QuestionCtrl = {
     }
   },
   getQuestion: async (req: Request, res: Response) => {
+    const { limit, page } = Pagination(req);
+    const options = {
+      page: page,
+      limit: limit,
+      sort: { _id: 1, createdAt: -1 },
+    };
     try {
-      const rows = await Question.find().sort("-createdAt");
-      res.json({ rows });
+      let query = [];
+      if (req.query.name) {
+        query.push({ name: { $regex: `.*${req.query.name}.*` , $options : 'i'} });
+      } else {
+        query = [{ _id: { $exists: true } }];
+      }
+
+      const condition = Question.aggregate([
+        { $match: { $and: query } },
+      ]);
+
+      const questions = await Question.aggregatePaginate(condition, options);
+      return res.json({ rows : questions });
+      
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }

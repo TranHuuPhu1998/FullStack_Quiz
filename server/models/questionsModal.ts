@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import {IQuestions} from '../config/interface'
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const questionSchema = new mongoose.Schema({
     user: { type: mongoose.Types.ObjectId, ref: 'user' },
@@ -21,4 +21,6 @@ const questionSchema = new mongoose.Schema({
   timestamps: true
 })
 
-export default mongoose.model<IQuestions>('question', questionSchema)
+questionSchema.plugin(aggregatePaginate)
+
+export default mongoose.model('question', questionSchema)

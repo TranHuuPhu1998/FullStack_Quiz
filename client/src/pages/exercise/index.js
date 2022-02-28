@@ -77,11 +77,11 @@ const Exercise = () => {
     <div className='main-div'>
       <div className='question-list'>
         <h3 className='question-title'>
-          Question List: <span className='text-blue'>{questions.length}</span>
+          Question List: <span className='text-blue'>{questions?.data?.length}</span>
         </h3>
         <div className='question-content'>
           <div className='create-test'>
-            {questions.map((item, index) => (
+            {questions?.data?.map((item, index) => (
               <div
                 className={`list-item ${
                   index === currentQ && 'active-question'
@@ -100,7 +100,7 @@ const Exercise = () => {
 
       <div className='inner-div'>
         {
-          isSubmitQuestion === false && currentQ === questions.length && (
+          isSubmitQuestion === false && currentQ === questions?.data?.length && (
             <Alert color="success">
               <h2 className='d-flex align-items-center justify-content-center text-success-info'>Chúc mừng bạn kiểm tra thành công hãy submit để kiểm tra thành quả !</h2>
             </Alert>
@@ -109,7 +109,7 @@ const Exercise = () => {
         {
           isSubmitQuestion && (
             <Alert color="success">
-              <h2 className='d-flex align-items-center justify-content-center text-success-info'>Chúc mừng bạn kiểm tra thành công với&nbsp;<span className='text-blue'> {point +'/'+ questions.length} </span>&nbsp;điểm . </h2>
+              <h2 className='pt-5 text-center text-success-info'>Chúc mừng bạn kiểm tra thành công với&nbsp;<span className='text-blue'> {point +'/'+ questions?.data?.length} </span>&nbsp;điểm . </h2>
               <h3 className='d-flex align-items-center justify-content-center'>Số lần chuyển Tab là : {numberSwapTab} lần</h3>
             </Alert>
           )
@@ -133,7 +133,7 @@ const Exercise = () => {
           </>
         ) : (
           <>
-            {questions.map((item, index) => (
+            {questions?.data?.map((item, index) => (
               <React.Fragment key={index}>
                 <QuestionItem
                   yourAnswerSubmit={''}

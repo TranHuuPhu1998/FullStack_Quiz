@@ -3,8 +3,9 @@ import { API_ENDPOINT } from '../constants';
 
 const token = localStorage.getItem('TOKEN');
 
-export const getQuestions = () => {
-  return axiosService.get(`${API_ENDPOINT}/questions`);
+export const getQuestions = ({pageInfo}) => {
+  const { page, limit , text_search } = pageInfo;
+  return axiosService.get(`${API_ENDPOINT}/questions?page=${page}&limit=${limit}${text_search ? `&name=${text_search}` : ''}`);
 };
 
 export const getQuestionsCategory = (id) => {

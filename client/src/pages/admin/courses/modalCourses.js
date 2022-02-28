@@ -21,6 +21,7 @@ import './styles.scoped.scss';
 
 const modalCourses = (props) => {
   const { isShow, handleClose, courseDetail, categories } = props;
+  console.log("🚀 ~ file: modalCourses.js ~ line 24 ~ modalCourses ~ courseDetail", courseDetail)
   const [listCategories, setListCategories] = useState([]);
   const [loading , setLoading] = useState(false);
   const [imageBanner, setImageBanner] = useState('');
@@ -31,6 +32,12 @@ const modalCourses = (props) => {
     handleClose();
     formik.resetForm();
   };
+
+  // useEffect(() => {
+  //   if(courseDetail) {
+  //     setImageBanner(courseDetail.imageBanner);
+  //   }
+  // },[courseDetail])
 
   useEffect(() => {
     const resp = categories.rows?.docs.map((item) => ({
@@ -78,9 +85,9 @@ const modalCourses = (props) => {
   };
 
   const RenderImage = () => {
-    const src = imageBanner.base64
-      ? `data: image/${imageBanner.extension};base64,${imageBanner.base64}`
-      : imageBanner;
+    const src = imageBanner?.base64
+      ? `data: image/${imageBanner?.extension};base64,${imageBanner?.base64}`
+      : courseDetail?.imageBanner;
     return <img src={src} className='img-upload' />;
   };
 
@@ -156,7 +163,7 @@ const modalCourses = (props) => {
           </FormGroup>
           <FormGroup>
             <div className='avatar__preview'>
-              {imageBanner.base64 ? (
+              {imageBanner.base64 || courseDetail?.imageBanner  ? (
                 <RenderImage />
               ) : (
                 <Button tag={Label} className='button__img'>

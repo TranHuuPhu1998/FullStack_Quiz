@@ -3,6 +3,8 @@ import { Table, PageTitle, Row, Col, Input, Button } from '@App/components';
 import { getListCourse , deleteCourse } from '@App/app/actions/course';
 import { getCategory } from '@App/app/actions/category';
 import { useSelector , useDispatch } from 'react-redux';
+import { PAGE_INFO_CATEGORY} from '@App/app/constants';
+import AdminLayout from '@App/layout/AdminLayout';
 import IconDelete from '@App/assets/img/icon-delete.svg';
 import IconEdit from '@App/assets/img/icon-edit.svg';
 import IconAdd from '@App/assets/img/icon-add.svg';
@@ -11,13 +13,15 @@ import ModalCourses from './modalCourses';
 const Courses = () => {
   const [isShowModal , setIsShowModal] = useState(false);
   const [courseDetail , setCourseDetail] = useState({});
+  const [pageInfoCategory, ] = useState(PAGE_INFO_CATEGORY);
+
   const dispatch = useDispatch();
   const course = useSelector((state) => state.courseReducers);
   const categories = useSelector((state) => state.categoryReducers);
 
   useEffect(() => {
     dispatch(getListCourse());
-    dispatch(getCategory());
+    dispatch(getCategory(pageInfoCategory));
   },[])
 
   const handleCreateCourse = () => {
@@ -33,7 +37,7 @@ const Courses = () => {
   }
 
   return (
-    <>
+    <AdminLayout>
       <PageTitle>COURSE MANAGEMENT</PageTitle>
       <Row className='d-flex justify-content-between mb-3'>
         <Col md='3'>
@@ -104,7 +108,7 @@ const Courses = () => {
         categories={categories}
         handleClose={() => setIsShowModal(!isShowModal)}
       />
-    </>
+    </AdminLayout>
   );
 };
 

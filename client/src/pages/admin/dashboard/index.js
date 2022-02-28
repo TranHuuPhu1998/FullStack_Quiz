@@ -6,12 +6,15 @@ import {
   Row,
   Col,
   Input,
-  Button
+  Button,
+  PaginationBar 
 } from '@App/components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getQuestions, deleteQuestion } from '@App/app/actions/question';
 import { getCategory } from '@App/app/actions/category';
+import { PAGE_INFO , PAGE_INFO_CATEGORY} from '@App/app/constants';
 import ModalCreateQuestion from './modalQuestion';
+import AdminLayout from '@App/layout/AdminLayout';
 import IconDelete from '@App/assets/img/icon-delete.svg';
 import IconEdit from '@App/assets/img/icon-edit.svg';
 import IconAdd from '@App/assets/img/icon-add.svg';
@@ -19,15 +22,20 @@ import IconAdd from '@App/assets/img/icon-add.svg';
 const DashBoard = () => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [questionDetail, setQuestionDetail] = useState({});
+  const [pageInfo, setPageInfo] = useState(PAGE_INFO);
+  const [pageInfoCategory, ] = useState(PAGE_INFO_CATEGORY);
 
   const dispatch = useDispatch();
   const questions = useSelector((state) => state.questionReducers);
   const categories = useSelector((state) => state.categoryReducers);
 
   useEffect(() => {
-    dispatch(getQuestions());
-    dispatch(getCategory());
-  }, []);
+    dispatch(getQuestions(pageInfo));
+  }, [pageInfo]);
+
+  useEffect(() => {
+    dispatch(getCategory(pageInfoCategory));
+  }, [pageInfoCategory]);
 
   const handleEditQuestion = (question) => {
     setQuestionDetail(question);
@@ -43,8 +51,26 @@ const DashBoard = () => {
     dispatch(deleteQuestion(id));
   };
 
+  const onChangeSearch = (e) => {
+    setPageInfo({
+      ...pageInfo,
+      page:1,
+      text_search: e.target.value,
+    });
+  }
+
+  const handleKeyPressSearch = (e) => {
+    if(e.key === 'Enter'){
+      dispatch(getQuestions(pageInfo));
+    }
+  }
+
+  const onChangePage = (number) => {
+    setPageInfo({ ...pageInfo, page: Number(number) });
+  }
+
   return (
-    <>
+    <AdminLayout>
       <PageTitle>DASHBOARD</PageTitle>
       <Row className='d-flex justify-content-between mb-3'>
         <Col md='3'>
@@ -52,6 +78,8 @@ const DashBoard = () => {
             className='border w-md mr-3'
             placeholder='Search by Question Name'
             defaultValue=''
+            onKeyPress={handleKeyPressSearch}
+            onChange={onChangeSearch}
           />
         </Col>
         <Col md='3' className='text-right'>
@@ -78,7 +106,7 @@ const DashBoard = () => {
             </tr>
           </thead>
           <tbody>
-            {questions?.map((item, index) => (
+            {questions?.data?.map((item, index) => (
               <tr key={index}>
                 <td>{item.name}</td>
                 <td>{new Date(item.createdAt).toLocaleString()}</td>
@@ -119,14 +147,21 @@ const DashBoard = () => {
           </tbody>
         </Table>
       </div>
-
+      {
+        questions.totalDocs > 8 && <PaginationBar
+        totalItems={questions.totalDocs}
+        itemsPerPage={PAGE_INFO.limit}
+        currentPage={pageInfo.page}
+        onChangePage={onChangePage}
+      />   
+      }
       <ModalCreateQuestion
         isShow={isShowModal}
         questionDetail={questionDetail}
         categories={categories}
         handleClose={() => setIsShowModal(!isShowModal)}
       />
-    </>
+    </AdminLayout>
   );
 };
 

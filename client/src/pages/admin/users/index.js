@@ -3,23 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Table, PageTitle, Row, Col, Input, Button } from '@App/components';
 import { getListUser } from '@App/app/actions/user';
 import Avatar from 'react-avatar';
-import IconAdd from '@App/assets/img/icon-add.svg';
 import ModalCreateUser from './modalUser';
+import AdminLayout from '@App/layout/AdminLayout';
 
 const Users = () => {
   const [isShowModal , setIsShowModal] = useState(false);
   const users = useSelector((state) => state.userReducers);
   const dispatch = useDispatch();
 
-
   useEffect(() => {
     dispatch(getListUser());
   },[])
 
-  const handleCreateUser = () => {}
-
   return (
-    <>
+    <AdminLayout>
       <PageTitle>USER MANAGEMENT</PageTitle>
       <Row className='d-flex justify-content-between mb-3'>
         <Col md='3'>
@@ -56,7 +53,7 @@ const Users = () => {
         isShow={isShowModal}
         handleClose={() => setIsShowModal(!isShowModal)}
         />
-    </>
+    </AdminLayout>
   );
 };
 

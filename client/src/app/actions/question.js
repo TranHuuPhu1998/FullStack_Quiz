@@ -1,9 +1,12 @@
 import * as types from '@App/app/constants/ActionTypes';
 
 // Get List Questions
-export const getQuestions = () => {
+export const getQuestions = (pageInfo) => {
   return {
-    type: types.ACTION_GET_QUESTIONS
+    type: types.ACTION_GET_QUESTIONS,
+    payload: {
+      pageInfo
+    }
   };
 };
 
