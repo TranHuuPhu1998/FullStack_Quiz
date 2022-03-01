@@ -102,8 +102,8 @@ const userCtrl = {
     if (!req.user)
         return res.status(400).json({ msg: "Invalid Authentication." });
 
-    if (req.user.role !== "admin")
-        return res.status(400).json({ msg: "Invalid Authentication." });
+    // if (req.user.role)
+    //     return res.status(400).json({ msg: "Invalid Authentication." });
 
     try {
       const user = await Users.findById(req.user._id).select("-password");

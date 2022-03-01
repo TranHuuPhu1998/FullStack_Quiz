@@ -3,285 +3,215 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  Form,
   FormGroup,
   Row,
   Col,
   Button,
-  ModalFooter,
-  Input,
   Label,
-  CustomInput
 } from '@App/components';
 import { useDispatch } from 'react-redux';
 import { createQuestion, updateQuestion } from '@App/app/actions/question';
-import { useFormik } from 'formik';
-import { toastError } from '@App/app/common/helpers/toastHelper';
 import { highlight, languages } from 'prismjs/components/prism-core';
-import Editor from 'react-simple-code-editor';
-import Select from 'react-select';
-import * as Yup from 'yup';
+import { Formik, Form, Field, FieldArray } from 'formik';
+import { nanoid } from "nanoid";
+import { coverListDateToOption, coverItemDataSelect } from '@App/app/utils';
 
-const ModalCreateQuestion = (props) => {
-  const { isShow, handleClose, categories, questionDetail } = props;
+import Select from 'react-select';
+import Editor from 'react-simple-code-editor';
+import IconAdd from '@App/assets/img/icon-add.svg';
+
+const Modal2CreateQuestion = (props) => {
+  const { isShow, handleClose, categories, courses, questionDetail } = props;
   const [listCategories, setListCategories] = useState([]);
-  const [listAnswers, setListAnswers] = useState([]);
-  const [firstAnswers, setFirstAnswers] = useState('');
-  const [answerNew, setAnswerNew] = useState(1);
-  const [checkAnswer, setCheckAnswer] = useState(null);
-  const [isAddLayoutAnswers, setIsLayoutAnswers] = useState(true);
-  const [totalAddAnswer, setTotalAddAnswer] = useState(0);
+  const [listCourses, setListCourses] = useState([]);
   const [code, setCode] = useState('');
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const resp = categories.rows?.docs.map((item) => ({
-      label: item.name,
-      value: item._id
-    }));
-    setListCategories(resp);
-  }, [categories]);
-
-  useEffect(() => {
-    if (questionDetail._id) {
-      setListAnswers(questionDetail.answers);
-      setAnswerNew(1);
+    if (questionDetail.name) {
       setCode(questionDetail.name);
     }
-  }, [questionDetail]);
+  }, [questionDetail])
 
-  // handle input of List answer
-  const handleChangeAns = (e) => {
-    const id = e.currentTarget.id;
-    const value = e.currentTarget.value;
-    setFirstAnswers({ id: Number(id), content: value, isCorrect: false });
-    // when update answer question
-    let _listAnswersUpdate = listAnswers;
+  useEffect(() => {
+    setListCategories(coverListDateToOption(categories.rows?.docs));
+    setListCourses(coverListDateToOption(courses));
+  }, [categories, courses]);
+
+  const onSubmit = async (values, helpers) => {
+    const data = {
+      name: code,
+      categoryId: values.categoryId.value,
+      answers: values.answers,
+      courseId: values.courseId.value
+    };
     if (questionDetail._id) {
-      listAnswers.map((item, index) => {
-        if (Number(item.id) === Number(id)) {
-          _listAnswersUpdate[index] = {
-            content: value,
-            id: id,
-            isCorrect: false
-          };
-        }
-      });
-      setListAnswers(_listAnswersUpdate);
+      dispatch(updateQuestion(data, questionDetail._id));
+    } else {
+      dispatch(createQuestion(data));
     }
-  };
-
-  // handle chose answer is true or false
-  const handleChangeResult = (e) => {
-    const id = e.currentTarget.id;
-    const checkId = id.split('-');
-    setCheckAnswer({ id: checkId.at(1) });
-  };
+    helpers.resetForm();
+    handleCloseResetFrom();
+  }
 
   const handleCloseResetFrom = () => {
     handleClose();
-    formik.resetForm();
     setCode('');
-    setListAnswers([]);
-    setAnswerNew(1);
-    setIsLayoutAnswers(true);
-    setFirstAnswers('');
-    setCheckAnswer(null);
-    setTotalAddAnswer(0)
   };
-
-  const AddLayoutAnswer = () => {
-    setAnswerNew((prev) => prev + 1);
-    setIsLayoutAnswers(!isAddLayoutAnswers);
-  };
-
-  const coverCategorySelect = (category) => {
-    if (category) {
-      return {
-        value: category.id,
-        label: category.name
-      };
-    }
-  };
-
-  const AddAnswers = () => {
-    if (firstAnswers) {
-      const mergeListAnswer = [...listAnswers, firstAnswers];
-      setListAnswers(mergeListAnswer);
-      setIsLayoutAnswers(!isAddLayoutAnswers);
-      setTotalAddAnswer((prev) => prev + 1);
-      setFirstAnswers('');
-    } else {
-      toastError('Answer is required');
-    }
-  };
-
-  const newArray = (number) => {
-    return Array.from(Array(number).keys());
-  };
-
-  // handle when client update or new question
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      category: coverCategorySelect(questionDetail.category) || ''
-    },
-    validationSchema: Yup.object({
-      category: Yup.object().required('required')
-    }),
-    onSubmit: async (values) => {
-      const _isCheckIndex = checkAnswer && checkAnswer.id;
-      const res = listAnswers.map((item) => ({
-        content: item.content,
-        isCorrect: Number(item.id) === Number(_isCheckIndex),
-        id: item.id
-      }));
-     
-      const data = {
-        name: code,
-        categoryId: values.category.value,
-        answers: res
-      };
-      console.log(data,questionDetail._id);
-      if (questionDetail._id) {
-        console.log(data,questionDetail._id);
-        dispatch(updateQuestion(data, questionDetail._id));
-      } else {
-        dispatch(createQuestion(data));
-      }
-      handleCloseResetFrom();
-    }
-  });
-
-  const checkUpdateOrNewQuestion = (isUpdate) => {
-    if (isUpdate) {
-      return listAnswers;
-    } else {
-      return newArray(answerNew);
-    }
-  };
-
-
-  // check render list answer for list question when add or update
-  const RenderAnswer = checkUpdateOrNewQuestion(questionDetail._id)?.map(
-    (ele, index) => {
-      return (
-        <FormGroup key={index}>
-          <Label>
-            Nhập Nội Dung câu trả lời {index + 1} // Chọn kết quả đúng
-          </Label>
-          <Row className='align-items-center'>
-            <Col md='11'>
-              <Input
-                type='text'
-                id={index}
-                defaultValue={ele.content}
-                name='text-answer'
-                className='form-control'
-                onChange={handleChangeAns}
-              />
-            </Col>
-            {(totalAddAnswer > index || questionDetail._id) && (
-              <Col md='1'>
-                <CustomInput
-                  type='radio'
-                  defaultChecked={ele.isCorrect === true}
-                  id={`answer-${index}`}
-                  name='answer'
-                  onChange={handleChangeResult}
-                />
-              </Col>
-            )}
-          </Row>
-        </FormGroup>
-      );
-    }
-  );
 
   return (
-    <Modal centered isOpen={isShow} toggle={handleCloseResetFrom}>
-      <ModalHeader>{questionDetail ? 'Update' :'Create'} a Question</ModalHeader>
+    <Modal centered isOpen={isShow} toggle={handleCloseResetFrom} style={{
+      maxWidth: '600px'
+    }}>
+      <ModalHeader>{questionDetail ? 'Update' : 'Create'} a Question</ModalHeader>
       <ModalBody>
-        <Form onSubmit={formik.handleSubmit} id='questions'>
-          <FormGroup>
-            <Select
-              id='category'
-              classNamePrefix='filter__dropdown'
-              name='category'
-              isClearable
-              options={listCategories}
-              value={formik.values.category || ''}
-              onChange={(option) => formik.setFieldValue('category', option)}
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>Nhập Nội Dung câu hỏi:</Label>
-            <Editor
-              value={code}
-              onValueChange={(code) => setCode(code)}
-              highlight={(code) => highlight(code, languages.js)}
-              padding={10}
-              placeholder='code hear'
-              style={{
-                fontFamily: '"Fira code", "Fira Mono", monospace',
-                fontSize: 14,
-                border: '1px solid',
+        <Formik
+          initialValues={{
+            answers: questionDetail.answers || [
+              {
+                content: "",
+                id: nanoid(),
+                isCorrect: false,
+              },
+            ],
+            categoryId: coverItemDataSelect(questionDetail.category) || "",
+            courseId: coverItemDataSelect({
+              id: questionDetail.courseId,
+              name: questionDetail.courseName
+            }) || ""
+          }}
+          onSubmit={onSubmit}
+          validateOnBlur
+          validateOnChange
+        >
+          {({ setFieldValue, values }) => (
+            <Form>
+              <FormGroup>
+                <Label>Enter the category of the question here:</Label>
+                <Select
+                  id='categoryId'
+                  classNamePrefix='filter__dropdown'
+                  name='categoryId'
+                  value={values.categoryId}
+                  isClearable
+                  options={listCategories}
+                  onChange={(option) => setFieldValue('categoryId', option)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label>Enter the course of the question here:</Label>
+                <Select
+                  id='courseId'
+                  classNamePrefix='filter__dropdown'
+                  name='courseId'
+                  value={values.courseId}
+                  isClearable
+                  options={listCourses}
+                  onChange={(option) => setFieldValue('courseId', option)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label>Enter the content of the question here:</Label>
+                <Editor
+                  name='name'
+                  value={code}
+                  onValueChange={(code) => setCode(code)}
+                  highlight={(code) => highlight(code, languages.js)}
+                  padding={10}
+                  placeholder='code hear'
+                  style={{
+                    fontFamily: '"Fira code", "Fira Mono", monospace',
+                    fontSize: 14,
+                    border: '1px solid',
+                  }}
+                />
+              </FormGroup>
+              <FieldArray
+                name="answers"
+                render={(arrayHelpers) => (
+                  <>
+                    {values.answers.map(({ id, content, isCorrect }, index) => (
+                      <FormGroup key={index}>
+                        <Row
+                          key={index}
+                        >
+                          <Col md='8'>
+                            <Field
+                              className="form-control w-100 h-100"
+                              name={`answers[${index}].content`}
+                              placeholder={`Enter the content of the answer ${index + 1} here`}
+                            />
+                            <Field
+                              hidden
+                              name={`answers[${index}].id`}
+                              placeholder="u"
+                            />
+                          </Col>
+                          <Col md="4" className="d-flex justify-content-end">
+                            <Button
+                              className="w-25"
+                              onClick={() => arrayHelpers.remove(index)}
+                            >
+                              -
+                            </Button>
+                            <Button
+                              onClick={() => arrayHelpers.replace(index, { id: id, content: content, isCorrect: !isCorrect })} // insert an empty string at a position
+                            >
+                              {isCorrect === false ? 'check' : 'uncheck'}
+                            </Button>
+                          </Col>
+                        </Row>
+                      </FormGroup>
+                    ))}
 
-              }}
-            />
+                    <FormGroup>
+                      <Row>
+                        <Col md="12">
+                          <Button
+                            size="large"
+                            className="w-100"
+                            block
+                            onClick={() =>
+                              arrayHelpers.push({ content: "", id: nanoid(), isCorrect: false })
+                            }
+                          >
+                            <img className='ml-2' src={IconAdd} />&nbsp;Add question
+                          </Button>
+                        </Col>
+                      </Row>
+                    </FormGroup>
+                  </>
+                )}
+              />
+              <Row className='d-flex justify-content-end'>
+                <Col md="3">
+                  <Button
+                    color='primary'
+                    className='text-capitalize w-100 mr-2'
+                    outline
+                    onClick={handleCloseResetFrom}
+                  >
+                    Cancel
+                  </Button>
+                </Col>
+                <Col md="3">
+                  <Button
+                    color='primary'
+                    className='text-capitalize w-100'
+                    type='submit'
+                  >
+                    {questionDetail._id ? 'Update' : 'Create'}
+                  </Button>
+                </Col>
+              </Row>
+            </Form>
+          )}
+        </Formik>
 
-          </FormGroup>
-          {RenderAnswer}
-          <Row>
-            {isAddLayoutAnswers ? (
-              <Col md='4'>
-                <Button className='w-100' onClick={AddAnswers}>
-                  Add Answer
-                </Button>
-              </Col>
-            ) : (
-              <Col md='8'>
-                <Row>
-                  <Col>
-                    <Button className='w-100' onClick={AddLayoutAnswer}>
-                      Add Layout
-                    </Button>
-                  </Col>
-                  <Col>
-                    <Button
-                      color='success'
-                      className='w-100'
-                      onClick={() => setAnswerNew((prev) => prev - 1)}
-                    >
-                      Remove Layout
-                    </Button>
-                  </Col>
-                </Row>
-              </Col>
-            )}
-          </Row>
-        </Form>
       </ModalBody>
-      <ModalFooter className='d-flex justify-content-end'>
-        <Button
-          color='primary'
-          className='text-capitalize w-25 mr-2'
-          outline
-          onClick={handleCloseResetFrom}
-        >
-          Cancel
-        </Button>
-        <Button
-          color='primary'
-          className='text-capitalize w-25'
-          type='submit'
-          form='questions'
-        >
-          {questionDetail._id ? 'Update' : 'Create'}
-        </Button>
-      </ModalFooter>
-    </Modal>
+
+    </Modal >
   );
 };
 
-export default ModalCreateQuestion;
+export default Modal2CreateQuestion;

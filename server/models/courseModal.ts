@@ -22,13 +22,12 @@ const courseSchema = new mongoose.Schema({
     },
     released : {
         type : Boolean,
-        required : [true, "Please add your released"],
     },
     descriptions : {
         type : String,
         trim: true
     }
-}, {
+    }, {
   timestamps: true
 })
 

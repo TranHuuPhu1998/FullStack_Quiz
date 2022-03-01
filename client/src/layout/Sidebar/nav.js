@@ -15,7 +15,7 @@ export default function () {
       title_const: 'Users',
       to: '/admin/users',
       exact: true,
-      icon : iconUser
+      icon: iconUser
     },
     {
       title_const: 'Course',
@@ -26,14 +26,8 @@ export default function () {
     {
       title_const: 'Questions',
       to: '/admin',
-      exact: true ,
-      icon : iconQuestion
-    },
-    {
-      title_const: 'Chat Room',
-      to: '/chat',
-      exact: true ,
-      icon : iconQuestion
+      exact: true,
+      icon: iconQuestion
     },
   ];
 }

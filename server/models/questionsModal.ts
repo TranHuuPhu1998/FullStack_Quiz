@@ -12,6 +12,10 @@ const questionSchema = new mongoose.Schema({
         required : true,
         type : Object
     },
+    courseId : {
+        type: mongoose.Types.ObjectId,
+        ref: 'course',
+    },
     answers : {
         type : Array,
         required : [true, "Please add your Answers"],

@@ -7,12 +7,13 @@ import {
   Col,
   Input,
   Button,
-  PaginationBar 
+  PaginationBar
 } from '@App/components';
 import { useDispatch, useSelector } from 'react-redux';
 import { getQuestions, deleteQuestion } from '@App/app/actions/question';
 import { getCategory } from '@App/app/actions/category';
-import { PAGE_INFO , PAGE_INFO_CATEGORY} from '@App/app/constants';
+import { getListCourse } from '@App/app/actions/course';
+import { PAGE_INFO, PAGE_INFO_CATEGORY } from '@App/app/constants';
 import ModalCreateQuestion from './modalQuestion';
 import AdminLayout from '@App/layout/AdminLayout';
 import IconDelete from '@App/assets/img/icon-delete.svg';
@@ -23,11 +24,12 @@ const DashBoard = () => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [questionDetail, setQuestionDetail] = useState({});
   const [pageInfo, setPageInfo] = useState(PAGE_INFO);
-  const [pageInfoCategory, ] = useState(PAGE_INFO_CATEGORY);
+  const [pageInfoCategory,] = useState(PAGE_INFO_CATEGORY);
 
   const dispatch = useDispatch();
   const questions = useSelector((state) => state.questionReducers);
   const categories = useSelector((state) => state.categoryReducers);
+  const courses = useSelector((state) => state.courseReducers);
 
   useEffect(() => {
     dispatch(getQuestions(pageInfo));
@@ -36,6 +38,12 @@ const DashBoard = () => {
   useEffect(() => {
     dispatch(getCategory(pageInfoCategory));
   }, [pageInfoCategory]);
+
+  useEffect(() => {
+    if (isShowModal === true) {
+      dispatch(getListCourse());
+    }
+  }, [isShowModal]);
 
   const handleEditQuestion = (question) => {
     setQuestionDetail(question);
@@ -54,13 +62,13 @@ const DashBoard = () => {
   const onChangeSearch = (e) => {
     setPageInfo({
       ...pageInfo,
-      page:1,
+      page: 1,
       text_search: e.target.value,
     });
   }
 
   const handleKeyPressSearch = (e) => {
-    if(e.key === 'Enter'){
+    if (e.key === 'Enter') {
       dispatch(getQuestions(pageInfo));
     }
   }
@@ -88,7 +96,7 @@ const DashBoard = () => {
             color='primary'
             className='text-uppercase-fl w-100'
           >
-            Create a Question <img className='ml-2' src={IconAdd} />
+            <img className='ml-2' src={IconAdd} />&nbsp;Create a question
           </Button>
         </Col>
       </Row>
@@ -97,7 +105,7 @@ const DashBoard = () => {
           <thead>
             <tr>
               <th width={300}>Question Name</th>
-              <th width={130}>Create At</th>
+              <th width={130}>Course</th>
               <th width={120}>Category</th>
               <th width={300}>Answer / Result</th>
               <th width={100} className='text-center'>
@@ -108,9 +116,9 @@ const DashBoard = () => {
           <tbody>
             {questions?.data?.map((item, index) => (
               <tr key={index}>
-                <td>{item.name}</td>
-                <td>{new Date(item.createdAt).toLocaleString()}</td>
-                <td>{item.category?.name}</td>
+                <td>{item.name || "__"}</td>
+                <td>{item.courseName || "__"}</td>
+                <td>{item.category?.name || "__"}</td>
                 <td>
                   {item.answers?.map((item, index) => (
                     <Row key={index}>
@@ -149,13 +157,14 @@ const DashBoard = () => {
       </div>
       {
         questions.totalDocs > 8 && <PaginationBar
-        totalItems={questions.totalDocs}
-        itemsPerPage={PAGE_INFO.limit}
-        currentPage={pageInfo.page}
-        onChangePage={onChangePage}
-      />   
+          totalItems={questions.totalDocs}
+          itemsPerPage={PAGE_INFO.limit}
+          currentPage={pageInfo.page}
+          onChangePage={onChangePage}
+        />
       }
       <ModalCreateQuestion
+        courses={courses}
         isShow={isShowModal}
         questionDetail={questionDetail}
         categories={categories}

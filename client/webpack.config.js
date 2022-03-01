@@ -13,7 +13,7 @@ const config = {
       appMountId: 'app',
       filename: 'index.html',
       hash: true,
-      template: './index.html'
+      template: './index.html',
     })
   ],
   module: {

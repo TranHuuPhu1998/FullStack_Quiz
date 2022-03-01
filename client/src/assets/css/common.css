@@ -250,3 +250,11 @@ html {
 .page-title {
   color: white;
 }
+
+input:focus {
+  outline: none;
+}
+
+input:active {
+  outline: none;
+}

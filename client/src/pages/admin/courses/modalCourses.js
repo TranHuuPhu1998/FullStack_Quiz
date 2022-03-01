@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import iconUpdate from '@App/assets/img/icon-upload.svg';
 import Select from 'react-select';
-import {imageUpload} from '@App/app/common/helpers/ImageUpload';
+import { imageUpload } from '@App/app/common/helpers/ImageUpload';
 import * as Yup from 'yup';
 import './styles.scoped.scss';
 
@@ -23,7 +23,7 @@ const modalCourses = (props) => {
   const { isShow, handleClose, courseDetail, categories } = props;
   console.log("🚀 ~ file: modalCourses.js ~ line 24 ~ modalCourses ~ courseDetail", courseDetail)
   const [listCategories, setListCategories] = useState([]);
-  const [loading , setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [imageBanner, setImageBanner] = useState('');
 
   const dispatch = useDispatch();
@@ -32,12 +32,6 @@ const modalCourses = (props) => {
     handleClose();
     formik.resetForm();
   };
-
-  // useEffect(() => {
-  //   if(courseDetail) {
-  //     setImageBanner(courseDetail.imageBanner);
-  //   }
-  // },[courseDetail])
 
   useEffect(() => {
     const resp = categories.rows?.docs.map((item) => ({
@@ -72,7 +66,7 @@ const modalCourses = (props) => {
           name: fileName,
           extension: extension,
           base64: base64,
-          fileUpload : file
+          fileUpload: file
         });
       }
     };
@@ -105,7 +99,7 @@ const modalCourses = (props) => {
     onSubmit: async (values) => {
       setLoading(true)
       let response = '';
-      if(imageBanner.fileUpload){
+      if (imageBanner.fileUpload) {
         response = await imageUpload(imageBanner.fileUpload)
       }
       const data = {
@@ -113,7 +107,7 @@ const modalCourses = (props) => {
         descriptions: values.descriptions,
         categoryId: values.categoryName.value,
         released: values.release,
-        imageBanner : response.url || '',
+        imageBanner: response.url || '',
       };
       await dispatch(createCourse(data));
       handleClose();
@@ -163,7 +157,7 @@ const modalCourses = (props) => {
           </FormGroup>
           <FormGroup>
             <div className='avatar__preview'>
-              {imageBanner.base64 || courseDetail?.imageBanner  ? (
+              {imageBanner.base64 || courseDetail?.imageBanner ? (
                 <RenderImage />
               ) : (
                 <Button tag={Label} className='button__img'>

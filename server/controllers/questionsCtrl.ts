@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Question from "../models/questionsModal";
 import Category from "../models/categoryModal";
+import Course from "../models/courseModal";
 import { IReqAuth } from "../config/interface";
 import mongoose from 'mongoose'
 
@@ -21,21 +22,31 @@ const QuestionCtrl = {
       return res.status(400).json({ msg: "Invalid Authentication Admin." });
 
     try {
-      const { name, categoryId, answers } = req.body;
+      const { name, categoryId, answers, courseId} = req.body;
       const user = req.user._id;
       const category = await Category.findById(categoryId);
+      const course = await Course.findById(courseId);
       const categoryItem = {id : category?._id , name : category?.name};
 
       const rows = new Question({
         name,
         category : categoryItem,
+        courseId : courseId,
         answers,
         user,
       });
 
       await rows.save();
 
-      res.json({ rows });
+      const response = {
+        name,
+        category : categoryItem,
+        courseName : course?.name,
+        answers,
+        user,
+      }
+
+      res.json({ rows : response });
     } catch (err: any) {
       let errMsg;
 
@@ -49,12 +60,18 @@ const QuestionCtrl = {
       return res.status(500).json({ msg: errMsg });
     }
   },
-  getQuestion: async (req: Request, res: Response) => {
+  getQuestion: async (req: IReqAuth, res: Response) => {
+    if (!req.user)
+    return res.status(400).json({ msg: "Invalid Authentication User." });
+
+    if (req.user.role !== "admin")
+      return res.status(400).json({ msg: "Invalid Authentication Admin." });
+
     const { limit, page } = Pagination(req);
     const options = {
       page: page,
       limit: limit,
-      sort: { _id: 1, createdAt: -1 },
+      sort: { _id: 1, createdAt: 1 },
     };
     try {
       let query = [];
@@ -66,6 +83,8 @@ const QuestionCtrl = {
 
       const condition = Question.aggregate([
         { $match: { $and: query } },
+        { $lookup: { from: "courses", localField: "courseId", foreignField: "_id", as: "courseName" } },
+        { $addFields: { courseName: { $arrayElemAt: ["$courseName.name", 0] } } },
       ]);
 
       const questions = await Question.aggregatePaginate(condition, options);
@@ -80,6 +99,18 @@ const QuestionCtrl = {
       const _id = req.params.id;
       const rows = await Question.aggregate([
         { $match : { "category.id" : mongoose.Types.ObjectId(_id) } }
+      ]);
+
+      res.json({ rows });
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+  getQuestionByCourse : async (req: Request, res: Response) => {
+    try {
+      const _id = req.params.id;
+      const rows = await Question.aggregate([
+        { $match : { "courseId" : mongoose.Types.ObjectId(_id) } }
       ]);
 
       res.json({ rows });
@@ -105,21 +136,33 @@ const QuestionCtrl = {
     try {
       const id = req.params.id;
       const user = req.user._id;
-      const { name, categoryId, answers } = req.body;
+      const { name, categoryId, answers , courseId } = req.body;
       const category = await Category.findById(categoryId);
-      const categoryItem = {id : category?._id , name : category?.name};
+      const course = await Course.findById(courseId);
+      const categoryItem = {id : category._id , name : category.name};
 
-      const question = await Question.findByIdAndUpdate(
+      await Question.findByIdAndUpdate(
         id,
         {
           name,
           category : categoryItem,
           answers,
+          courseId : courseId,
           user,
         },
         {new : true}
       )
-      res.json({ rows: question });
+
+      const response = {
+        _id:id,
+        name,
+        category : categoryItem,
+        answers,
+        courseName : course?.name,
+        user,
+      }
+    
+      res.json({ rows: response });
     } catch (err : any) {
       return res.status(500).json({ msg: err.message });
     }

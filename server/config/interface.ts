@@ -65,3 +65,10 @@ export interface ICourse {
 export interface ICategory {
   name? : string
 }
+
+export interface IChat {
+  content: string,
+  time: Date,
+  user: string,
+  idUser: string,
+}

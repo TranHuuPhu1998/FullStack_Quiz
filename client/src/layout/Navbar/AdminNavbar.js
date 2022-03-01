@@ -19,7 +19,7 @@ import {
   ModalHeader
 } from '@App/components';
 
-const AdminNavbar = ( {handleLogout , user }) => {
+const AdminNavbar = ({ handleLogout, user }) => {
   const token = localStorage.getItem('TOKEN');
 
   return (
@@ -68,7 +68,7 @@ const AdminNavbar = ( {handleLogout , user }) => {
                   nav
                   onClick={(e) => e.preventDefault()}
                 >
-                  <img src={user.at(0)?.avatar} className='photo'/>
+                  <img src={user.at(0)?.avatar} className='photo' />
                   <b className='caret d-none d-lg-block d-xl-block' />
                   <p className='d-lg-none'>Log out</p>
                 </DropdownToggle>
@@ -76,11 +76,11 @@ const AdminNavbar = ( {handleLogout , user }) => {
                   <NavLink to='/profile'>
                     <DropdownItem className='nav-item'>Profile</DropdownItem>
                   </NavLink>
-                  <NavLink to=''>
+                  {/* <NavLink to=''>
                     <DropdownItem className='nav-item'>Settings</DropdownItem>
-                  </NavLink>
+                  </NavLink> */}
                   <DropdownItem divider tag='li' />
-                  <NavLink to='/' onClick={()=>handleLogout(token)}>
+                  <NavLink to='/' onClick={() => handleLogout(token)}>
                     <DropdownItem className='nav-item'>Log out</DropdownItem>
                   </NavLink>
                 </DropdownMenu>

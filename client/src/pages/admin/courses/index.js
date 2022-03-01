@@ -1,20 +1,24 @@
-import React, { useEffect , useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, PageTitle, Row, Col, Input, Button } from '@App/components';
-import { getListCourse , deleteCourse } from '@App/app/actions/course';
+import { getListCourse, deleteCourse } from '@App/app/actions/course';
 import { getCategory } from '@App/app/actions/category';
-import { useSelector , useDispatch } from 'react-redux';
-import { PAGE_INFO_CATEGORY} from '@App/app/constants';
+import { useSelector, useDispatch } from 'react-redux';
+import { PAGE_INFO_CATEGORY } from '@App/app/constants';
+import { useHistory } from 'react-router-dom';
 import AdminLayout from '@App/layout/AdminLayout';
 import IconDelete from '@App/assets/img/icon-delete.svg';
 import IconEdit from '@App/assets/img/icon-edit.svg';
 import IconAdd from '@App/assets/img/icon-add.svg';
+import IconLeaning from '@App/assets/img/icons8-learning-64.png';
 import ModalCourses from './modalCourses';
+import './styles.scoped.scss';
 
 const Courses = () => {
-  const [isShowModal , setIsShowModal] = useState(false);
-  const [courseDetail , setCourseDetail] = useState({});
-  const [pageInfoCategory, ] = useState(PAGE_INFO_CATEGORY);
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [courseDetail, setCourseDetail] = useState({});
+  const [pageInfoCategory,] = useState(PAGE_INFO_CATEGORY);
 
+  const history = useHistory();
   const dispatch = useDispatch();
   const course = useSelector((state) => state.courseReducers);
   const categories = useSelector((state) => state.categoryReducers);
@@ -22,18 +26,24 @@ const Courses = () => {
   useEffect(() => {
     dispatch(getListCourse());
     dispatch(getCategory(pageInfoCategory));
-  },[])
+  }, [])
 
   const handleCreateCourse = () => {
     setIsShowModal(true);
     setCourseDetail('');
   };
+
   const handleUpdateCourse = (value) => {
     setIsShowModal(true);
     setCourseDetail(value);
   };
+
   const handleDeleteCourses = (id) => {
     dispatch(deleteCourse(id))
+  };
+
+  const handleLearning = (courseId) => {
+    history.push(`/exercise?courseId=${courseId}`)
   }
 
   return (
@@ -67,23 +77,23 @@ const Courses = () => {
             <th>Released</th>
             <th>Created At</th>
             <th width={250}>Descriptions</th>
-            <th width={100} className='text-center'>
+            <th width={120} className='text-center'>
               Action
             </th>
           </tr>
         </thead>
         <tbody>
           {
-            course?.map((item,index) => (
+            course?.map((item, index) => (
               <tr key={index}>
-                <td width={200}><img src={item?.imageBanner}/></td>
+                <td width={200}><img src={item?.imageBanner} /></td>
                 <td>{item.name}</td>
                 <td>{item.createBy}</td>
                 <td>{item.category?.name}</td>
                 <td>{item.released ? 'Yes' : 'No'}</td>
                 <td>{new Date(item.createdAt).toLocaleDateString()}</td>
-                <td>{item.descriptions.length > 250 ? item.descriptions.slice(0, 250)+'...' : item.descriptions}</td>
-                <td className='text-center'>
+                <td>{item.descriptions.length > 250 ? item.descriptions.slice(0, 250) + '...' : item.descriptions}</td>
+                <td className='text-center d-flex action-content'>
                   <span
                     onClick={() => handleDeleteCourses(item._id)}
                     className='mr-2 pointer'
@@ -92,9 +102,15 @@ const Courses = () => {
                   </span>
                   <span
                     onClick={() => handleUpdateCourse(item)}
-                    className='pointer'
+                    className='mr-2 pointer'
                   >
                     <img src={IconEdit}></img>
+                  </span>
+                  <span
+                    onClick={() => handleLearning(item._id)}
+                    className='pointer icon-learning'
+                  >
+                    <img className='w-100' src={IconLeaning}></img>
                   </span>
                 </td>
               </tr>

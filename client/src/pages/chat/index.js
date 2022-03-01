@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch , useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getOneUser } from '@App/app/actions/user';
 import UserLayout from '@App/layout/UserLayout';
 import io from 'socket.io-client';
@@ -18,7 +18,7 @@ const chatPage = () => {
 
   useEffect(() => {
     dispatch(getOneUser())
-  },[])
+  }, [])
 
   useEffect(() => {
     socketRef.current = io.connect('http://localhost:5000');
@@ -44,11 +44,11 @@ const chatPage = () => {
   const sendMessage = (e) => {
     if (message !== null) {
       const msg = {
-        content: message,
+        content: message.trim(),
         id: id,
-        time : new Date().toLocaleTimeString(),
-        user : user[0].name,
-        idUser: user[0]._id,
+        time: new Date(),
+        user: user[0]?.name,
+        idUser: user[0]?._id,
       };
       // send message to server
       socketRef.current.emit('sendDataClient', msg);
@@ -111,7 +111,7 @@ const chatPage = () => {
           </div>
         </div>
       </div>
-      </UserLayout>
+    </UserLayout>
   );
 };
 

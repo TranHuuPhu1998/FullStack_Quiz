@@ -1,4 +1,4 @@
-import React, { useState , useEffect , useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Form,
   FormGroup,
@@ -11,25 +11,27 @@ import {
   Input,
   Button
 } from '@App/components';
-import { useDispatch , useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { imageUpload } from '@App/app/common/helpers/ImageUpload';
-import { updateUserAvatar , getOneUser } from '@App/app/actions/user';
+import { updateUserAvatar, getOneUser } from '@App/app/actions/user';
 import { useFormik } from 'formik';
+
+import UserLayout from "@App/layout/UserLayout";
 import * as Yup from 'yup';
 
 const Profile = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducers)
-  const [loadImages , setLoadImages] = useState('');
+  const [loadImages, setLoadImages] = useState('');
   const [logoImage, setLogoImage] = useState();
 
   useEffect(() => {
     dispatch(getOneUser())
-  },[loadImages])
+  }, [loadImages])
 
   useEffect(() => {
     setLogoImage(user.at(0)?.avatar)
-  },[user,loadImages])
+  }, [user, loadImages])
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -38,7 +40,7 @@ const Profile = () => {
       email: user.at(0)?.account
     },
     validationSchema: Yup.object({}),
-    onSubmit: (values) => {}
+    onSubmit: (values) => { }
   });
 
   const RenderImage = () => {
@@ -56,103 +58,105 @@ const Profile = () => {
   }
 
   return (
-    <Form id='info-profile' className='mt-32' onSubmit={formik.handleSubmit}>
-      <Row className='gap-2'>
-        <Col md='6'>
-          <Card secondary>
-            <CardBody>
-              <FormGroup row>
-                <Col md='12'>
-                  <Label>Name</Label>
-                  <Input
-                    id='name'
-                    placeholder='name'
-                    type='text'
-                    name='name'
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.name}
-                    invalid={formik.touched.name && !!formik.errors.name}
-                  />
-                  <FormFeedback>{formik.errors.name}</FormFeedback>
-                </Col>
-              </FormGroup>
-              <FormGroup row>
-                <Col md='12'>
-                  <Label>Email</Label>
-                  <Input
-                    id='email'
-                    placeholder='email'
-                    type='text'
-                    name='email'
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.email}
-                    invalid={formik.touched.email && !!formik.errors.email}
-                  />
-                  <FormFeedback>{formik.errors.email}</FormFeedback>
-                </Col>
-              </FormGroup>
-              <FormGroup row>
-                <Col md='12'>
-                  <Label>Pass Word Old</Label>
-                  <Input
-                    id='password_old'
-                    placeholder='password old'
-                    type='text'
-                    name='password_old'
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.password_old}
-                    invalid={formik.touched.password_old && !!formik.errors.password_old}
-                  />
-                  <FormFeedback>{formik.errors.password_old}</FormFeedback>
-                </Col>
-              </FormGroup>
-              <FormGroup row>
-                <Col md='12'>
-                  <Label>Pass Word New</Label>
-                  <Input
-                    id='password_new'
-                    placeholder='password new'
-                    type='text'
-                    name='password_new'
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.password_new}
-                    invalid={formik.touched.password_new && !!formik.errors.password_new}
-                  />
-                  <FormFeedback>{formik.errors.password_new}</FormFeedback>
-                </Col>
-              </FormGroup>
-              <Button color='primary' block className='rounded-lg mt-30'>
-                Save
-              </Button>
-            </CardBody>
-          </Card>
-        </Col>
-        <Col md='3'>
-          <FormGroup className='main__avatar'>
-            <div className='text-center'>
-              {logoImage?.base64 ? (
-                <RenderImage />
-              ) : (
-                <img src={logoImage} className='text-center' />
-              )}
-            </div>
-          </FormGroup>
-          <Button tag={Label} color='primary' block className='rounded-lg'>
-            Upload Your Logo
-            <Input
-              type='file'
-              hidden
-              accept='image/png, image/jpeg, image/jpg'
-              onChange={(e) => onLogoSelected(e)}
-            />
-          </Button>
-        </Col>
-      </Row>
-    </Form>
+    <UserLayout>
+      <Form id='info-profile' className='mt-32' onSubmit={formik.handleSubmit}>
+        <Row className='gap-2'>
+          <Col md='6'>
+            <Card secondary>
+              <CardBody>
+                <FormGroup row>
+                  <Col md='12'>
+                    <Label>Name</Label>
+                    <Input
+                      id='name'
+                      placeholder='name'
+                      type='text'
+                      name='name'
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.name || ''}
+                      invalid={formik.touched.name && !!formik.errors.name}
+                    />
+                    <FormFeedback>{formik.errors.name}</FormFeedback>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col md='12'>
+                    <Label>Email</Label>
+                    <Input
+                      id='email'
+                      placeholder='email'
+                      type='text'
+                      name='email'
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.email || ''}
+                      invalid={formik.touched.email && !!formik.errors.email}
+                    />
+                    <FormFeedback>{formik.errors.email}</FormFeedback>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col md='12'>
+                    <Label>Pass Word Old</Label>
+                    <Input
+                      id='password_old'
+                      placeholder='password old'
+                      type='text'
+                      name='password_old'
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.password_old}
+                      invalid={formik.touched.password_old && !!formik.errors.password_old}
+                    />
+                    <FormFeedback>{formik.errors.password_old}</FormFeedback>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col md='12'>
+                    <Label>Pass Word New</Label>
+                    <Input
+                      id='password_new'
+                      placeholder='password new'
+                      type='text'
+                      name='password_new'
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.password_new}
+                      invalid={formik.touched.password_new && !!formik.errors.password_new}
+                    />
+                    <FormFeedback>{formik.errors.password_new}</FormFeedback>
+                  </Col>
+                </FormGroup>
+                <Button color='primary' block className='rounded-lg mt-30'>
+                  Save
+                </Button>
+              </CardBody>
+            </Card>
+          </Col>
+          <Col md='3'>
+            <FormGroup className='main__avatar'>
+              <div className='text-center'>
+                {logoImage?.base64 ? (
+                  <RenderImage />
+                ) : (
+                  <img src={logoImage} className='text-center' />
+                )}
+              </div>
+            </FormGroup>
+            <Button tag={Label} color='primary' block className='rounded-lg'>
+              Upload Your Logo
+              <Input
+                type='file'
+                hidden
+                accept='image/png, image/jpeg, image/jpg'
+                onChange={(e) => onLogoSelected(e)}
+              />
+            </Button>
+          </Col>
+        </Row>
+      </Form>
+    </UserLayout>
   );
 };
 

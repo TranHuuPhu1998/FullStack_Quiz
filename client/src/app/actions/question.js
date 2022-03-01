@@ -26,10 +26,10 @@ export const getQuestionsError = () => {
 };
 // Get list question
 
-export const getQuestionByCategory = ({categoryId}) => {
+export const getQuestionByCategory = ({ categoryId }) => {
   return {
-    type : types.ACTION_GET_QUESTIONS_CATEGORY,
-    payload : {
+    type: types.ACTION_GET_QUESTIONS_CATEGORY,
+    payload: {
       categoryId
     }
   }
@@ -37,8 +37,8 @@ export const getQuestionByCategory = ({categoryId}) => {
 
 export const getQuestionByCategorySuccess = (data) => {
   return {
-    type : types.GET_QUESTIONS_CATEGORY_SUCCESS,
-    payload : {
+    type: types.GET_QUESTIONS_CATEGORY_SUCCESS,
+    payload: {
       data
     }
   }
@@ -46,7 +46,33 @@ export const getQuestionByCategorySuccess = (data) => {
 
 export const getQuestionByCategoryError = () => {
   return {
-    type : types.GET_QUESTIONS_CATEGORY_ERROR
+    type: types.GET_QUESTIONS_CATEGORY_ERROR
+  }
+}
+
+// Get question by source 
+
+export const getQuestionByCourse = ({ courseId }) => {
+  return {
+    type: types.ACTION_GET_QUESTIONS_COURSE,
+    payload: {
+      courseId
+    }
+  }
+}
+
+export const getQuestionByCourseSuccess = (data) => {
+  return {
+    type: types.GET_QUESTIONS_COURSE_SUCCESS,
+    payload: {
+      data
+    }
+  }
+}
+
+export const getQuestionByCourseError = () => {
+  return {
+    type: types.GET_QUESTIONS_COURSE_ERROR
   }
 }
 
