@@ -1,12 +1,19 @@
 import * as types from '@App/app/constants/ActionTypes';
 import { toastError, toastSuccess } from '@App/app/common/helpers/toastHelper';
 
-const initialState = [];
+const initialState = {
+  data: [],
+  totalDocs: 0,
+};
 
 const reducers = (state = initialState, action) => {
   switch (action.type) {
     case types.GET_CATEGORY_SUCCESS: {
-      return action.payload.data;
+      const { docs, totalDocs } = action.payload.data.rows;
+      return {
+        data: docs,
+        totalDocs: totalDocs
+      };
     }
     case types.GET_CATEGORY_ERROR: {
       toastError('Get Category Error');
@@ -14,8 +21,11 @@ const reducers = (state = initialState, action) => {
     }
     case types.CREATE_CATEGORY_SUCCESS: {
       toastSuccess('Create Category Success');
-      const question = action.payload.data.rows;
-      return [question, ...state];
+      const category = action.payload.data.rows;
+      return {
+        data: [category, ...state.data],
+        totalDocs: state.totalDocs + 1
+      };
     }
     case types.CREATE_CATEGORY_ERROR: {
       toastError('Create Category Error');
@@ -24,16 +34,23 @@ const reducers = (state = initialState, action) => {
     case types.UPDATE_CATEGORY_SUCCESS: {
       toastSuccess('Update Category Success');
       const data = action.payload.data.rows;
-      const _index = state.findIndex((ele) => ele._id === data._id);
-      state[_index] = data;
-      return [...state];
+
+      const _index = state.data.findIndex((ele) => ele._id === data._id);
+      state.data[_index] = data;
+      return {
+        data: [...state.data],
+        totalDocs: state.totalDocs
+      };
     }
     case types.DELETE_CATEGORY_SUCCESS: {
       toastSuccess('Delete Category Success');
       const id = action.payload.id;
-      const _index = state.findIndex((ele) => ele._id === id);
-      state.splice(_index, 1);
-      return [...state];
+      const _index = state.data.findIndex((ele) => ele._id === id);
+      state.data.splice(_index, 1);
+      return {
+        data: [...state.data],
+        totalDocs: state.totalDocs - 1
+      };
     }
     case types.DELETE_CATEGORY_ERROR: {
       toastError('Delete Category Error');

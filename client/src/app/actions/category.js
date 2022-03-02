@@ -49,7 +49,7 @@ export const createCategorySuccess = (data) => {
 
 export const createCategoryError = () => {
   return {
-    type: types.CREATE_CATEGORY_SUCCESS
+    type: types.CREATE_CATEGORY_ERROR
   };
 };
 

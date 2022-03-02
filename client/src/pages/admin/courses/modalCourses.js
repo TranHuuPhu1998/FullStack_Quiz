@@ -21,7 +21,6 @@ import './styles.scoped.scss';
 
 const modalCourses = (props) => {
   const { isShow, handleClose, courseDetail, categories } = props;
-  console.log("🚀 ~ file: modalCourses.js ~ line 24 ~ modalCourses ~ courseDetail", courseDetail)
   const [listCategories, setListCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [imageBanner, setImageBanner] = useState('');

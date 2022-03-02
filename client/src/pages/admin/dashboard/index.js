@@ -156,7 +156,7 @@ const DashBoard = () => {
         </Table>
       </div>
       {
-        questions.totalDocs > 8 && <PaginationBar
+        questions.totalDocs > PAGE_INFO.limit && <PaginationBar
           totalItems={questions.totalDocs}
           itemsPerPage={PAGE_INFO.limit}
           currentPage={pageInfo.page}

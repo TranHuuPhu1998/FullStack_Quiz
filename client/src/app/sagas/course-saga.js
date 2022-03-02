@@ -39,7 +39,6 @@ function* processCreateCourse({ payload }) {
 
 function* processDeleteCourse({payload}) {
   const {id} = payload;
-  console.log("🚀 ~ file: course-saga.js ~ line 40 ~ function*processDeleteCourse ~ id", id)
   try {
     yield call(deleteCourse, id);
     yield put(deleteCourseSuccess(id));

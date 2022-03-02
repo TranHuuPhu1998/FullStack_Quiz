@@ -34,7 +34,7 @@ const Modal2CreateQuestion = (props) => {
   }, [questionDetail])
 
   useEffect(() => {
-    setListCategories(coverListDateToOption(categories.rows?.docs));
+    setListCategories(coverListDateToOption(categories.data));
     setListCourses(coverListDateToOption(courses));
   }, [categories, courses]);
 
