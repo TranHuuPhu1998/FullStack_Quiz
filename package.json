@@ -5,7 +5,10 @@
   "main": "server/index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "ts-node-dev server/index.ts"
+    "dev": "ts-node-dev server/index.ts",
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "client": "cd client && npm run start",
+    "install-all": "concurrently \"npm run server-install\" \"npm run client-install\""
   },
   "keywords": [],
   "author": "",
