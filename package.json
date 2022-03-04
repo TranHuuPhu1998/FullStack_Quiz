@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "ts-node-dev server/index.ts",
-    "heroku-prebuild": "cd client && npm install --dev",
     "heroku-postbuild": "cd client && npm install && npm run build",
+    "heroku-prebuild": "cd client && npm install --dev",
     "client": "cd client && npm run start",
     "install-all": "concurrently \"npm run server-install\" \"npm run client-install\""
   },
