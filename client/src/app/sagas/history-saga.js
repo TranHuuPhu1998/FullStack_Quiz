@@ -37,3 +37,5 @@ function* historySaga() {
   yield takeLatest(historyType.ACTION_GET_HISTORY_EXERCISE, processGetHistoryExercise);
   yield takeLatest(historyType.ACTION_CREATE_HISTORY_EXERCISE, processCreateHistoryExercise);
 }
+
+export default historySaga;

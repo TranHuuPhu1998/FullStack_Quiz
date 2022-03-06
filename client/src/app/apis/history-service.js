@@ -4,7 +4,7 @@ import { API_ENDPOINT } from '@App/app/constants';
 const token = localStorage.getItem('TOKEN');
 
 export const getListHistoryExercise = () => {
-  return axiosService.get(`${API_ENDPOINT}/history`);
+  return axiosService.get(`${API_ENDPOINT}/histories`);
 }
 
 export const createHistoryExercise = (data) => {

@@ -8,11 +8,14 @@ const initialState = {
 const reducers = (state = initialState, action) => {
   switch (action.type) {
     case types.GET_HISTORY_EXERCISE_SUCCESS: {
-      const history = action.payload.data.rows;
-      return [...history];
+      const { docs, totalDocs } = action.payload.data.rows;
+      return {
+        data: docs,
+        totalDocs: totalDocs
+      };
     }
     default:
-      return history;
+      return state;
   }
 };
 

@@ -64,11 +64,17 @@ const historyExerciseCtrl = {
       };
       const condition = HistoryExercise.aggregate([
         { $lookup: { from: "courses", localField: "courseId", foreignField: "_id", as: "courseName" } },
-        { $addFields: { courseName: { $arrayElemAt: ["$courseName.name", 0] } } },
+        { $addFields: { 
+          courseName: { $arrayElemAt: ["$courseName.name", 0] } ,
+          courseImage : { $arrayElemAt: ["$courseName.imageBanner", 0] }
+        } },
         { $lookup: { from: "categories", localField: "categoryId", foreignField: "_id", as: "categoryName" } },
         { $addFields: { categoryName: { $arrayElemAt: ["$categoryName.name", 0] } } },
         { $lookup: { from: "users", localField: "userId", foreignField: "_id", as: "userName" } },
-        { $addFields: { userName: { $arrayElemAt: ["$userName.name", 0] } } },
+        { $addFields: { 
+          userName: { $arrayElemAt: ["$userName.name", 0] } ,
+          userImage : { $arrayElemAt: ["$userName.avatar", 0] }
+        } },
       ]);
 
       const HistoryExercises = await HistoryExercise.aggregatePaginate(condition, options);

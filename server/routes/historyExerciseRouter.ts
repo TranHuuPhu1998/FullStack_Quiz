@@ -5,6 +5,6 @@ import auth from '../middleware/auth'
 const router = express.Router()
 
 router.post('/history',auth, historyExerciseCtrl.createExercise)
-router.get('/history-exercises',historyExerciseCtrl.getHistoryExercises)
+router.get('/histories',historyExerciseCtrl.getHistoryExercises)
 
 export default router;

@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { getQuestionByCourse } from '@App/app/actions/question';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { Alert } from '@App/components';
 import queryString from 'query-string';
 import QuestionItem from './QuestionItem';
 import UserLayout from '@App/layout/UserLayout';
