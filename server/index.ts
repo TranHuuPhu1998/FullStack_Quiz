@@ -24,6 +24,7 @@ app.use('/api' , routes.userRouter)
 app.use('/api' , routes.categoryRouter)
 app.use('/api' , routes.questionRouter)
 app.use('/api' , routes.courseRouter)
+app.use('/api' , routes.historyRouter)
 
 import './config/database'
 

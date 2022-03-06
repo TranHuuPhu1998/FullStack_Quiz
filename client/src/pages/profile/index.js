@@ -21,7 +21,7 @@ import * as Yup from 'yup';
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.userReducers)
+  const user = useSelector((state) => state.profileReducers)
   const [loadImages, setLoadImages] = useState('');
   const [logoImage, setLogoImage] = useState();
 

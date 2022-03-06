@@ -144,3 +144,10 @@
   height: 200px;
   text-align: center;
 }
+.save-next {
+  background-color: #FAD20B;
+  color: #67758D;
+  &:hover {
+    background-color: #FEF4C2;
+  }
+}

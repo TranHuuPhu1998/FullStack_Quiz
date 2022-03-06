@@ -5,6 +5,8 @@ import categoryReducers from './categories';
 import uiLoadingReducers from './uiLoading';
 import userReducers from './user';
 import courseReducers from './courses';
+import profileReducers from './profile';
+import historyReducers from './history';
 
 const rootReducers = combineReducers({
   authReducers,
@@ -12,7 +14,9 @@ const rootReducers = combineReducers({
   categoryReducers,
   uiLoadingReducers,
   userReducers,
-  courseReducers
+  courseReducers,
+  profileReducers,
+  historyReducers
 });
 
 export default rootReducers;

@@ -36,7 +36,7 @@ const Courses = () => {
         {
           course.map((item, index) => {
             return (
-              <Col key={index} sm="12" md="9" xl="12" xxl="12">
+              <Col key={index} sm="12" md="12" lg="12" xl="6" xxl="6">
                 <Card className='card-container' key={index}>
                   <CardImg
                     top

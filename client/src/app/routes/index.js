@@ -8,6 +8,7 @@ const Exercise = lazy(() => import('@App/pages/exercise'));
 const CourseUser = lazy(() => import('@App/pages/courses'));
 const Chat = lazy(() => import('@App/pages/chat'));
 const Home = lazy(() => import('@App/pages/home'));
+const HistoryExercise = lazy(() => import('@App/pages/history-exercise'));
 
 export default [
   {
@@ -54,5 +55,10 @@ export default [
     path: '/',
     exact: true,
     component: Home
+  },
+  {
+    path: '/history-exercise',
+    exact: true,
+    component: HistoryExercise
   }
 ];

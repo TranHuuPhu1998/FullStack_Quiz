@@ -9,8 +9,8 @@ export const getListUser = () => {
 
 export const getListUserSuccess = (data) => {
   return {
-    type : types.GET_USER_SUCCESS,
-    payload : {
+    type: types.GET_USER_SUCCESS,
+    payload: {
       data
     }
   }
@@ -25,27 +25,27 @@ export const getListUserError = () => {
 // create a user
 export const createUser = (data) => {
   return {
-    type : types.ACTION_CREATE_USER
+    type: types.ACTION_CREATE_USER
   }
 };
 
 export const createUserSuccess = () => {
   return {
-    type : types.CREATE_USER_SUCCESS,
+    type: types.CREATE_USER_SUCCESS,
   }
 };
 
 export const createUserError = () => {
   return {
-    type : types.CREATE_USER_ERROR
+    type: types.CREATE_USER_ERROR
   }
 }
 
 // update profile user
 export const updateUserProfile = (data) => {
   return {
-    type : types.ACTION_UPDATE_PROFILE,
-    payload : {
+    type: types.ACTION_UPDATE_PROFILE,
+    payload: {
       data
     }
   }
@@ -53,8 +53,8 @@ export const updateUserProfile = (data) => {
 
 export const updateUserProfileSuccess = (data) => {
   return {
-    type : types.UPDATE_PROFILE_SUCCESS,
-    payload : {
+    type: types.UPDATE_PROFILE_SUCCESS,
+    payload: {
       data
     }
   }
@@ -62,7 +62,7 @@ export const updateUserProfileSuccess = (data) => {
 
 export const updateUserProfileError = (data) => {
   return {
-    type : types.UPDATE_PROFILE_ERROR,
+    type: types.UPDATE_PROFILE_ERROR,
   }
 }
 
@@ -70,17 +70,17 @@ export const updateUserProfileError = (data) => {
 
 export const updateUserAvatar = (data) => {
   return {
-    type : types.ACTION_UPDATE_AVATAR,
-    payload : {
-      avatar : data
+    type: types.ACTION_UPDATE_AVATAR,
+    payload: {
+      avatar: data
     }
   }
 }
 
 export const updateUserAvatarSuccess = (data) => {
   return {
-    type : types.UPDATE_AVATAR_SUCCESS,
-    payload : {
+    type: types.UPDATE_AVATAR_SUCCESS,
+    payload: {
       data
     }
   }
@@ -88,7 +88,7 @@ export const updateUserAvatarSuccess = (data) => {
 
 export const updateUserAvatarError = () => {
   return {
-    type : types.UPDATE_CATEGORY_ERROR
+    type: types.UPDATE_CATEGORY_ERROR
   }
 }
 
@@ -96,21 +96,15 @@ export const updateUserAvatarError = () => {
 
 export const getOneUser = () => {
   return {
-    type : types.ACTION_GET_ONE_USER,
+    type: types.ACTION_GET_PROFILE,
   }
 }
 
 export const getOneUserSuccess = (data) => {
   return {
-    type : types.GET_ONE_USER_SUCCESS,
-    payload : {
+    type: types.GET_PROFILE_SUCCESS,
+    payload: {
       data
     }
-  }
-}
-
-export const getOneUserError = () => {
-  return {
-    type : types.GET_ONE_USER_SUCCESS,
   }
 }

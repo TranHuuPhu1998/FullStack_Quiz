@@ -29,5 +29,11 @@ export default function () {
       exact: true,
       icon: iconQuestion
     },
+    {
+      title_const: 'History Exercise',
+      to: '/history-exercise',
+      exact: true,
+      icon: iconQuestion
+    },
   ];
 }

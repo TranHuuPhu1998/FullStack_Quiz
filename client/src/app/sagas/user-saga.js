@@ -9,7 +9,6 @@ import {
   updateUserAvatarSuccess,
   updateUserAvatarError,
   getOneUserSuccess,
-  getOneUserError
 } from '@App/app/actions/user';
 import { hideLoading, showLoading } from '@App/app/actions/ui';
 import { call, takeLatest, put } from 'redux-saga/effects';
@@ -56,7 +55,7 @@ function* processGetOneUser() {
 function* userSaga() {
   yield takeLatest(userType.ACTION_GET_USER, processGetListUser);
   yield takeLatest(userType.ACTION_UPDATE_AVATAR, processUpdateUserAvatar);
-  yield takeLatest(userType.ACTION_GET_ONE_USER, processGetOneUser);
+  yield takeLatest(userType.ACTION_GET_PROFILE, processGetOneUser);
 }
 
 export default userSaga;

@@ -6,6 +6,8 @@ import { Alert } from '@App/components';
 import queryString from 'query-string';
 import QuestionItem from './QuestionItem';
 import UserLayout from '@App/layout/UserLayout';
+import ExerciseSuccess from './ExerciseSuccess';
+import ExerciseTotalScore from './ExerciseTotalScore';
 import './styles.scoped.scss';
 
 const Exercise = () => {
@@ -62,7 +64,11 @@ const Exercise = () => {
   const handleSubmitExercise = () => {
     setIsSubmitQuestion(true);
     let _point = 0;
+    let categoryId = '';
+    let courseId = '';
     yourAnswerSubmit?.map((item) => {
+      categoryId = item.questionSubmit.category._id;
+      courseId = item.questionSubmit.course._id;
       item.questionSubmit.answers.map((ele) => {
         if (item.answerSubmit === ele.content && ele.isCorrect === true) {
           _point = _point + 1;
@@ -70,7 +76,26 @@ const Exercise = () => {
       })
     })
     setPoint(_point);
+
+    const dataHistory = {
+      courseId: courseId,
+      categoryId: categoryId,
+      score: _point,
+      lengthYourAnswer: yourAnswerSubmit?.length,
+      lengthQuestion: questions?.length,
+      tab: numberSwapTab
+    }
   };
+
+  const checkSaveNext = (item) => {
+    let classSaveNext = '';
+    yourAnswerSubmit?.forEach((itemX, idx) => {
+      if (itemX.questionSubmit._id === item._id) {
+        classSaveNext = 'save-next';
+      }
+    });
+    return classSaveNext;
+  }
 
   return (
     <UserLayout>
@@ -81,38 +106,25 @@ const Exercise = () => {
           </h3>
           <div className='question-content'>
             <div className='create-test'>
-              {questions?.data?.map((item, index) => (
-                <div
-                  className={`list-item ${index === currentQ && 'active-question'
-                    }`}
-                  key={index}
-                  onClick={() => setCurrentQ(index)}
-                >
-                  <div className='question-item'>
-                    <span className='text text-test'>{index + 1}</span>
+              {
+                questions?.data?.map((item, index) => (
+                  <div
+                    className={`list-item ${index === currentQ && 'active-question'} ${checkSaveNext(item)}`}
+                    key={index}
+                    onClick={() => setCurrentQ(index)}
+                  >
+                    <div className='question-item'>
+                      <span className='text text-test'>{index + 1}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              }
             </div>
           </div>
         </div>
-
         <div className='inner-div'>
-          {
-            isSubmitQuestion === false && currentQ === questions?.data?.length && (
-              <Alert color="success">
-                <h2 className='d-flex align-items-center justify-content-center text-success-info'>Chúc mừng bạn kiểm tra thành công hãy submit để kiểm tra thành quả !</h2>
-              </Alert>
-            )
-          }
-          {
-            isSubmitQuestion && (
-              <Alert color="success">
-                <h2 className='pt-5 text-center text-success-info'>Chúc mừng bạn kiểm tra thành công với&nbsp;<span className='text-blue'> {point + '/' + questions?.data?.length} </span>&nbsp;điểm . </h2>
-                <h3 className='d-flex align-items-center justify-content-center'>Số lần chuyển Tab là : {numberSwapTab} lần</h3>
-              </Alert>
-            )
-          }
+          <ExerciseSuccess isSubmitQuestion={isSubmitQuestion} currentQ={currentQ} length={questions?.data?.length} />
+          <ExerciseTotalScore isSubmitQuestion={isSubmitQuestion} point={point} length={questions?.data?.length} numberSwapTab={numberSwapTab} />
           {isSubmitQuestion === true ? (
             <>
               {yourAnswerSubmit.map((item, index) => (
@@ -158,8 +170,7 @@ const Exercise = () => {
               Go Back To Previous
             </button>
             <button
-              className={`btn-custom save-question ${isSaveNext === false && 'disabled'
-                }`}
+              className={`btn-custom save-question ${isSaveNext === false && 'disabled'}`}
               disabled={isSaveNext === false}
               onClick={() => handleNextSubmit(currentQ)}
             >
@@ -174,7 +185,7 @@ const Exercise = () => {
           </div>
         </div>
       </div>
-    </UserLayout>
+    </UserLayout >
   );
 };
 
