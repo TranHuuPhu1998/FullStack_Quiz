@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { getListChat } from '@App/app/actions/chat-global';
 import { useDispatch, useSelector } from 'react-redux'
 import { getOneUser } from '@App/app/actions/user';
 import UserLayout from '@App/layout/UserLayout';
@@ -9,7 +10,9 @@ const chatPage = () => {
   const [mess, setMess] = useState([]);
   const [message, setMessage] = useState('');
   const [id, setId] = useState();
-  const user = useSelector((state) => state.userReducers)
+  const user = useSelector((state) => state.profileReducers)
+  const chats = useSelector((state) => state.chatGlobalReducers)
+  console.log("🚀 ~ file: index.js ~ line 15 ~ chatPage ~ chats", chats.data)
 
   const dispatch = useDispatch();
 
@@ -18,6 +21,7 @@ const chatPage = () => {
 
   useEffect(() => {
     dispatch(getOneUser())
+    dispatch(getListChat())
   }, [])
 
   useEffect(() => {
@@ -48,7 +52,7 @@ const chatPage = () => {
         id: id,
         time: new Date(),
         user: user[0]?.name,
-        idUser: user[0]?._id,
+        userId: user[0]?._id,
       };
       // send message to server
       socketRef.current.emit('sendDataClient', msg);
@@ -63,9 +67,9 @@ const chatPage = () => {
     }
   };
 
-  const renderChat = () => {
+  const renderChatRealtime = (mess) => {
     return mess?.map((m, index) => (
-      <div key={index} className={`${m.idUser === user[0]._id ? 'your-message' : 'other-people'} chat-item`}>
+      <div key={index} className={`${m.userId === user[0]?._id ? 'your-message' : 'other-people'} chat-item`}>
         <div className='user-chat'>
           {m.user}
         </div>
@@ -87,14 +91,15 @@ const chatPage = () => {
     if (messageListRef?.current) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight + 50;
     }
-  }, [message]);
+  }, [mess, chats?.data]);
 
   return (
     <UserLayout>
       <div className='card'>
         <h1 className='p-2'>Chat form</h1>
         <div className='render-chat' ref={messageListRef} >
-          {renderChat()}
+          {renderChatRealtime(chats?.data)}
+          {renderChatRealtime(mess)}
         </div>
         <div>
           <div className='d-flex'>

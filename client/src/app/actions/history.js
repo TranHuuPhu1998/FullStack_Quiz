@@ -25,9 +25,12 @@ export const getListHistoryExerciseError = () => {
 
 // create history exercise
 
-export const createHistoryExercise = () => {
+export const createHistoryExercise = (data) => {
   return {
-    type: types.ACTION_CREATE_HISTORY_EXERCISE
+    type: types.ACTION_CREATE_HISTORY_EXERCISE,
+    payload: {
+      data
+    }
   }
 }
 

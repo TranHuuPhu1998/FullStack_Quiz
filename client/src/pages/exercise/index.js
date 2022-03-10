@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { getQuestionByCourse } from '@App/app/actions/question';
+import { createHistoryExercise } from '@App/app/actions/history';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
@@ -60,14 +61,14 @@ const Exercise = () => {
     };
   }, [yourAnswer]);
 
-  const handleSubmitExercise = () => {
+  const handleSubmitExercise = async () => {
     setIsSubmitQuestion(true);
     let _point = 0;
     let categoryId = '';
     let courseId = '';
     yourAnswerSubmit?.map((item) => {
-      categoryId = item.questionSubmit.category._id;
-      courseId = item.questionSubmit.course._id;
+      categoryId = item.questionSubmit.category?.id;
+      courseId = item.questionSubmit.courseId;
       item.questionSubmit.answers.map((ele) => {
         if (item.answerSubmit === ele.content && ele.isCorrect === true) {
           _point = _point + 1;
@@ -81,9 +82,11 @@ const Exercise = () => {
       categoryId: categoryId,
       score: _point,
       lengthYourAnswer: yourAnswerSubmit?.length,
-      lengthQuestion: questions?.length,
+      lengthQuestion: questions?.totalDocs,
       tab: numberSwapTab
     }
+
+    await dispatch(createHistoryExercise(dataHistory));
   };
 
   const checkSaveNext = (item) => {

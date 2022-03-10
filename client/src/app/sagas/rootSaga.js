@@ -5,6 +5,7 @@ import categorySaga from './categories-saga';
 import userSaga from './user-saga';
 import courseSaga from './course-saga';
 import historySaga from './history-saga';
+import chatGlobalSaga from './chat-global-saga';
 
 function* rootSaga() {
   yield all([
@@ -14,6 +15,7 @@ function* rootSaga() {
     yield fork(userSaga),
     yield fork(courseSaga),
     yield fork(historySaga),
+    yield fork(chatGlobalSaga),
   ]);
 }
 

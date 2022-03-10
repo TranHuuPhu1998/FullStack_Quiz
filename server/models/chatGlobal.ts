@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const chatGlobalSchema = new mongoose.Schema({
-  idUser: { type: mongoose.Types.ObjectId, ref: 'user' },
+  userId: { type: mongoose.Types.ObjectId },
   time : {
     type : Date,
   },
@@ -15,5 +16,7 @@ const chatGlobalSchema = new mongoose.Schema({
   }, {
     timestamps: true
 })
+
+chatGlobalSchema.plugin(aggregatePaginate)
 
 export default mongoose.model('chatGlobal', chatGlobalSchema)

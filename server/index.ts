@@ -25,6 +25,7 @@ app.use('/api' , routes.categoryRouter)
 app.use('/api' , routes.questionRouter)
 app.use('/api' , routes.courseRouter)
 app.use('/api' , routes.historyRouter)
+app.use('/api' , routes.chatGlobal)
 
 import './config/database'
 
@@ -39,7 +40,7 @@ io.on("connection", (socket : any) => {
         userId: data.userId,
         content: data.content.trim(),
         time: data.time,
-        user: data.user
+        user: data.user,
       });
 
       await rows.save();

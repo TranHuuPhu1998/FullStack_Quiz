@@ -4,7 +4,7 @@ import { IReqAuth } from "../config/interface";
 
 const Pagination = (req: IReqAuth) => {
   let page = Number(req.query.page) * 1 || 1;
-  let limit = Number(req.query.limit) * 1 || 4;
+  let limit = Number(req.query.limit) * 1 || 8;
   let skip = (page - 1) * limit;
 
   return { page, limit, skip };

@@ -4,6 +4,7 @@ import categoryRouter from './categoryRouter'
 import questionRouter from './questionRouter'
 import courseRouter from './courseRouter'
 import historyRouter from './historyExerciseRouter'
+import chatGlobal from './chatGlobalRouter'
 
 const routes = {
     authRouter,
@@ -11,7 +12,8 @@ const routes = {
     categoryRouter,
     questionRouter,
     courseRouter,
-    historyRouter
+    historyRouter,
+    chatGlobal
 }
 
 export default routes;

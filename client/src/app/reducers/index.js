@@ -7,6 +7,7 @@ import userReducers from './user';
 import courseReducers from './courses';
 import profileReducers from './profile';
 import historyReducers from './history';
+import chatGlobalReducers from './chat-global';
 
 const rootReducers = combineReducers({
   authReducers,
@@ -16,7 +17,8 @@ const rootReducers = combineReducers({
   userReducers,
   courseReducers,
   profileReducers,
-  historyReducers
+  historyReducers,
+  chatGlobalReducers
 });
 
 export default rootReducers;

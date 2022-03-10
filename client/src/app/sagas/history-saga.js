@@ -30,6 +30,8 @@ function* processCreateHistoryExercise({ payload }) {
     yield put(createHistoryExerciseSuccess(resp.data));
   } catch (error) {
     yield put(createHistoryExerciseError());
+  } finally {
+    yield put(hideLoading());
   }
 }
 
