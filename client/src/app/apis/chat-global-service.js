@@ -3,6 +3,7 @@ import { API_ENDPOINT } from '@App/app/constants';
 
 const token = localStorage.getItem('TOKEN');
 
-export const getListChatGlobal = () => {
-  return axiosService.get(`${API_ENDPOINT}/chat-globals`, token);
+export const getListChatGlobal = (pageInfo) => {
+  const { page, limit } = pageInfo;
+  return axiosService.get(`${API_ENDPOINT}/chat-globals?page=${page}&limit=${limit}`, token);
 }

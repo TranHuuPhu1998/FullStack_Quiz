@@ -2,9 +2,12 @@ import * as types from '@App/app/constants/ActionTypes';
 
 // get list chat
 
-export const getListChat = () => {
+export const getListChat = (pageInfo) => {
   return {
     type: types.ACTION_GET_CHAT_GLOBAL,
+    payload: {
+      pageInfo
+    }
   }
 }
 

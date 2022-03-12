@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { getListChat } from '@App/app/actions/chat-global';
 import { useDispatch, useSelector } from 'react-redux'
 import { getOneUser } from '@App/app/actions/user';
+import { PAGE_INFO } from '@App/app/constants';
 import UserLayout from '@App/layout/UserLayout';
 import io from 'socket.io-client';
 import './chat.scoped.scss';
@@ -9,20 +10,54 @@ import './chat.scoped.scss';
 const chatPage = () => {
   const [mess, setMess] = useState([]);
   const [message, setMessage] = useState('');
+  const [chatList, setChatList] = useState([]);
   const [id, setId] = useState();
   const user = useSelector((state) => state.profileReducers)
   const chats = useSelector((state) => state.chatGlobalReducers)
-  console.log("🚀 ~ file: index.js ~ line 15 ~ chatPage ~ chats", chats.data)
+  const [pageInfo, setPageInfo] = useState(PAGE_INFO);
+  const [stop, setStop] = useState(false);
+  const [firstLoad, setFirstLoad] = useState(false);
 
   const dispatch = useDispatch();
 
+  const btnRef = useRef();
   const socketRef = useRef();
   const messageListRef = useRef();
 
   useEffect(() => {
     dispatch(getOneUser())
-    dispatch(getListChat())
   }, [])
+
+  useEffect(() => {
+    dispatch(getListChat(pageInfo))
+  }, [pageInfo])
+
+  useEffect(() => {
+    if (chatList.length === chats.totalDocs && firstLoad === true) setStop(true);
+    if (chats.data.length > 0) {
+      setChatList((prev) => [...prev, ...chats.data])
+      setFirstLoad(true)
+    }
+  }, [chats.data])
+
+  const handleLoadMore = useCallback(() => {
+    if (stop) return;
+    setPageInfo(prev => ({ ...prev, page: prev.page + 1 }))
+  }, [stop])
+
+  useEffect(() => {
+    const btn = btnRef.current;
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && firstLoad === true) {
+        handleLoadMore();
+      }
+    });
+
+    if (btn) observer.observe(btn);
+    return () => {
+      if (btn) observer.unobserve(btn);
+    }
+  }, [handleLoadMore, firstLoad])
 
   useEffect(() => {
     socketRef.current = io.connect('http://localhost:5000');
@@ -40,6 +75,13 @@ const chatPage = () => {
       socketRef.current.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    // scroll to bottom after message changed
+    if (messageListRef?.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight + 50;
+    }
+  }, [mess, chats?.data]);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -84,23 +126,24 @@ const chatPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     sendMessage();
-  }
-
-  useEffect(() => {
-    // scroll to bottom after message changed
-    if (messageListRef?.current) {
-      messageListRef.current.scrollTop = messageListRef.current.scrollHeight + 50;
-    }
-  }, [mess, chats?.data]);
+  };
 
   return (
     <UserLayout>
       <div className='card'>
         <h1 className='p-2'>Chat form</h1>
         <div className='render-chat' ref={messageListRef} >
-          {renderChatRealtime(chats?.data)}
+          {renderChatRealtime(chatList)}
           {renderChatRealtime(mess)}
+          <button
+            className='loading-chat'
+            ref={btnRef}
+            style={{ visibility: stop ? 'hidden' : 'visible' }}
+            disabled={stop}
+            onClick={() => setPageInfo(prev => ({ ...prev, page: prev.page + 1 }))}
+          >Loading...</button>
         </div>
+
         <div>
           <div className='d-flex'>
             <form className='d-flex w-100' onSubmit={handleSubmit}>

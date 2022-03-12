@@ -7,11 +7,12 @@ import { hideLoading, showLoading } from '@App/app/actions/ui';
 import { call, takeLatest, put } from 'redux-saga/effects';
 import * as chatGlobalType from '@App/app/constants/ActionTypes';
 
-function* processGetChatGlobal() {
+function* processGetChatGlobal({ payload }) {
+  const { pageInfo } = payload;
   yield put(showLoading());
 
   try {
-    const resp = yield call(getListChatGlobal);
+    const resp = yield call(getListChatGlobal, pageInfo);
     yield put(getListChatSuccess(resp.data));
   } catch (error) {
     yield put(getListChatError());
