@@ -29,8 +29,6 @@ app.use('/api' , routes.courseRouter)
 app.use('/api' , routes.historyRouter)
 app.use('/api' , routes.chatGlobal)
 
-import './config/database'
-
 // socket io
 
 io.on("connection", (socket : any) => {
@@ -55,20 +53,7 @@ io.on("connection", (socket : any) => {
   });
 });
 
-const URI = process.env.MONGODB_URL;
-mongoose.connect(
-  URI,
-  {
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
-  (err:any) => {
-    if (err) throw err;
-    console.log("Connected to mongosedb");
-  }
-);
+import './config/database'
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static('client/dist'))
