@@ -5,6 +5,8 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import routes from './routes/index';
+import path from 'path'
+const mongoose = require("mongoose");
 import chatGlobal from './models/chatGlobal';
 // middleware
 const app = express()
@@ -53,7 +55,27 @@ io.on("connection", (socket : any) => {
   });
 });
 
+const URI = process.env.MONGODB_URL;
+mongoose.connect(
+  URI,
+  {
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  (err:any) => {
+    if (err) throw err;
+    console.log("Connected to mongosedb");
+  }
+);
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/dist"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client", "dist", "index.html"));
+  });
+}
 
 // server listenning
 const POST = process.env.PORT || 5000
