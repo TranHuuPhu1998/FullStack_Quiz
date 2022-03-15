@@ -60,7 +60,7 @@ const chatPage = () => {
   }, [handleLoadMore, firstLoad])
 
   useEffect(() => {
-    socketRef.current = io.connect('http://localhost:5000');
+    socketRef.current = io.connect('https://quiz-app-hihi.herokuapp.com/');
     // get data from server
     socketRef.current.on('getId', (data) => {
       setId(data);
