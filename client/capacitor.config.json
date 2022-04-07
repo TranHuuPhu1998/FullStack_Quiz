@@ -1,0 +1,6 @@
+{
+  "appId": "quizapp",
+  "appName": "Quiz App",
+  "webDir": "build",
+  "bundledWebRuntime": false
+}
