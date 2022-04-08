@@ -1,74 +1,54 @@
-import { lazy } from 'react';
-import { AUTH_ONLY } from 'routes/types';
-const DashBoard = lazy(() => import('../pages/admin/dashboard'));
-const Categories = lazy(() => import('../pages/admin/categories'));
-const Users = lazy(() => import('../pages/admin/users'));
-const Course = lazy(() => import('../pages/admin/courses'));
-const Profile = lazy(() => import('../pages/admin/profile'));
-const ExerciseUser = lazy(() => import('../pages/user/exercise'));
-const CourseUser = lazy(() => import('../pages/user/courses'));
-const ChatUser = lazy(() => import('../pages/user/user-chat'));
-const Home = lazy(() => import('../pages'));
-const HistoryExercise = lazy(() => import('../pages/admin/history-exercise'));
+import { lazy } from "react-router-guard";
+import { checkAuth, checkResolve } from "./guards";
 
-
-const routers : any =  [
+const routes = [
   {
-    path: '/admin',
-    exact: true,
-    component: DashBoard,
-    loading: 'Custom loading for home page...',
-    error: 'Custom error for home page',
-    meta: {
-      [AUTH_ONLY]: true,
-    },
+    path: "/test",
+    redirect: "/user"
   },
   {
-    path: '/admin/categories',
-    exact: true,
-    component: Categories
+    path: "/user",
+    component: lazy(() => import("pages/admin/users")),
+    canActivate: [checkAuth],
+    routes: [
+      {
+        path: "/user",
+        redirect: "/user/profile"
+      },
+      {
+        path: "/user/profile",
+        canActivate: [checkResolve],
+        component: lazy(() => import("./pages/User/Profile"))
+      },
+      {
+        path: "/user/setting",
+        component: lazy(() => import("./pages/User/Setting"))
+      }
+    ]
   },
   {
-    path: '/admin/users',
-    exact: true,
-    component: Users
-  },
-  {
-    path: '/admin/course',
-    exact: true,
-    component: Course
-  },
-  {
-    path: '/profile',
-    exact: true,
-    component: Profile
-  },
-  {
-    path: '/exercise',
-    exact: true,
-    component: ExerciseUser
-  },
-  {
-    path: '/courses',
-    exact: true,
-    component: CourseUser
-  },
-  {
-    path: '/chat',
-    exact: true,
-    component: ChatUser
-  },
-  {
-    path: '/',
-    exact: true,
-    component: Home
-  },
-  {
-    path: '/history-exercise',
-    exact: true,
-    component: HistoryExercise
+    path: "/",
+    component: lazy(() => import("./layouts/MainLayout")),
+    routes: [
+      {
+        path: "/",
+        exact: true,
+        component: lazy(() => import("./pages/Home"))
+      },
+      {
+        path: "/services",
+        redirect: "/services/1"
+      },
+      {
+        path: "/services/1",
+        component: lazy(() => import("./pages/Services/NewService1"))
+      },
+      {
+        path: "/services/2",
+        component: lazy(() => import("./pages/Services/NewService2"))
+      }
+    ]
   }
 ];
 
-export default routers;
-
+export default routes;
