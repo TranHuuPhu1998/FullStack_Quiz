@@ -1,11 +1,10 @@
 import React from 'react'
+import AdminCategory from 'features/admin-categories';
 
-const Categories = () => {
+const CategoriesPage:React.FC = () => {
   return (
-    <div>
-
-    </div>
+    <AdminCategory />
   )
 }
 
-export default Categories
+export default CategoriesPage

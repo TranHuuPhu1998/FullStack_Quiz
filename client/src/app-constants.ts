@@ -1,8 +1,9 @@
-export const API_ENDPOINT = 'https://quiz-app-hihi.herokuapp.com/api';
+// export const API_ENDPOINT = 'https://quiz-app-hihi.herokuapp.com/api';
+export const API_ENDPOINT = 'http://localhost:5000/api';
 export const AUTHORIZATION_KEY = 'TOKEN';
 export const PAGE_INFO = {
-  page: 1,
-  limit: 15,
+  current: 1,
+  pageSize: 10,
   text_search: null
 };
 export const PAGE_INFO_CATEGORY = {

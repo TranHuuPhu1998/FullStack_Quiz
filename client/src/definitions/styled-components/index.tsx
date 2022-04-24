@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeProvider } from "styled-components/macro";
+import { ThemeProvider } from "styled-components";
 
 import { dark } from "./dark";
 import { light } from "./light";
@@ -33,9 +33,9 @@ export const StyledThemeProvider: React.FC = ({ children }) => {
   return (
     <ThemeContext.Provider value={values}>
       <ThemeProvider theme={theme === "light" ? light : dark}>
-        {children}
+        <>{children}</>
       </ThemeProvider>
-    </ThemeContext.Provider>
+    </ThemeContext.Provider >
   );
 };
 

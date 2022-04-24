@@ -12,13 +12,12 @@ type ExtendedColors =
   | "cardsBg"
   | "textColor"
   | "dodgerBlue";
-
 declare module "styled-components" {
   export interface BaseTheme {
     colors: Record<CommonColors, string>;
   }
 
-  export interface DefaultTheme extends BaseTheme {
+  export interface DefaultTheme {
     colors: Record<ExtendedColors, string>;
   }
 }

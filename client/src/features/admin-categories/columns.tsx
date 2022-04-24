@@ -1,14 +1,14 @@
-import { Space } from "antd";
+import { Button, Space } from "antd";
 import { ColumnsType } from "antd/lib/table";
 import { TFunction } from "react-i18next";
-import { TableActions } from "../../interfaces/features/TableActions";
+import { TableActions } from "interfaces/features/TableActions";
 
 /**
  * Get all columns of poll table
  * @param t Translation function
  * @returns
  */
-export function getTablePollColumns(t: TFunction, { onDelete, onEdit }: TableActions): ColumnsType<any> {
+export function getTableColumns(t: TFunction, { onDelete, onEdit , onView }: TableActions): ColumnsType<any> {
   return [
     {
       key: "id",
@@ -41,9 +41,9 @@ export function getTablePollColumns(t: TFunction, { onDelete, onEdit }: TableAct
       title: t('action'),
       render: (text, record) => (
         <Space size="small">
-          <ViewButton showIcon onClick={() => onView?.(record.id)} />
-          <EditButton showIcon onClick={() => onEdit?.(record.id)} />
-          <DeleteButton showIcon onClick={() => onDelete?.(record.id)} />
+          <Button onClick={() => onView?.(record.id)} />
+          <Button onClick={() => onEdit?.(record.id)} />
+          <Button onClick={() => onDelete?.(record.id)} />
         </Space>
       ),
     },

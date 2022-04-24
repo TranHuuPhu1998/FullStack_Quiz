@@ -1,10 +1,15 @@
-import React from 'react'
+import { Layout } from 'antd';
+import styled from 'styled-components';
+import React from 'react';
 
-const AppHeader = () => {
+const Header = styled(Layout.Header)`
+  padding: 0;
+  background: #fff;
+`
+
+const AppHeader:React.FC = () => {
   return (
-    <div>
-      AppHeader
-    </div>
+    <Header/>
   )
 }
 

@@ -1,25 +1,33 @@
-import React from "react";
-import { Layout } from "antd";
-import SideBar from "layout/AppSideBar";
+import { Layout } from 'antd';
+import Footer from 'layout/AppFooter';
+import SideBar from 'layout/AppSideBar';
+import Header from 'layout/AppHeader';
+import Breadcrumb from 'layout/AppBreadcrumb';
+import styled from 'styled-components';
 
-const { Header, Content, Sider } = Layout;
+const { Content } = Layout;
+const Container = styled.div`
+  padding: 24px;
+  background: #fff;
+`;
 
-function MainLayout(props) {
-  const { children, location } = props;
+const DashboardLayout:React.FC = ({children}) => {
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Sider collapsible>
-        <SideBar pathname={location.pathname} />
-      </Sider>
-      <Layout>
-        <Header style={{ background: "#fff", padding: "0 25px" }}>
-          <h2>Main Layout</h2>
-        </Header>
-        <Content style={{ margin: "15px" }}>{children}</Content>
+    <Layout style={{ minHeight: '100vh' }}>
+        <SideBar/>
+        <Layout>
+          <Header/>
+          <Content style={{ margin: '0 16px' }}>
+            <Breadcrumb/>
+            <Container>
+              {children}
+            </Container>
+          </Content>
+          <Footer />
+        </Layout>
       </Layout>
-    </Layout>
   );
 }
 
-export default MainLayout;
+export default DashboardLayout;

@@ -1,6 +1,4 @@
-// #region Global Imports
-import { BaseTheme } from "styled-components/macro";
-// #endregion Global Imports
+import { BaseTheme } from "styled-components";
 
 const common: BaseTheme = {
   colors: {
