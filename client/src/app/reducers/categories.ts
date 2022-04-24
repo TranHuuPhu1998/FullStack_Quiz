@@ -10,7 +10,7 @@ const initialState:any = {
 const reducers = (state = initialState, action:any) => {
   switch (action.type) {
     case types.GET_CATEGORY_SUCCESS: {
-      const { docs, totalDocs } = action.payload.data.rows;
+      const { docs, totalDocs } = action.payload.data;
       return {
         data: docs,
         totalDocs: totalDocs

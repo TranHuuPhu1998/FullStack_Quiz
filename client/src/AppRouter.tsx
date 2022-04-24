@@ -3,28 +3,27 @@ import NotFound from "pages/404";
 import React, { Suspense } from "react";
 import {
   BrowserRouter as Router,
-  Redirect,
   Route,
   RouteProps,
   Switch,
 } from "react-router-dom";
 import flattenNavURLs from "routes/routes";
-import { Alert } from "antd";
+import routersAuth from "routes/routersAuth";
 import { Spin } from "antd";
-
-const { ErrorBoundary } = Alert;
+import { AUTHORIZATION_KEY } from "app-constants";
 
 const AsyncRoute: React.FC<RouteProps> = (props) => {
   return <Route {...props}>{props.children}</Route>;
 };
 
-const AppRouter: React.FC = ({ authenticated }: any) => {
-  const appRoutes = flattenNavURLs;
+const AppRouter: React.FC<any> = ({ authenticated }) => {
+  const appRoutes = authenticated ? flattenNavURLs : routersAuth;
+
   return (
-    <BaseDashboardLayout>
+    <BaseDashboardLayout authenticated={authenticated}>
       <Suspense fallback={<Spin size="large" />}>
         <Switch>
-          {appRoutes?.map((route, index) => {
+          {appRoutes?.map((route:any) => {
             const Component = route.component;
             return (
               <AsyncRoute exact key={route.key} path={route.path} children={(<Component/>)}/>
@@ -38,9 +37,10 @@ const AppRouter: React.FC = ({ authenticated }: any) => {
 };
 
 const App: React.FC = () => {
+  const authenticated = localStorage.getItem(AUTHORIZATION_KEY);
   return (
     <Router>
-      <AppRouter />
+      <AppRouter authenticated={authenticated}/>
     </Router>
   );
 };

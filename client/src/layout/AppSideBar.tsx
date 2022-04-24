@@ -35,7 +35,7 @@ const SideBar: React.FC = () => {
                       }
                     </SubMenu>
                   ) : (
-                    <Menu.Item icon={<v.icon />}>
+                    <Menu.Item key={i} icon={<v.icon />}>
                       <NavLink to={v.path}>{v.name}</NavLink>
                     </Menu.Item>
                   )

@@ -4,7 +4,6 @@ import { TFunction } from "react-i18next";
 import { TableActions } from "interfaces/features/TableActions";
 
 /**
- * Get all columns of poll table
  * @param t Translation function
  * @returns
  */
@@ -39,11 +38,12 @@ export function getTableColumns(t: TFunction, { onDelete, onEdit , onView }: Tab
     },
     {
       title: t('action'),
+      width: 100,
       render: (text, record) => (
         <Space size="small">
-          <Button onClick={() => onView?.(record.id)} />
-          <Button onClick={() => onEdit?.(record.id)} />
-          <Button onClick={() => onDelete?.(record.id)} />
+          <Button onClick={() => onView?.(record.id)} >{t('view')}</Button>
+          <Button onClick={() => onEdit?.(record.id)} >{t('edit')}</Button>
+          <Button onClick={() => onDelete?.(record.id)} >{t('delete')}</Button>
         </Space>
       ),
     },

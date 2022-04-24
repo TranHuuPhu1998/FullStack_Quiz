@@ -11,10 +11,12 @@ const Container = styled.div`
   background: #fff;
 `;
 
-const DashboardLayout:React.FC = ({children}) => {
+const DashboardLayout:React.FC<any> = ({children,authenticated}) => {
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <>
+      {authenticated ? (
+        <Layout style={{ minHeight: '100vh' }}>
         <SideBar/>
         <Layout>
           <Header/>
@@ -27,6 +29,11 @@ const DashboardLayout:React.FC = ({children}) => {
           <Footer />
         </Layout>
       </Layout>
+      ) : <Layout style={{ minHeight: '100vh' }}>
+          {children}
+        </Layout>}
+    </>
+    
   );
 }
 

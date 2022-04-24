@@ -17,7 +17,7 @@ import {
 import { hideLoading, showLoading } from '../actions/ui';
 import { call, takeLatest, put } from 'redux-saga/effects';
 import * as categoryType from '../constants/ActionTypes';
-import {ResponseGenerator} from '../../interfaces/response-server';
+import { ResponseGenerator } from '../../interfaces/response-server';
 
 function* processGetCategories({payload}:any) {
   const data = payload;
@@ -25,7 +25,7 @@ function* processGetCategories({payload}:any) {
 
   try {
     const resp : ResponseGenerator = yield call(getCategories, data);
-    yield put(getCategoriesSuccess(resp.data));
+    yield put(getCategoriesSuccess(resp.data.rows));
   } catch (error) {
     yield put(getCategoriesError(error));
   } finally {
@@ -37,7 +37,7 @@ function* processCreateCategory({ payload }:any) {
   const { data } = payload;
   yield put(showLoading());
   try {
-    const resp : ResponseGenerator = yield call(createCategory, { name: data });
+    const resp : ResponseGenerator = yield call(createCategory,data);
     yield put(createCategorySuccess(resp.data));
   } catch (error) {
     yield put(createCategoryError());

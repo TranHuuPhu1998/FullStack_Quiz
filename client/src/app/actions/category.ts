@@ -28,7 +28,7 @@ export const getCategoriesError = (data:any) => {
 };
 
 // CREATE A CATEGORY
-export const createCategory = (data:any) => {
+export const createCategory = (data:{name:string}) => {
   return {
     type: types.ACTION_CREATE_CATEGORY,
     payload: {
@@ -53,12 +53,11 @@ export const createCategoryError = () => {
 };
 
 // UPDATE A CATEGORY
-export const updateCategory = (data:any, id:any) => {
+export const updateCategory = (data:any) => {
   return {
     type: types.ACTION_UPDATE_CATEGORY,
     payload: {
-      data,
-      id
+      data
     }
   };
 };

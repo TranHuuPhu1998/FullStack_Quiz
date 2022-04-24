@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConfigProvider } from 'antd';
-import locale from 'antd/lib/locale/ja_JP';
+import locale from 'antd/lib/locale/en_US';
 
 const AntdConfigProvider: React.FC = ({ children }) => {
   return (

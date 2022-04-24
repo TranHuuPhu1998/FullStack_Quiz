@@ -55,7 +55,7 @@ function* processLogin({ payload }:any) {
     yield put(loginSuccess(resp.data));
     const { access_token } = resp.data;
     yield localStorage.setItem(AUTHORIZATION_KEY, access_token);
-    yield localStorage.setItem('LOGIN_TYPE',resp.data.user.role)
+    yield localStorage.setItem('LOGIN_TYPE',resp.data.user.role);
     if(resp.data.user.role === 'admin') {
       yield axiosService.redirectTo(document,'/admin');
     }else {
