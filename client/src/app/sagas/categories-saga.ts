@@ -2,7 +2,8 @@ import {
   getCategories,
   createCategory,
   updateCategory,
-  deleteCategory
+  deleteCategory,
+  getCategoryById
 } from '../apis/categories-service';
 import {
   getCategoriesSuccess,
@@ -12,7 +13,9 @@ import {
   updateCategorySuccess,
   updateCategoryError,
   deleteCategorySuccess,
-  deleteCategoryError
+  deleteCategoryError,
+  getCategoryByIdSuccess,
+  getCategoryByIdError
 } from '../actions/category';
 import { hideLoading, showLoading } from '../actions/ui';
 import { call, takeLatest, put } from 'redux-saga/effects';
@@ -47,10 +50,10 @@ function* processCreateCategory({ payload }:any) {
 }
 
 function* processUpdateCategory({ payload }:any) {
-  const { data, id } = payload;
+  const { data } = payload;
   yield put(showLoading());
   try {
-    const resp : ResponseGenerator = yield call(updateCategory, { data, id });
+    const resp : ResponseGenerator = yield call(updateCategory, data);
     yield put(updateCategorySuccess(resp.data));
   } catch (error) {
     yield put(updateCategoryError());
@@ -72,11 +75,25 @@ function* processDeleteCategory({ payload }:any) {
   }
 }
 
+function* processGetCategoryById({ payload }:any) {
+  const { id } = payload;
+  yield put(showLoading());
+  try {
+    const resp : ResponseGenerator = yield call(getCategoryById, id);
+    yield put(getCategoryByIdSuccess(resp.data.rows));
+  } catch (error) {
+    yield put(getCategoryByIdError(error));
+  } finally {
+    yield put(hideLoading());
+  }
+}
+
 function* categorySaga() {
   yield takeLatest(categoryType.ACTION_GET_CATEGORIES, processGetCategories);
   yield takeLatest(categoryType.ACTION_CREATE_CATEGORY, processCreateCategory);
   yield takeLatest(categoryType.ACTION_UPDATE_CATEGORY, processUpdateCategory);
   yield takeLatest(categoryType.ACTION_DELETE_CATEGORY, processDeleteCategory);
+  yield takeLatest(categoryType.ACTION_GET_CATEGORY_BY_ID, processGetCategoryById);
 }
 
 export default categorySaga;

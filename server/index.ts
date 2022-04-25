@@ -21,7 +21,7 @@ app.use(morgan('dev'))
 app.use(cookieParser())
 
 //Routes
-app.use('/api/auth' , routes.authRouter)
+app.use('/api/auth', routes.authRouter)
 app.use('/api' , routes.userRouter)
 app.use('/api' , routes.categoryRouter)
 app.use('/api' , routes.questionRouter)

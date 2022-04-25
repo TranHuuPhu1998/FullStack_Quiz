@@ -1,10 +1,11 @@
 import * as types from '../constants/ActionTypes';
-
+import { CrudState } from 'interfaces/common';
 import { toastError, toastSuccess } from '../../common/helpers/toastHelper';
 
 const initialState:any = {
   data: [],
   totalDocs: 0,
+  status: CrudState.NotSet,
 };
 
 const reducers = (state = initialState, action:any) => {
@@ -25,12 +26,16 @@ const reducers = (state = initialState, action:any) => {
       const category = action.payload.data.rows;
       return {
         data: [category, ...state.data],
-        totalDocs: state.totalDocs + 1
+        totalDocs: state.totalDocs + 1,
+        status: CrudState.Succeed
       };
     }
     case types.CREATE_CATEGORY_ERROR: {
       toastError('Create Category Error');
-      return state;
+      return {
+        data: [...state.data],
+        status: CrudState.Failed
+      };
     }
     case types.UPDATE_CATEGORY_SUCCESS: {
       toastSuccess('Update Category Success');
@@ -40,8 +45,16 @@ const reducers = (state = initialState, action:any) => {
       state.data[_index] = data;
       return {
         data: [...state.data],
-        totalDocs: state.totalDocs
+        totalDocs: state.totalDocs,
+        status : CrudState.Updated
       };
+    }
+    case types.UPDATE_CATEGORY_ERROR: {
+      toastError('Update category Error');
+      return {
+        data: [...state.data],
+        status: CrudState.Failed,
+      }
     }
     case types.DELETE_CATEGORY_SUCCESS: {
       toastSuccess('Delete Category Success');
@@ -56,6 +69,20 @@ const reducers = (state = initialState, action:any) => {
     case types.DELETE_CATEGORY_ERROR: {
       toastError('Delete Category Error');
       return [...state];
+    }
+    case types.GET_CATEGORY_BY_ID_SUCCESS: {
+      const category = action.payload.data;
+      return {
+        data: [category],
+        status : CrudState.Succeed
+      };
+    }
+    case types.GET_CATEGORY_BY_ID_ERROR: {
+      toastError('Get Category By Id Error');
+      return {
+        data: [...state.data],
+        status: CrudState.Failed,
+      }
     }
     default:
       return state;

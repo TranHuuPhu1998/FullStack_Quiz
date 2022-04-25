@@ -10,9 +10,10 @@ const Login:React.FC = () => {
   const dispatch = useDispatch();
 
   return (
-      <Row justify="space-between">
-        <Col xxl={12} xl={12} lg={24} md={24} sm={24} xs={24}>
+      <Row justify="space-between" className="h-100">
+        <Col xxl={12} xl={12} lg={24} md={24} sm={24} xs={24} className="h-100">
           <Image
+            className="h-100"
             preview={false}
             src="https://mixkit.imgix.net/art/preview/mixkit-left-handed-man-sitting-at-a-table-writing-in-a-notebook-27-original-large.png?q=80&auto=format%2Ccompress&h=700"
             alt="Login"

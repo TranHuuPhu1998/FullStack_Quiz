@@ -7,7 +7,7 @@ import styled from 'styled-components';
 
 const { Content } = Layout;
 const Container = styled.div`
-  padding: 24px;
+  padding: 0px;
   background: #fff;
 `;
 
@@ -29,11 +29,12 @@ const DashboardLayout:React.FC<any> = ({children,authenticated}) => {
           <Footer />
         </Layout>
       </Layout>
-      ) : <Layout style={{ minHeight: '100vh' }}>
-          {children}
-        </Layout>}
+      ) :
+      <Layout style={{ height: '100vh' }}>
+        {children}
+      </Layout>}
     </>
-    
+
   );
 }
 

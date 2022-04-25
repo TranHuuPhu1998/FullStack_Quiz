@@ -1,30 +1,39 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
-const questionSchema = new mongoose.Schema({
-    user: { type: mongoose.Types.ObjectId, ref: 'user' },
-    name : {
-        type : String,
-        required : [true, "Please add your name"],
-        trim: true
+const questionSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "user",
+      required: [true, "Please add user"],
     },
-    category : {
-        required : true,
-        type : Object
+    name: {
+      type: String,
+      required: [true, "Please add your name"],
+      trim: true,
     },
-    courseId : {
-        type: mongoose.Types.ObjectId,
-        ref: 'course',
+    category: {
+      required: true,
+      type: mongoose.Types.ObjectId,
+      ref: "category",
     },
-    answers : {
-        type : Array,
-        required : [true, "Please add your Answers"],
-        ref : 'answer'
-    }
-}, {
-  timestamps: true
-})
+    courseId: {
+      required: true,
+      type: mongoose.Types.ObjectId,
+      ref: "course",
+    },
+    answers: {
+      type: Array,
+      required: [true, "Please add your Answers"],
+      ref: "answer",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-questionSchema.plugin(aggregatePaginate)
+questionSchema.plugin(aggregatePaginate);
 
-export default mongoose.model('question', questionSchema)
+export default mongoose.model("question", questionSchema);

@@ -1,3 +1,20 @@
 {
-  
+  "List_page": "Total {{total}} items",
+  "List_of_categories": "List of categories",
+  "Add_category": "Add category",
+  "View": "View",
+  "Edit": "Edit",
+  "Delete": "Delete",
+  "Action": "Action",
+  "Updated_at": "Updated at",
+  "Created_at": "Created at",
+  "Created_by": "Created by",
+  "Name": "Name",
+  "Id": "No",
+  "Please_enter_category": "Please enter the category name",
+  "Save": "Save",
+  "List_of_questions": "List of questions",
+  "Add_question": "Add question",
+  "Course_name": "Course Name",
+  "Category_name": "Category Name"
 }

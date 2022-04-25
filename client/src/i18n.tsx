@@ -18,7 +18,7 @@ const resources = {
 
 i18n.use(LanguageDetector).use(initReactI18next).init({
   resources,
-  lng:"ja",
+  lng:"en",
   keySeparator:".",
   nonExplicitSupportedLngs:true,
   load:'languageOnly',

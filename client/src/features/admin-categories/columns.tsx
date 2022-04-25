@@ -21,29 +21,29 @@ export function getTableColumns(t: TFunction, { onDelete, onEdit , onView }: Tab
     },
     {
       key: "createBy",
-      title: t("Create-By"),
+      title: t("Created_by"),
       dataIndex: "userName",
     },
     {
       key: "createdAt",
-      title: t("createdAt"),
+      title: t("Created_at"),
       dataIndex: "createdAt",
       render: (_, record) => new Date(record.createdAt).toLocaleString(),
     },
     {
       key: "updatedAt",
-      title: t("updatedAt"),
+      title: t("Updated_at"),
       dataIndex: "updatedAt",
       render: (_, record) => new Date(record.updatedAt).toLocaleString(),
     },
     {
-      title: t('action'),
+      title: t('Action'),
       width: 100,
       render: (text, record) => (
         <Space size="small">
-          <Button onClick={() => onView?.(record.id)} >{t('view')}</Button>
-          <Button onClick={() => onEdit?.(record.id)} >{t('edit')}</Button>
-          <Button onClick={() => onDelete?.(record.id)} >{t('delete')}</Button>
+          <Button onClick={() => onView?.(record._id)} >{t('View')}</Button>
+          <Button onClick={() => onEdit?.(record._id)} >{t('Edit')}</Button>
+          <Button onClick={() => onDelete?.(record._id)} >{t('Delete')}</Button>
         </Space>
       ),
     },

@@ -1,3 +1,4 @@
+import { CategoryItem } from './../../interfaces/features/Category';
 import * as types from '../constants/ActionTypes';
 // GET A CATEGORY
 export const getCategory = (pageInfo:any) => {
@@ -53,7 +54,7 @@ export const createCategoryError = () => {
 };
 
 // UPDATE A CATEGORY
-export const updateCategory = (data:any) => {
+export const updateCategory = (data:CategoryItem) => {
   return {
     type: types.ACTION_UPDATE_CATEGORY,
     payload: {
@@ -102,3 +103,31 @@ export const deleteCategoryError = () => {
     type: types.DELETE_CATEGORY_SUCCESS
   };
 };
+
+// GET A CATEGORY BY ID
+export const getCategoryById = (id:string) => {
+  return {
+    type: types.ACTION_GET_CATEGORY_BY_ID,
+    payload: {
+      id
+    }
+  };
+}
+
+export const getCategoryByIdSuccess = (data:any) => {
+  return {
+    type: types.GET_CATEGORY_BY_ID_SUCCESS,
+    payload: {
+      data
+    }
+  };
+}
+
+export const getCategoryByIdError = (error:any) => {
+  return {
+    type: types.GET_CATEGORY_BY_ID_ERROR,
+    payload: {
+      error
+    }
+  };
+}

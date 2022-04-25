@@ -3,3 +3,14 @@ export interface Pagination {
   pageSize: number;
   text_search: number;
 }
+export enum CrudState {
+  NotSet, // not set, default
+  Succeed, // Created
+  Deleted, // Deleted
+  Updated, // Updated
+  Failed, // Bad request
+  ServerError, // internal server error
+  NotFound, //Not found
+  OK, //Found
+  Forbidden
+}

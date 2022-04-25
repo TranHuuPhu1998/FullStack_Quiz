@@ -16,6 +16,7 @@ import {
 const DashBoard = lazy(() => import("pages/admin/dashboard"));
 const Categories = lazy(() => import("pages/admin/categories"));
 const CategoriesAdd = lazy(() => import("pages/admin/categories/add"));
+const CategoriesEdit = lazy(() => import("pages/admin/categories/edit"));
 const Users = lazy(() => import("pages/admin/users"));
 const Course = lazy(() => import("pages/admin/courses"));
 const Profile = lazy(() => import("pages/admin/profile"));
@@ -55,7 +56,7 @@ const flattenNavURLs = [
         icon: HeatMapOutlined,
       },
       {
-        path: "/admin/categories/add",
+        path: "/admin/category/add",
         key: "category-add-sub",
         name: "Add Category",
         icon: AppstoreAddOutlined,
@@ -63,11 +64,18 @@ const flattenNavURLs = [
     ],
   },
   {
-    path: "/admin/categories/add",
+    path: "/admin/category/add",
     exact: true,
     component: CategoriesAdd,
     key: "categories add",
-    name: "Categories Management",
+    show: false,
+  },
+  {
+    path: "/admin/category/edit/:id",
+    exact: true,
+    component: CategoriesEdit,
+    key: "categories edit",
+    show: false,
   },
   {
     path: "/admin/users",

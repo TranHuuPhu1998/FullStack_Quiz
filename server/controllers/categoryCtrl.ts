@@ -51,7 +51,7 @@ const categoryCtrl = {
       if (req.query.name) {
         query.push({ name: { $regex: `.*${req.query.name}.*`, $options : 'i' } });
       } else {
-        query = [{ _id: { $exists: true } }];
+        query = [{ _id: { $exists: true }}];
       }
 
       const condition = Category.aggregate([
@@ -113,6 +113,18 @@ const categoryCtrl = {
       return res.status(500).json({ msg: err.message });
     }
   },
+  getCategoryById: async (req: IReqAuth, res: Response) => {
+    if (!req.user)
+      return res.status(400).json({ msg: "Invalid Authentication User." });
+
+    try {
+      const category = await Category.findById(req.params.id);
+
+      res.json({ rows: category });
+    } catch (err: any) {
+      return res.status(500).json({ msg: err.message });
+    }
+  }
 };
 
 export default categoryCtrl;

@@ -21,4 +21,6 @@ const rootReducers = combineReducers({
   chatGlobalReducers
 });
 
+export type RootState = ReturnType<typeof rootReducers>
+
 export default rootReducers;
