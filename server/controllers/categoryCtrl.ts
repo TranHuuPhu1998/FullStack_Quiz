@@ -40,18 +40,20 @@ const categoryCtrl = {
     }
   },
   getCategories: async (req: Request | any, res: Response) => {
-    const { limit, page } = Pagination(req);
-    const options = {
-      page: page,
-      limit: limit,
-      sort: { _id: 1, createdAt: -1 },
-    };
     try {
-      let query = [];
+      const { limit, page } = Pagination(req);
+      const options = {
+        page: page,
+        limit: limit,
+        sort: { _id: 1, createdAt: -1 },
+      };
+      const query = [];
       if (req.query.name) {
-        query.push({ name: { $regex: `.*${req.query.name}.*`, $options : 'i' } });
+        query.push({
+          name: { $regex: `.*${req.query.name}.*`, $options: "i" },
+        });
       } else {
-        query = [{ _id: { $exists: true }}];
+        query.push({ _id: { $exists: true } });
       }
 
       const condition = Category.aggregate([
@@ -66,8 +68,8 @@ const categoryCtrl = {
         },
         {
           $addFields: {
-            userName:  { $arrayElemAt: ["$userName.name", 0] }
-          }
+            userName: { $arrayElemAt: ["$userName.name", 0] },
+          },
         },
       ]);
       const categories = await Category.aggregatePaginate(condition, options);
@@ -124,7 +126,7 @@ const categoryCtrl = {
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }
-  }
+  },
 };
 
 export default categoryCtrl;

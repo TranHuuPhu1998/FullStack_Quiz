@@ -3,6 +3,14 @@ import Course from "../models/courseModal";
 import Category from "../models/categoryModal";
 import { IReqAuth } from "../config/interface";
 
+const Pagination = (req: IReqAuth) => {
+  let page = Number(req.query.page) * 1 || 1;
+  let limit = Number(req.query.limit) * 1 || 8;
+  let skip = (page - 1) * limit;
+
+  return { page, limit, skip };
+};
+
 const courseCtrl = {
   createCourse: async (req: IReqAuth, res: Response) => {
     if (!req.user)
@@ -13,24 +21,23 @@ const courseCtrl = {
 
     try {
       const name = req.body.name.toLowerCase();
-      const {categoryId,released,descriptions,imageBanner} = req.body;
+      const { categoryId, released, descriptions, imageBanner } = req.body;
       const category = await Category.findById(categoryId);
-      const categoryItem = {id : category?._id , name : category?.name};
+      const categoryItem = { id: category?._id, name: category?.name };
 
-      const rows = new Course({ 
+      const rows = new Course({
         user: req.user._id,
         createBy: req.user.name,
         name: name,
-        category : categoryItem,
-        released : released,
-        descriptions : descriptions,
-        imageBanner : imageBanner,
+        category: categoryItem,
+        released: released,
+        descriptions: descriptions,
+        imageBanner: imageBanner,
       });
 
       await rows.save();
 
       res.json({ rows });
-      
     } catch (err: any) {
       let errMsg;
 
@@ -46,17 +53,34 @@ const courseCtrl = {
   },
   getCourses: async (req: Request, res: Response) => {
     try {
-      const rows = await Course.find().sort("-createdAt");
+      const { limit, page } = Pagination(req);
+      const options = {
+        page: page,
+        limit: limit,
+        sort: { _id: 1, createdAt: -1 },
+      };
+      const query = [];
+      if (req.query.name) {
+        query.push({
+          name: { $regex: `.*${req.query.name}.*`, $options: "i" },
+        });
+      } else {
+        query.push({ _id: { $exists: true } });
+      }
+      const condition = Category.aggregate([{ $match: { $and: query } }]);
+
+      const rows = await Course.aggregatePaginate(condition, options);
+
       res.json({ rows });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }
   },
-  getDetailCourses : async (req: Request, res: Response) => {
+  getDetailCourses: async (req: Request, res: Response) => {
     try {
       const _id = req.params.id;
 
-      const rows = await Course.findById(_id)
+      const rows = await Course.findById(_id);
       res.json({ rows });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
@@ -73,17 +97,17 @@ const courseCtrl = {
       let _id = req.params.id;
 
       const name = req.body.name.toLowerCase();
-      const {categoryId,released,descriptions,imageBanner} = req.body;
+      const { categoryId, released, descriptions, imageBanner } = req.body;
 
       await Course.findByIdAndUpdate(
         _id,
-        {  
+        {
           user: req.user._id,
           name: name,
-          categoryId : categoryId,
-          released : released,
-          descriptions : descriptions,
-          imageBanner : imageBanner
+          categoryId: categoryId,
+          released: released,
+          descriptions: descriptions,
+          imageBanner: imageBanner,
         },
         { new: true }
       );

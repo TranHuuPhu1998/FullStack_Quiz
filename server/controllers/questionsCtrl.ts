@@ -159,22 +159,19 @@ const QuestionCtrl = {
     try {
       const _id = req.params.id;
       const rows = await Question.findById(_id);
-      const { category, courseId, user } = rows;
-      const categoryDetail = await Category.findById(category);
-      const courseDetail = await Course.findById(courseId);
-      const userDetail = await User.findById(user).select("-password");
+      const userDetail = await User.findById(rows.user).select("-password");
 
       const questionDetail = {
         name: rows.name,
-        category: categoryDetail.name,
-        course_name: courseDetail?.name,
+        categoryId: rows.category,
+        courseId: rows.courseId,
         create_by: userDetail,
         answers: rows.answers,
         createdAt: rows.createdAt,
         updatedAt: rows.updatedAt,
       };
 
-      res.json({ questionDetail });
+      res.json({ row: questionDetail });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }
@@ -191,13 +188,12 @@ const QuestionCtrl = {
       const { name, categoryId, answers, courseId } = req.body;
       const category = await Category.findById(categoryId);
       const course = await Course.findById(courseId);
-      const categoryItem = { id: category._id, name: category.name };
 
       await Question.findByIdAndUpdate(
         id,
         {
           name,
-          category: categoryItem,
+          category: categoryId,
           answers,
           courseId: courseId,
           user,
@@ -208,7 +204,7 @@ const QuestionCtrl = {
       const response = {
         _id: id,
         name,
-        category: categoryItem,
+        category: category?.name,
         answers,
         courseName: course?.name,
         user,
