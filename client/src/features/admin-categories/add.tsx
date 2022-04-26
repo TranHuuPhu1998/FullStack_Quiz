@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Button, Row, Col } from "antd";
-import { Form, FormItem, Input } from "formik-antd";
-import { Formik, FormikHelpers } from "formik";
-import { useDispatch, useSelector } from "react-redux";
-import { createCategory } from "app/actions/category";
-import { useHistory } from "react-router-dom";
-import { RootState } from "app/reducers";
-import { CrudState } from "interfaces/common";
-import { CategoryItem } from "interfaces/features/Category";
-import { useTranslation } from "react-i18next";
-import { AddCategorySchema } from "features/admin-categories/validationSchema";
-import PageContentBase from "components/page-content/PageContentBase";
+import React, { useEffect, useState } from 'react';
+import { Button, Row, Col } from 'antd';
+import { Form, FormItem, Input } from 'formik-antd';
+import { Formik, FormikHelpers } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCategory } from 'app/actions/category';
+import { useHistory } from 'react-router-dom';
+import { RootState } from 'app/reducers';
+import { CrudState } from 'interfaces/common';
+import { CategoryItem } from 'interfaces/features/CategoryEntity';
+import { useTranslation } from 'react-i18next';
+import { AddCategorySchema } from 'features/admin-categories/validationSchema';
+import PageContentBase from 'components/page-content/PageContentBase';
 
 const AddCategory: React.FC = () => {
   const { t } = useTranslation();
@@ -19,10 +19,7 @@ const AddCategory: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { status } = useSelector((state: RootState) => state.categoryReducers);
 
-  const onSubmit = (
-    values: CategoryItem,
-    actions: FormikHelpers<CategoryItem>
-  ) => {
+  const onSubmit = (values: CategoryItem, actions: FormikHelpers<CategoryItem>) => {
     setLoading(true);
     dispatch(createCategory(values));
     actions.setSubmitting(false);
@@ -31,20 +28,20 @@ const AddCategory: React.FC = () => {
   useEffect(() => {
     if (status === CrudState.Succeed) {
       setLoading(false);
-      history.push("/admin/categories");
+      history.push('/admin/categories');
     }
   }, [history, status]);
 
   return (
-    <PageContentBase title={t("Add_category")} useBack>
+    <PageContentBase title={t('Add_category')} useBack>
       <Formik
-        initialValues={{ name: "" }}
+        initialValues={{ name: '' }}
+        validationSchema={AddCategorySchema(t)}
+        onSubmit={onSubmit}
         enableReinitialize
         validateOnBlur
         validateOnChange
         validateOnMount
-        validationSchema={AddCategorySchema(t)}
-        onSubmit={onSubmit}
       >
         {({ isValid }) => {
           return (
@@ -52,11 +49,7 @@ const AddCategory: React.FC = () => {
               <Row gutter={[16, 16]}>
                 <Col span={24}>
                   <FormItem name="name">
-                    <Input
-                      suffix={<span />}
-                      name="name"
-                      placeholder={t("Please_enter_category")}
-                    />
+                    <Input suffix={<span />} name="name" placeholder={t('Please_enter_category')} />
                   </FormItem>
                 </Col>
               </Row>
@@ -67,9 +60,9 @@ const AddCategory: React.FC = () => {
                     disabled={!isValid}
                     type="primary"
                     htmlType="submit"
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                   >
-                    {t("Save")}
+                    {t('Save')}
                   </Button>
                 </Col>
               </Row>

@@ -1,35 +1,39 @@
-import axios , { AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
 class AxiosService {
   service: AxiosInstance;
   constructor() {
     const service: AxiosInstance = axios.create({
-      headers: {}
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
     });
     service.interceptors.response.use(this.handleSuccess, this.handleError);
     this.service = service;
   }
 
-  setHeader(name:string, value:string) {
+  setHeader(name: string, value: string) {
     this.service.defaults.headers.common[name] = value;
   }
 
-  removeHeader(name:string) {
+  removeHeader(name: string) {
     delete this.service.defaults.headers.common[name];
   }
 
-  handleSuccess(response:any) {
+  handleSuccess(response: any) {
     return response;
   }
 
-  redirectTo = (document:any, path:string) => {
+  redirectTo = (document: any, path: string) => {
     document.location = path;
   };
-  redirectPage = (title:string, path:string) => {
+
+  redirectPage = (title: string, path: string) => {
     window.history.pushState('page2', title, path);
   };
 
-  handleError(error:any) {
+  handleError(error: any) {
     switch (error.response.status) {
       case 401:
         this.redirectTo(document, '/login');
@@ -39,71 +43,61 @@ class AxiosService {
     }
   }
 
-  get(endpoint:string, token?:any) {
+  get(endpoint: string, token?: any) {
     return this.service.request({
       method: 'GET',
       url: endpoint,
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        Authorization: token
+        Authorization: token,
       },
       responseType: 'json',
     });
   }
 
-  post(endpoint:string, payload:any, token?:any) {
+  post(endpoint: string, payload: any, token?: any) {
     return this.service.request({
       method: 'POST',
       url: endpoint,
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        Authorization: token
+        Authorization: token,
       },
       responseType: 'json',
-      data: payload
+      data: payload,
     });
   }
 
-  put(endpoint:string, payload:any, token?:any) {
+  put(endpoint: string, payload: any, token?: any) {
     return this.service.request({
       method: 'PUT',
       url: endpoint,
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        Authorization: token
+        Authorization: token,
       },
       responseType: 'json',
-      data: payload
+      data: payload,
     });
   }
 
-  patch(endpoint:string, payload:any, token?:any) {
+  patch(endpoint: string, payload: any, token?: any) {
     return this.service.request({
       method: 'PATCH',
       url: endpoint,
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        Authorization: token
+        Authorization: token,
       },
       responseType: 'json',
-      data: payload
+      data: payload,
     });
   }
 
-  delete(endpoint:string, token?:any) {
+  delete(endpoint: string, token?: any) {
     return this.service.request({
       method: 'DELETE',
       url: endpoint,
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        Authorization: token
+        Authorization: token,
       },
-      responseType: 'json'
+      responseType: 'json',
     });
   }
 }

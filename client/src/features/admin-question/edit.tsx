@@ -3,7 +3,7 @@ import PageContentBase from 'components/page-content/PageContentBase';
 import { Button, Row, Col } from 'antd';
 import { Form, FormItem, Select } from 'formik-antd';
 import { Field, FieldArray, Formik, FormikHelpers } from 'formik';
-import { createQuestion } from 'app/actions/question';
+import { updateQuestion } from 'app/actions/question';
 import Editor from 'react-simple-code-editor';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,8 +23,9 @@ import { PAGE_INFO_MAX } from 'app-constants';
 import { coverListDateToOption } from 'utils/coverData';
 import { getListCourse } from 'app/actions/course';
 import { CrudState, OptionEntity } from 'interfaces/common';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { URL_PAGE } from 'app-constants';
+import { getQuestionById } from 'app/actions/question';
 
 const initialValues: QuestionItem = {
   name: ``,
@@ -39,16 +40,23 @@ const initialValues: QuestionItem = {
   courseId: '',
 };
 
-const AddQuestion: React.FC = () => {
+const EditQuestion: React.FC = () => {
   const history = useHistory();
-  const [formDataInit] = useState<QuestionItem>(initialValues);
+  const { id } = useParams<{ id: string }>();
+  const [formDataInit, setFormDataInit] = useState<QuestionItem>(initialValues);
   const [categories, setCategories] = useState<OptionEntity[]>([]);
   const [courses, setCourses] = useState<OptionEntity[]>([]);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const { data } = useSelector((state: RootState) => state.categoryReducers);
   const { data: courseData } = useSelector((state: RootState) => state.courseReducers);
-  const { status } = useSelector((state: RootState) => state.questionReducers);
+  const { data: questionDatail, status } = useSelector(
+    (state: RootState) => state.questionReducers
+  );
+
+  useEffect(() => {
+    dispatch(getQuestionById(id));
+  }, [dispatch, id]);
 
   useEffect(() => {
     dispatch(getCategory(PAGE_INFO_MAX));
@@ -65,11 +73,17 @@ const AddQuestion: React.FC = () => {
   }, [data, courseData]);
 
   useEffect(() => {
-    if (status === CrudState.Succeed) {
+    if (status === CrudState.Updated) {
       setLoading(false);
       history.push(URL_PAGE.QUESTIONS);
     }
   }, [history, status]);
+
+  useEffect(() => {
+    if (questionDatail) {
+      setFormDataInit(questionDatail);
+    }
+  }, [questionDatail]);
 
   const onSubmit = async (values: QuestionItem, helpers: FormikHelpers<QuestionItem>) => {
     setLoading(true);
@@ -78,13 +92,14 @@ const AddQuestion: React.FC = () => {
       categoryId: values.categoryId,
       answers: values.answers,
       courseId: values.courseId,
+      id: id,
     };
-    dispatch(createQuestion(data));
-    helpers.resetForm();
+    dispatch(updateQuestion(data));
+    setLoading(false);
   };
 
   return (
-    <PageContentBase title={t('Add_question')} useBack>
+    <PageContentBase title={t('Edit_question')} useBack>
       <Formik
         initialValues={formDataInit}
         onSubmit={onSubmit}
@@ -133,7 +148,7 @@ const AddQuestion: React.FC = () => {
                   <Editor
                     aria-rowcount={3}
                     aria-colcount={3}
-                    value={values.name}
+                    value={values.name || ''}
                     name="name"
                     onValueChange={(code) => setFieldValue('name', code)}
                     highlight={(code) => prism.highlight(code, prism.languages.js, 'js')}
@@ -152,7 +167,7 @@ const AddQuestion: React.FC = () => {
                   name="answers"
                   render={(arrayHelpers) => (
                     <div>
-                      {values.answers.map(({ id, content, isCorrect }, index) => (
+                      {values?.answers?.map(({ id, content, isCorrect }, index) => (
                         <Row key={index} className="mt-3">
                           <Col xl={19} xxl={19} lg={24} md={24} sm={24}>
                             <Field
@@ -227,7 +242,7 @@ const AddQuestion: React.FC = () => {
                   className="text-capitalize w-100"
                   htmlType="submit"
                 >
-                  {t('Create')}
+                  {t('Update')}
                 </Button>
               </Col>
             </Row>
@@ -238,4 +253,4 @@ const AddQuestion: React.FC = () => {
   );
 };
 
-export default AddQuestion;
+export default EditQuestion;

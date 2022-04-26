@@ -16,5 +16,14 @@
   "List_of_questions": "List of questions",
   "Add_question": "Add question",
   "Course_name": "Course Name",
-  "Category_name": "Category Name"
+  "Category_name": "Category Name",
+  "Please_enter_code_hear": "Please enter the code hear",
+  "Please_choose_course": "Please choose the course : ",
+  "Please_choose_category": "Please choose the category : ",
+  "Please_enter_question": "Please enter the question : ",
+  "Check": "Check",
+  "Uncheck": "Uncheck",
+  "Create": "Create",
+  "Edit_question": "Edit question",
+  "Delete_category_title_confirm": "Are you sure you want to delete this category"
 }

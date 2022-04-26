@@ -3,6 +3,7 @@ export interface Pagination {
   pageSize: number;
   text_search: number;
 }
+
 export enum CrudState {
   NotSet, // not set, default
   Succeed, // Created
@@ -12,5 +13,10 @@ export enum CrudState {
   ServerError, // internal server error
   NotFound, //Not found
   OK, //Found
-  Forbidden
+  Forbidden,
+}
+
+export interface OptionEntity {
+  value: string;
+  label: string;
 }

@@ -1,11 +1,11 @@
-import { getListCourse, createCourse , deleteCourse } from '../apis/course-service';
+import { getListCourse, createCourse, deleteCourse } from '../apis/course-service';
 import {
   getListCourseSuccess,
   getListCourseError,
   createCourseSuccess,
   createCourseError,
   deleteCourseSuccess,
-  deleteCourseError
+  deleteCourseError,
 } from '../actions/course';
 import { hideLoading, showLoading } from '../actions/ui';
 import { call, takeLatest, put } from 'redux-saga/effects';
@@ -16,8 +16,8 @@ function* processGetCourse() {
   yield put(showLoading());
 
   try {
-    const resp : ResponseGenerator = yield call(getListCourse);
-    yield put(getListCourseSuccess(resp.data));
+    const resp: ResponseGenerator = yield call(getListCourse);
+    yield put(getListCourseSuccess(resp.data.rows));
   } catch (error) {
     yield put(getListCourseError());
   } finally {
@@ -25,11 +25,11 @@ function* processGetCourse() {
   }
 }
 
-function* processCreateCourse({ payload }:any) {
+function* processCreateCourse({ payload }: any) {
   const { data } = payload;
   yield put(showLoading());
   try {
-    const resp : ResponseGenerator = yield call(createCourse, data);
+    const resp: ResponseGenerator = yield call(createCourse, data);
     yield put(createCourseSuccess(resp.data));
   } catch (error) {
     yield put(createCourseError());
@@ -38,8 +38,8 @@ function* processCreateCourse({ payload }:any) {
   }
 }
 
-function* processDeleteCourse({payload}:any) {
-  const {id} = payload;
+function* processDeleteCourse({ payload }: any) {
+  const { id } = payload;
   try {
     yield call(deleteCourse, id);
     yield put(deleteCourseSuccess(id));

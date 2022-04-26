@@ -1,4 +1,4 @@
-import { lazy } from "react-router-guard";
+import { lazy } from 'react-router-guard';
 import {
   DashboardOutlined,
   HeatMapOutlined,
@@ -10,196 +10,203 @@ import {
   WechatOutlined,
   HistoryOutlined,
   QuestionCircleOutlined,
-  AppstoreAddOutlined
-} from "@ant-design/icons";
+  AppstoreAddOutlined,
+} from '@ant-design/icons';
 
-const DashBoard = lazy(() => import("pages/admin/dashboard"));
-const Categories = lazy(() => import("pages/admin/categories"));
-const CategoriesAdd = lazy(() => import("pages/admin/categories/add"));
-const CategoriesEdit = lazy(() => import("pages/admin/categories/edit"));
-const Users = lazy(() => import("pages/admin/users"));
-const Course = lazy(() => import("pages/admin/courses"));
-const Profile = lazy(() => import("pages/admin/profile"));
-const CourseUser = lazy(() => import("pages/admin/courses"));
-const Exercise = lazy(() => import("pages/user/exercise"));
-const Chat = lazy(() => import("pages/user/user-chat"));
-const Home = lazy(() => import("pages/welcome"));
-const HistoryExercise = lazy(() => import("pages/admin/history-exercise"));
-const CourseRanking = lazy(() => import("pages/admin/course-ranking"));
-const Questions = lazy(() => import("pages/admin/questions"));
-const AddQuestion = lazy(() => import("pages/admin/questions/add"));
+const DashBoard = lazy(() => import('pages/admin/dashboard'));
+const Categories = lazy(() => import('pages/admin/categories'));
+const CategoriesAdd = lazy(() => import('pages/admin/categories/add'));
+const CategoriesEdit = lazy(() => import('pages/admin/categories/edit'));
+const Users = lazy(() => import('pages/admin/users'));
+const Course = lazy(() => import('pages/admin/courses'));
+const Profile = lazy(() => import('pages/admin/profile'));
+const CourseUser = lazy(() => import('pages/admin/courses'));
+const Exercise = lazy(() => import('pages/user/exercise'));
+const Chat = lazy(() => import('pages/user/user-chat'));
+const Home = lazy(() => import('pages/welcome'));
+const HistoryExercise = lazy(() => import('pages/admin/history-exercise'));
+const CourseRanking = lazy(() => import('pages/admin/course-ranking'));
+const Questions = lazy(() => import('pages/admin/questions'));
+const AddQuestion = lazy(() => import('pages/admin/questions/add'));
+const EditQuestion = lazy(() => import('pages/admin/questions/edit'));
 
 const flattenNavURLs = [
   {
-    path: "/admin",
+    path: '/admin',
     exact: true,
     component: DashBoard,
-    key: "dashboard",
-    name: "Dashboard",
+    key: 'dashboard',
+    name: 'Dashboard',
     icon: DashboardOutlined,
     show: true,
   },
   // feature: categories
   {
-    path: "/admin/categories",
+    path: '/admin/categories',
     exact: true,
     component: Categories,
-    key: "categories",
-    name: "Categories Management",
+    key: 'categories',
+    name: 'Categories Management',
     icon: HeatMapOutlined,
     show: true,
-    subMenu : [
+    subMenu: [
       {
-        path: "/admin/categories",
-        key: "categories-sub",
-        name: "Categories Management",
+        path: '/admin/categories',
+        key: 'categories-sub',
+        name: 'Categories Management',
         icon: HeatMapOutlined,
       },
       {
-        path: "/admin/category/add",
-        key: "category-add-sub",
-        name: "Add Category",
+        path: '/admin/category/add',
+        key: 'category-add-sub',
+        name: 'Add Category',
         icon: AppstoreAddOutlined,
-      }
+      },
     ],
   },
   {
-    path: "/admin/category/add",
+    path: '/admin/category/add',
     exact: true,
     component: CategoriesAdd,
-    key: "categories add",
+    key: 'categories add',
     show: false,
   },
   {
-    path: "/admin/category/edit/:id",
+    path: '/admin/category/edit/:id',
     exact: true,
     component: CategoriesEdit,
-    key: "categories edit",
+    key: 'categories edit',
     show: false,
   },
   {
-    path: "/admin/users",
+    path: '/admin/users',
     exact: true,
     component: Users,
-    key: "users",
-    name: "Users Management",
+    key: 'users',
+    name: 'Users Management',
     icon: UsergroupAddOutlined,
     show: true,
   },
   {
-    path: "/admin/course",
+    path: '/admin/course',
     exact: true,
     component: Course,
-    key: "course",
-    name: "Course Management",
+    key: 'course',
+    name: 'Course Management',
     icon: BookOutlined,
     show: true,
     subMenu: [
       {
-        path: "/admin/course",
-        name:"List Course",
-        key: "course-sub",
+        path: '/admin/course',
+        name: 'List Course',
+        key: 'course-sub',
         icon: BookOutlined,
       },
       {
-        path: "/admin/course/ranking",
-        name: "Ranking",
-        key: "course-ranking-sub",
+        path: '/admin/course/ranking',
+        name: 'Ranking',
+        key: 'course-ranking-sub',
         icon: CrownOutlined,
       },
     ],
   },
   {
-    path: "/admin/course/ranking",
+    path: '/admin/course/ranking',
     exact: true,
     component: CourseRanking,
-    name: "Ranking",
-    key: "course-ranking",
+    name: 'Ranking',
+    key: 'course-ranking',
     icon: CrownOutlined,
   },
   {
-    path: "/admin/history-exercise",
+    path: '/admin/history-exercise',
     exact: true,
     component: HistoryExercise,
-    key: "history-exercise",
-    name: "History Exercise Management",
+    key: 'history-exercise',
+    name: 'History Exercise Management',
     icon: HistoryOutlined,
     show: true,
   },
   {
-    path: "/admin/profile",
+    path: '/admin/profile',
     exact: true,
     component: Profile,
-    key: "profile",
-    name: "Profile",
+    key: 'profile',
+    name: 'Profile',
     icon: DashboardOutlined,
     show: false,
   },
   {
-    path: "/admin/questions",
+    path: '/admin/questions',
     exact: true,
     component: Questions,
-    key: "questions",
-    name: "Questions Management",
+    key: 'questions',
+    name: 'Questions Management',
     icon: QuestionCircleOutlined,
     show: true,
-    subMenu : [
+    subMenu: [
       {
-        path: "/admin/questions/add",
-        name: "Add Question",
-        key: "add-question-sub",
+        path: '/admin/questions/add',
+        name: 'Add Question',
+        key: 'add-question-sub',
         icon: AppstoreAddOutlined,
       },
       {
-        path: "/admin/questions",
-        name: "List Question",
-        key: "list-question-sub",
+        path: '/admin/questions',
+        name: 'List Question',
+        key: 'list-question-sub',
         icon: AppstoreAddOutlined,
-      }
-    ]
+      },
+    ],
   },
   {
-    path: "/admin/questions/add",
+    path: '/admin/questions/add',
     exact: true,
     component: AddQuestion,
-    key: "add-question",
-    name: "Add Question",
+    key: 'add-question',
+    name: 'Add Question',
     icon: AppstoreAddOutlined,
-    show:false,
+    show: false,
   },
   {
-    path: "/exercise",
+    path: '/admin/questions/edit/:id',
+    exact: true,
+    component: EditQuestion,
+    key: 'edit-question',
+  },
+  {
+    path: '/exercise',
     exact: true,
     component: Exercise,
-    key: "exercise",
-    name: "Exercise",
+    key: 'exercise',
+    name: 'Exercise',
     icon: CodeOutlined,
     show: false,
   },
   {
-    path: "/courses",
+    path: '/courses',
     exact: true,
     component: CourseUser,
-    key: "courses",
-    name: "Courses",
+    key: 'courses',
+    name: 'Courses',
     icon: null,
     show: false,
   },
   {
-    path: "/chat",
+    path: '/chat',
     exact: true,
     component: Chat,
-    key: "chat",
-    name: "Chat",
+    key: 'chat',
+    name: 'Chat',
     icon: WechatOutlined,
     show: false,
   },
   {
-    path: "/",
+    path: '/',
     exact: true,
     component: Home,
-    key: "home",
-    name: "Home",
+    key: 'home',
+    name: 'Home',
     icon: HomeOutlined,
     show: false,
   },

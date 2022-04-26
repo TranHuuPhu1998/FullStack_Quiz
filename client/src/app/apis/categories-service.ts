@@ -1,4 +1,4 @@
-import { CategoryItem } from 'interfaces/features/Category'
+import { CategoryItem } from 'interfaces/features/CategoryEntity'
 import axiosService from 'app/axios/axios-service'
 import { API_ENDPOINT } from 'app-constants'
 

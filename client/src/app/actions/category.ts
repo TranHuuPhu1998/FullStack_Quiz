@@ -1,133 +1,133 @@
-import { CategoryItem } from './../../interfaces/features/Category';
-import * as types from '../constants/ActionTypes';
+import { CategoryItem } from '../../interfaces/features/CategoryEntity'
+import * as types from '../constants/ActionTypes'
 // GET A CATEGORY
-export const getCategory = (pageInfo:any) => {
+export const getCategory = (pageInfo: any) => {
   return {
     type: types.ACTION_GET_CATEGORIES,
-    payload : {
-      pageInfo
-    }
-  };
-};
+    payload: {
+      pageInfo,
+    },
+  }
+}
 
-export const getCategoriesSuccess = (data:any) => {
+export const getCategoriesSuccess = (data: any) => {
   return {
     type: types.GET_CATEGORY_SUCCESS,
     payload: {
-      data
-    }
-  };
-};
+      data,
+    },
+  }
+}
 
-export const getCategoriesError = (data:any) => {
+export const getCategoriesError = (data: any) => {
   return {
     type: types.GET_CATEGORY_ERROR,
     payload: {
-      data
-    }
-  };
-};
+      data,
+    },
+  }
+}
 
 // CREATE A CATEGORY
-export const createCategory = (data:{name:string}) => {
+export const createCategory = (data: { name: string }) => {
   return {
     type: types.ACTION_CREATE_CATEGORY,
     payload: {
-      data
-    }
-  };
-};
+      data,
+    },
+  }
+}
 
-export const createCategorySuccess = (data:any) => {
+export const createCategorySuccess = (data: any) => {
   return {
     type: types.CREATE_CATEGORY_SUCCESS,
     payload: {
-      data
-    }
-  };
-};
+      data,
+    },
+  }
+}
 
 export const createCategoryError = () => {
   return {
-    type: types.CREATE_CATEGORY_ERROR
-  };
-};
+    type: types.CREATE_CATEGORY_ERROR,
+  }
+}
 
 // UPDATE A CATEGORY
-export const updateCategory = (data:CategoryItem) => {
+export const updateCategory = (data: CategoryItem) => {
   return {
     type: types.ACTION_UPDATE_CATEGORY,
     payload: {
-      data
-    }
-  };
-};
+      data,
+    },
+  }
+}
 
-export const updateCategorySuccess = (data:any) => {
+export const updateCategorySuccess = (data: any) => {
   return {
     type: types.UPDATE_CATEGORY_SUCCESS,
     payload: {
-      data
-    }
-  };
-};
+      data,
+    },
+  }
+}
 
 export const updateCategoryError = () => {
   return {
-    type: types.UPDATE_CATEGORY_ERROR
-  };
-};
+    type: types.UPDATE_CATEGORY_ERROR,
+  }
+}
 
 // DELETE A CATEGORY
 
-export const deleteCategory = (id:any) => {
+export const deleteCategory = (id: any) => {
   return {
     type: types.ACTION_DELETE_CATEGORY,
     payload: {
-      id
-    }
-  };
-};
+      id,
+    },
+  }
+}
 
-export const deleteCategorySuccess = (id:any) => {
+export const deleteCategorySuccess = (id: any) => {
   return {
     type: types.DELETE_CATEGORY_SUCCESS,
     payload: {
-      id
-    }
-  };
-};
+      id,
+    },
+  }
+}
 
 export const deleteCategoryError = () => {
   return {
-    type: types.DELETE_CATEGORY_SUCCESS
-  };
-};
+    type: types.DELETE_CATEGORY_SUCCESS,
+  }
+}
 
 // GET A CATEGORY BY ID
-export const getCategoryById = (id:string) => {
+export const getCategoryById = (id: string) => {
   return {
     type: types.ACTION_GET_CATEGORY_BY_ID,
     payload: {
-      id
-    }
-  };
+      id,
+    },
+  }
 }
 
-export const getCategoryByIdSuccess = (data:any) => {
+export const getCategoryByIdSuccess = (data: any) => {
   return {
     type: types.GET_CATEGORY_BY_ID_SUCCESS,
     payload: {
-      data
-    }
-  };
+      data,
+    },
+  }
 }
 
-export const getCategoryByIdError = (error:any) => {
+export const getCategoryByIdError = (error: any) => {
   return {
     type: types.GET_CATEGORY_BY_ID_ERROR,
     payload: {
-      error
-    }
-  };
+      error,
+    },
+  }
 }

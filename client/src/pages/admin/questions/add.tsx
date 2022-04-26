@@ -1,9 +1,8 @@
 import React from 'react'
+import AddQuestion from 'features/admin-question/add'
 
-const AddQuestion = () => {
-  return (
-    <div>AddQuestion</div>
-  )
+const AddQuestionPage: React.FC = () => {
+  return <AddQuestion />
 }
 
-export default AddQuestion
+export default AddQuestionPage

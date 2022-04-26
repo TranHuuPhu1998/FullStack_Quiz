@@ -17,11 +17,11 @@
     "downlevelIteration": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "src",
+    "baseUrl": "src"
   },
   "include": [
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "index.d.ts" // declaration file path
   ]
 }
-
