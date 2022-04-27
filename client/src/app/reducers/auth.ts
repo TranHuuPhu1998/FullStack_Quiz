@@ -1,32 +1,32 @@
-import * as types from '../constants/ActionTypes';
+import * as types from 'app/constants/ActionTypes';
 
-import { toastError, toastSuccess } from '../../common/helpers/toastHelper';
+import { toastError, toastSuccess } from 'common/helpers/toastHelper';
 
 const initialState = {
   user: {},
-  access_token: ''
+  access_token: '',
 };
 
-const reducers = (state = initialState, action:any) => {
+const reducers = (state = initialState, action: any) => {
   switch (action.type) {
     case types.SIGN_UP: {
       return {
-        ...state
+        ...state,
       };
     }
     case types.SIGN_UP_SUCCESS: {
       return {
-        ...state
+        ...state,
       };
     }
     case types.SIGN_UP_FAILED: {
       return {
-        ...state
+        ...state,
       };
     }
     case types.LOGIN: {
       return {
-        ...state
+        ...state,
       };
     }
     case types.LOGIN_SUCCESS: {
@@ -35,55 +35,55 @@ const reducers = (state = initialState, action:any) => {
       return {
         ...state,
         user: data.user,
-        access_token: data.access_token
+        access_token: data.access_token,
       };
     }
     case types.LOGIN_FAILED: {
-      toastError('Login Failed')
+      toastError('Login Failed');
       return {
-        ...state
+        ...state,
       };
     }
     case types.SEND_MAIL: {
       return {
-        ...state
+        ...state,
       };
     }
     case types.SEND_MAIL_SUCCESS: {
       return {
-        ...state
+        ...state,
       };
     }
     case types.SEND_MAIL_FAILED: {
       return {
-        ...state
+        ...state,
       };
     }
     case types.RESET_PASSWORD_SUCCESS: {
       return {
-        ...state
+        ...state,
       };
     }
     case types.RESET_PASSWORD_FAILED: {
       return {
-        ...state
+        ...state,
       };
     }
     case types.LOGOUT: {
       toastSuccess('Logout Success');
       localStorage.removeItem('TOKEN');
       return {
-        ...state
+        ...state,
       };
     }
     case types.LOGOUT_SUCCESS: {
       return {
-        ...state
+        ...state,
       };
     }
     case types.LOGOUT_FAILED: {
       return {
-        ...state
+        ...state,
       };
     }
     default:

@@ -13,31 +13,22 @@ import {
   resetPasswordSuccess,
   resetPasswordFailed,
   logoutSuccess,
-  logoutFailed
+  logoutFailed,
 } from '../actions/auth';
 
-import {
-  login,
-  signUp,
-  logout,
-  sendMail,
-  resetPassword
-} from '../apis/auth-service';
+import { login, signUp, logout, sendMail, resetPassword } from '../apis/auth-service';
 import * as authTypes from '../constants/ActionTypes';
 import axiosService from '../axios/axios-service';
-import {ResponseGenerator} from '../../interfaces/response-server';
+import { ResponseGenerator } from '../../interfaces/response-server';
 
-function* processSignUp({ payload }:any) {
+function* processSignUp({ payload }: any) {
   const { data } = payload;
   yield put(showLoading());
   try {
     const resp: ResponseGenerator = yield call(signUp, data);
     yield put(signUpSuccess(resp.data));
     //
-    yield axiosService.redirectTo(
-      document,
-      authTypes.REDIRECT_AFTER_SIGN_UP_SUCCESS
-    );
+    yield axiosService.redirectTo(document, authTypes.REDIRECT_AFTER_SIGN_UP_SUCCESS);
   } catch (error) {
     const details = get(error, 'response.data.message');
     yield put(signUpFailed(details));
@@ -47,19 +38,19 @@ function* processSignUp({ payload }:any) {
   }
 }
 
-function* processLogin({ payload }:any) {
+function* processLogin({ payload }: any) {
   const { account, password } = payload;
   yield put(showLoading());
   try {
-    const resp : ResponseGenerator = yield call(login, { account, password });
+    const resp: ResponseGenerator = yield call(login, { account, password });
     yield put(loginSuccess(resp.data));
     const { access_token } = resp.data;
     yield localStorage.setItem(AUTHORIZATION_KEY, access_token);
-    yield localStorage.setItem('LOGIN_TYPE',resp.data.user.role);
-    if(resp.data.user.role === 'admin') {
-      yield axiosService.redirectTo(document,'/admin');
-    }else {
-      yield axiosService.redirectTo(document,'/courses');
+    yield localStorage.setItem('LOGIN_TYPE', resp.data.user.role);
+    if (resp.data.user.role === 'admin') {
+      yield axiosService.redirectTo(document, '/admin');
+    } else {
+      yield axiosService.redirectTo(document, '/courses');
     }
   } catch (error) {
     const details = get(error, 'response.data.message');
@@ -70,23 +61,23 @@ function* processLogin({ payload }:any) {
   }
 }
 
-function* processLogout({ payload }:any) {
+function* processLogout({ payload }: any) {
   const { token } = payload;
   try {
-    const resp : ResponseGenerator = yield call(logout, { token });
+    const resp: ResponseGenerator = yield call(logout, { token });
     yield put(logoutSuccess(resp.data));
-    yield axiosService.redirectTo(document,'/');
+    yield axiosService.redirectTo(document, '/login');
   } catch (error) {
     const details = get(error, 'response.data.message');
     yield put(logoutFailed(details));
   }
 }
 
-function* processSendMail({ payload }:any) {
+function* processSendMail({ payload }: any) {
   const { email } = payload;
   yield put(showLoading());
   try {
-    const resp : ResponseGenerator = yield call(sendMail, { email });
+    const resp: ResponseGenerator = yield call(sendMail, { email });
     yield put(sendMailSuccess(resp.data.message));
   } catch (error) {
     const details = get(error, 'response.data.message');
@@ -97,11 +88,11 @@ function* processSendMail({ payload }:any) {
   }
 }
 
-function* processResetPassword({ payload }:any) {
+function* processResetPassword({ payload }: any) {
   const { password, token } = payload;
   yield put(showLoading());
   try {
-    const resp : ResponseGenerator = yield call(resetPassword, { token, password });
+    const resp: ResponseGenerator = yield call(resetPassword, { token, password });
     yield put(resetPasswordSuccess(resp.data));
   } catch (error) {
     yield put(resetPasswordFailed(null));

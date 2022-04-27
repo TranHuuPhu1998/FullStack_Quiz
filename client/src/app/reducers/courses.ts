@@ -1,11 +1,10 @@
 import { CrudState } from 'interfaces/common';
 import * as types from '../constants/ActionTypes';
-// import { ResponseReducers } from 'interfaces/response-server';
 
 import { toastError, toastSuccess } from '../../common/helpers/toastHelper';
 
 const initialState: any = {
-  data: null,
+  data: [],
   totalDocs: 0,
   status: CrudState.NotSet,
 };
@@ -21,14 +20,19 @@ const reducers = (state = initialState, action: any) => {
     }
     case types.CREATE_COURSE_SUCCESS: {
       toastSuccess('Create Courses Success');
-      const course = action.payload.data.rows;
+      const course = action.payload.data;
       return {
-        data: [course, ...state.data],
+        data: [course, ...state?.data],
         totalDocs: state.totalDocs + 1,
         status: CrudState.Succeed,
       };
     }
-    // eslint-disable-next-line no-lone-blocks
+    case types.UPDATE_COURSE_SUCCESS: {
+      toastSuccess('Update Courses Success');
+      return {
+        status: CrudState.Updated,
+      };
+    }
     case types.CREATE_COURSE_ERROR: {
       toastError('Create Courses Error');
       return state;
@@ -41,6 +45,12 @@ const reducers = (state = initialState, action: any) => {
       return {
         data: [...state.data],
         totalDocs: state.totalDocs - 1,
+      };
+    }
+    case types.GET_COURSE_BY_ID_SUCCESS: {
+      const { data } = action.payload;
+      return {
+        data,
       };
     }
     default:

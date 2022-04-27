@@ -1,11 +1,8 @@
-import React from 'react'
+import React from 'react';
+import AdminUser from 'features/admin-user';
 
-const Users = () => {
-  return (
-    <div>
-Users
-    </div>
-  )
-}
+const Users: React.FC = () => {
+  return <AdminUser />;
+};
 
-export default Users
+export default Users;

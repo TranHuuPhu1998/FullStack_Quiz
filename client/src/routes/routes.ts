@@ -11,6 +11,7 @@ import {
   HistoryOutlined,
   QuestionCircleOutlined,
   AppstoreAddOutlined,
+  PlusSquareOutlined,
 } from '@ant-design/icons';
 
 const DashBoard = lazy(() => import('pages/admin/dashboard'));
@@ -19,6 +20,8 @@ const CategoriesAdd = lazy(() => import('pages/admin/categories/add'));
 const CategoriesEdit = lazy(() => import('pages/admin/categories/edit'));
 const Users = lazy(() => import('pages/admin/users'));
 const Course = lazy(() => import('pages/admin/courses'));
+const AddCoursePage = lazy(() => import('pages/admin/courses/add'));
+const EditCoursePage = lazy(() => import('pages/admin/courses/edit'));
 const Profile = lazy(() => import('pages/admin/profile'));
 const CourseUser = lazy(() => import('pages/admin/courses'));
 const Exercise = lazy(() => import('pages/user/exercise'));
@@ -78,6 +81,7 @@ const flattenNavURLs = [
     key: 'categories edit',
     show: false,
   },
+  // feature: users
   {
     path: '/admin/users',
     exact: true,
@@ -87,8 +91,9 @@ const flattenNavURLs = [
     icon: UsergroupAddOutlined,
     show: true,
   },
+  // feature: courses
   {
-    path: '/admin/course',
+    path: '/admin/courses',
     exact: true,
     component: Course,
     key: 'course',
@@ -97,10 +102,16 @@ const flattenNavURLs = [
     show: true,
     subMenu: [
       {
-        path: '/admin/course',
+        path: '/admin/courses',
         name: 'List Course',
         key: 'course-sub',
         icon: BookOutlined,
+      },
+      {
+        path: '/admin/course/add',
+        name: 'Add Course',
+        key: 'course-sub-add',
+        icon: PlusSquareOutlined,
       },
       {
         path: '/admin/course/ranking',
@@ -109,6 +120,22 @@ const flattenNavURLs = [
         icon: CrownOutlined,
       },
     ],
+  },
+  {
+    path: '/admin/course/add',
+    exact: true,
+    component: AddCoursePage,
+    name: 'Add Course',
+    key: 'course-add',
+    show: false,
+  },
+  {
+    path: '/admin/course/edit/:id',
+    exact: true,
+    component: EditCoursePage,
+    name: 'Edit Course',
+    key: 'course-edit',
+    show: false,
   },
   {
     path: '/admin/course/ranking',

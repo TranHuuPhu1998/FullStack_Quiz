@@ -20,24 +20,13 @@ import { getCategory } from 'app/actions/category';
 import * as prism from 'prismjs';
 import { RootState } from 'app/reducers';
 import { PAGE_INFO_MAX } from 'app-constants';
-import { coverListDateToOption } from 'utils/coverData';
+import { coverListToOption } from 'utils/coverData';
 import { getListCourse } from 'app/actions/course';
 import { CrudState, OptionEntity } from 'interfaces/common';
 import { useHistory } from 'react-router-dom';
 import { URL_PAGE } from 'app-constants';
-
-const initialValues: QuestionItem = {
-  name: ``,
-  categoryId: '',
-  answers: [
-    {
-      id: nanoid(),
-      content: '',
-      isCorrect: false,
-    },
-  ],
-  courseId: '',
-};
+import { AddQuestionSchema } from 'features/admin-question/validationSchema';
+import { initialValues } from 'features/admin-question/initData';
 
 const AddQuestion: React.FC = () => {
   const history = useHistory();
@@ -57,8 +46,8 @@ const AddQuestion: React.FC = () => {
 
   useEffect(() => {
     if (data?.length > 0 && courseData?.length > 0) {
-      const categoryOption = coverListDateToOption(data);
-      const courseOption = coverListDateToOption(courseData);
+      const categoryOption = coverListToOption(data);
+      const courseOption = coverListToOption(courseData);
       setCourses(courseOption);
       setCategories(categoryOption);
     }
@@ -92,6 +81,7 @@ const AddQuestion: React.FC = () => {
         validateOnBlur
         validateOnChange
         validateOnMount
+        validationSchema={AddQuestionSchema(t)}
       >
         {({ setFieldValue, values }) => (
           <Form layout="vertical" autoComplete="off">
@@ -148,73 +138,75 @@ const AddQuestion: React.FC = () => {
                 </FormItem>
               </Col>
               <Col span={24}>
-                <FieldArray
-                  name="answers"
-                  render={(arrayHelpers) => (
-                    <div>
-                      {values.answers.map(({ id, content, isCorrect }, index) => (
-                        <Row key={index} className="mt-3">
-                          <Col xl={19} xxl={19} lg={24} md={24} sm={24}>
-                            <Field
-                              className="form-control"
-                              name={`answers[${index}].content`}
-                              placeholder={`Enter the content of the answer ${index + 1} here`}
-                            />
-                            <Field hidden name={`answers[${index}].id`} placeholder="u" />
-                          </Col>
-                          <Col
-                            xl={5}
-                            xxl={5}
-                            lg={24}
-                            md={24}
-                            sm={24}
-                            className="d-flex justify-content-end "
-                          >
-                            <Button
-                              className="h-100 ml-2"
-                              type="primary"
-                              icon={<DeleteOutlined />}
-                              onClick={() => arrayHelpers.remove(index)}
+                <FormItem name="answers" label={t('Please_enter_answer')}>
+                  <FieldArray
+                    name="answers"
+                    render={(arrayHelpers) => (
+                      <div>
+                        {values.answers.map(({ id, content, isCorrect }, index) => (
+                          <Row key={index} className="mt-2">
+                            <Col xl={19} xxl={19} lg={24} md={24} sm={24}>
+                              <Field
+                                className="form-control"
+                                name={`answers[${index}].content`}
+                                placeholder={`Enter the content of the answer ${index + 1} here`}
+                              />
+                              <Field hidden name={`answers[${index}].id`} placeholder="u" />
+                            </Col>
+                            <Col
+                              xl={5}
+                              xxl={5}
+                              lg={24}
+                              md={24}
+                              sm={24}
+                              className="d-flex justify-content-end "
                             >
-                              Delete
-                            </Button>
+                              <Button
+                                className="h-100 ml-2"
+                                type="primary"
+                                icon={<DeleteOutlined />}
+                                onClick={() => arrayHelpers.remove(index)}
+                              >
+                                Delete
+                              </Button>
+                              <Button
+                                className="h-100 ml-2"
+                                type="dashed"
+                                icon={isCorrect ? <CloseOutlined /> : <CheckOutlined />}
+                                onClick={() =>
+                                  arrayHelpers.replace(index, {
+                                    id: id,
+                                    content: content,
+                                    isCorrect: !isCorrect,
+                                  })
+                                }
+                              >
+                                {isCorrect === false ? t('Check') : t('Uncheck')}
+                              </Button>
+                            </Col>
+                          </Row>
+                        ))}
+
+                        <Row className="mt-3">
+                          <Col xl={19} xxl={19} lg={24} md={24} sm={24} xs={24}>
                             <Button
-                              className="h-100 ml-2"
+                              size="large"
                               type="dashed"
-                              icon={isCorrect ? <CloseOutlined /> : <CheckOutlined />}
+                              className="w-100"
+                              icon={<PlusCircleOutlined />}
+                              block
                               onClick={() =>
-                                arrayHelpers.replace(index, {
-                                  id: id,
-                                  content: content,
-                                  isCorrect: !isCorrect,
-                                })
+                                arrayHelpers.push({ content: '', id: nanoid(), isCorrect: false })
                               }
                             >
-                              {isCorrect === false ? t('Check') : t('Uncheck')}
+                              {t('Add_question')}
                             </Button>
                           </Col>
                         </Row>
-                      ))}
-
-                      <Row className="mt-3">
-                        <Col xl={19} xxl={19} lg={24} md={24} sm={24} xs={24}>
-                          <Button
-                            size="large"
-                            type="dashed"
-                            className="w-100"
-                            icon={<PlusCircleOutlined />}
-                            block
-                            onClick={() =>
-                              arrayHelpers.push({ content: '', id: nanoid(), isCorrect: false })
-                            }
-                          >
-                            {t('Add_question')}
-                          </Button>
-                        </Col>
-                      </Row>
-                    </div>
-                  )}
-                />
+                      </div>
+                    )}
+                  />
+                </FormItem>
               </Col>
             </Row>
 

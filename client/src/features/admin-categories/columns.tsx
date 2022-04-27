@@ -1,7 +1,8 @@
 import { Button, Space } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import { TFunction } from 'react-i18next';
-import { TableActions } from 'interfaces/features/TableActionsEntity';
+import { TableActions } from 'interfaces/components/TableActionsEntity';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
 /**
  * @param t Translation function
@@ -44,8 +45,12 @@ export function getTableColumns(
       width: 100,
       render: (text, record) => (
         <Space size="small">
-          <Button onClick={() => onEdit?.(record._id)}>{t('Edit')}</Button>
-          <Button onClick={() => onDelete?.(record._id)}>{t('Delete')}</Button>
+          <Button icon={<EditOutlined />} onClick={() => onEdit?.(record._id)}>
+            {t('Edit')}
+          </Button>
+          <Button icon={<DeleteOutlined />} onClick={() => onDelete?.(record._id)}>
+            {t('Delete')}
+          </Button>
         </Space>
       ),
     },

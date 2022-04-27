@@ -1,7 +1,7 @@
 export interface Pagination {
   current: number;
   pageSize: number;
-  text_search: number;
+  text_search: string;
 }
 
 export enum CrudState {

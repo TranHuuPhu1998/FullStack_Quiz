@@ -10,6 +10,7 @@ import { CrudState } from 'interfaces/common';
 import { CategoryItem } from 'interfaces/features/CategoryEntity';
 import { useTranslation } from 'react-i18next';
 import { AddCategorySchema } from 'features/admin-categories/validationSchema';
+import { URL_PAGE } from 'app-constants';
 import PageContentBase from 'components/page-content/PageContentBase';
 
 const AddCategory: React.FC = () => {
@@ -19,16 +20,16 @@ const AddCategory: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { status } = useSelector((state: RootState) => state.categoryReducers);
 
-  const onSubmit = (values: CategoryItem, actions: FormikHelpers<CategoryItem>) => {
+  const onSubmit = (values: CategoryItem, helpers: FormikHelpers<CategoryItem>) => {
     setLoading(true);
     dispatch(createCategory(values));
-    actions.setSubmitting(false);
+    helpers.setSubmitting(false);
   };
 
   useEffect(() => {
     if (status === CrudState.Succeed) {
       setLoading(false);
-      history.push('/admin/categories');
+      history.push(URL_PAGE.CATEGORIES);
     }
   }, [history, status]);
 

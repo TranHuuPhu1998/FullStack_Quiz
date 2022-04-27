@@ -1,6 +1,7 @@
 import * as types from '../constants/ActionTypes';
+import { Pagination } from 'interfaces/common';
 // Get List Questions
-export const getQuestions = (pageInfo: any) => {
+export const getQuestions = (pageInfo: Pagination) => {
   return {
     type: types.ACTION_GET_QUESTIONS,
     payload: {
@@ -130,7 +131,6 @@ export const updateQuestionError = () => {
 
 // Delete A Question
 export const deleteQuestion = (id: string) => {
-  console.log('🚀 ~ file: question.ts ~ line 133 ~ deleteQuestion ~ id', id);
   return {
     type: types.ACTION_DELETE_QUESTION,
     payload: {

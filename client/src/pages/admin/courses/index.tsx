@@ -1,11 +1,8 @@
-import React from 'react'
+import React from 'react';
+import AdminCourse from 'features/admin-course';
 
-const Courses = () => {
-  return (
-    <div>
-      Courses
-    </div>
-  )
-}
+const AdminCoursesPage: React.FC = () => {
+  return <AdminCourse />;
+};
 
-export default Courses
+export default AdminCoursesPage;

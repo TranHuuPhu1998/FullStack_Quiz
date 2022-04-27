@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { ICourse } from "../config/interface";
 const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 const courseSchema = new mongoose.Schema(
@@ -18,7 +17,7 @@ const courseSchema = new mongoose.Schema(
       required: [true, "Please add your name"],
       trim: true,
     },
-    category: {
+    categoryId: {
       required: true,
       type: mongoose.Types.ObjectId,
       ref: "category",

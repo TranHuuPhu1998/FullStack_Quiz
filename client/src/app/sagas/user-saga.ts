@@ -1,8 +1,4 @@
-import {
-  getListUser,
-  updateUserAvatar,
-  getOneUser
-} from '../apis/user-service';
+import { getListUser, updateUserAvatar, getOneUser } from '../apis/user-service';
 import {
   getListUserError,
   getListUserSuccess,
@@ -19,15 +15,15 @@ function* processGetListUser() {
   yield put(showLoading());
 
   try {
-    const resp : ResponseGenerator = yield call(getListUser);
-    yield put(getListUserSuccess(resp.data));
+    const resp: ResponseGenerator = yield call(getListUser);
+    yield put(getListUserSuccess(resp.data.rows));
   } catch (error) {
     yield put(getListUserError());
   } finally {
     yield put(hideLoading());
   }
 }
-function* processUpdateUserAvatar({ payload }:any) {
+function* processUpdateUserAvatar({ payload }: any) {
   const avatar = payload;
   yield put(showLoading());
 
@@ -45,8 +41,8 @@ function* processGetOneUser() {
   yield put(showLoading());
 
   try {
-    const resp : ResponseGenerator = yield call(getOneUser);
-    yield put(getOneUserSuccess(resp.data))
+    const resp: ResponseGenerator = yield call(getOneUser);
+    yield put(getOneUserSuccess(resp.data));
   } catch (error) {
   } finally {
     yield put(hideLoading());

@@ -22,14 +22,12 @@ const courseCtrl = {
     try {
       const name = req.body.name.toLowerCase();
       const { categoryId, released, descriptions, imageBanner } = req.body;
-      const category = await Category.findById(categoryId);
-      const categoryItem = { id: category?._id, name: category?.name };
 
       const rows = new Course({
         user: req.user._id,
         createBy: req.user.name,
         name: name,
-        category: categoryItem,
+        categoryId: categoryId,
         released: released,
         descriptions: descriptions,
         imageBanner: imageBanner,
@@ -67,7 +65,37 @@ const courseCtrl = {
       } else {
         query.push({ _id: { $exists: true } });
       }
-      const condition = Category.aggregate([{ $match: { $and: query } }]);
+
+      const condition = Category.aggregate([
+        { $match: { $and: query } },
+        {
+          $lookup: {
+            from: "users",
+            localField: "user",
+            foreignField: "_id",
+            as: "user_detail",
+          },
+        },
+        {
+          $addFields: {
+            user_detail: { $arrayElemAt: ["$user_detail", 0] },
+          },
+        },
+        { $unset: ["user_detail.password", "user_detail.account"] },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "categoryId",
+            foreignField: "_id",
+            as: "category_name",
+          },
+        },
+        {
+          $addFields: {
+            category_name: { $arrayElemAt: ["$category_name.name", 0] },
+          },
+        },
+      ]);
 
       const rows = await Course.aggregatePaginate(condition, options);
 
@@ -79,7 +107,6 @@ const courseCtrl = {
   getDetailCourses: async (req: Request, res: Response) => {
     try {
       const _id = req.params.id;
-
       const rows = await Course.findById(_id);
       res.json({ rows });
     } catch (err: any) {

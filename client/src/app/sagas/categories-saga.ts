@@ -3,7 +3,7 @@ import {
   createCategory,
   updateCategory,
   deleteCategory,
-  getCategoryById
+  getCategoryById,
 } from '../apis/categories-service';
 import {
   getCategoriesSuccess,
@@ -15,19 +15,19 @@ import {
   deleteCategorySuccess,
   deleteCategoryError,
   getCategoryByIdSuccess,
-  getCategoryByIdError
+  getCategoryByIdError,
 } from '../actions/category';
 import { hideLoading, showLoading } from '../actions/ui';
 import { call, takeLatest, put } from 'redux-saga/effects';
 import * as categoryType from '../constants/ActionTypes';
 import { ResponseGenerator } from '../../interfaces/response-server';
 
-function* processGetCategories({payload}:any) {
-  const data = payload;
+function* processGetCategories({ payload }: ReturnType<typeof payload>) {
+  const { pageInfo } = payload;
   yield put(showLoading());
 
   try {
-    const resp : ResponseGenerator = yield call(getCategories, data);
+    const resp: ResponseGenerator = yield call(getCategories, pageInfo);
     yield put(getCategoriesSuccess(resp.data.rows));
   } catch (error) {
     yield put(getCategoriesError(error));
@@ -36,11 +36,11 @@ function* processGetCategories({payload}:any) {
   }
 }
 
-function* processCreateCategory({ payload }:any) {
+function* processCreateCategory({ payload }: any) {
   const { data } = payload;
   yield put(showLoading());
   try {
-    const resp : ResponseGenerator = yield call(createCategory,data);
+    const resp: ResponseGenerator = yield call(createCategory, data);
     yield put(createCategorySuccess(resp.data));
   } catch (error) {
     yield put(createCategoryError());
@@ -49,11 +49,11 @@ function* processCreateCategory({ payload }:any) {
   }
 }
 
-function* processUpdateCategory({ payload }:any) {
+function* processUpdateCategory({ payload }: any) {
   const { data } = payload;
   yield put(showLoading());
   try {
-    const resp : ResponseGenerator = yield call(updateCategory, data);
+    const resp: ResponseGenerator = yield call(updateCategory, data);
     yield put(updateCategorySuccess(resp.data));
   } catch (error) {
     yield put(updateCategoryError());
@@ -62,7 +62,7 @@ function* processUpdateCategory({ payload }:any) {
   }
 }
 
-function* processDeleteCategory({ payload }:any) {
+function* processDeleteCategory({ payload }: any) {
   const { id } = payload;
   yield put(showLoading());
   try {
@@ -75,11 +75,11 @@ function* processDeleteCategory({ payload }:any) {
   }
 }
 
-function* processGetCategoryById({ payload }:any) {
+function* processGetCategoryById({ payload }: any) {
   const { id } = payload;
   yield put(showLoading());
   try {
-    const resp : ResponseGenerator = yield call(getCategoryById, id);
+    const resp: ResponseGenerator = yield call(getCategoryById, id);
     yield put(getCategoryByIdSuccess(resp.data.rows));
   } catch (error) {
     yield put(getCategoryByIdError(error));

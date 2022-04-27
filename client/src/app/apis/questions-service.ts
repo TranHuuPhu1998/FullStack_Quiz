@@ -1,9 +1,11 @@
-import axiosService from '../axios/axios-service';
-import { API_ENDPOINT } from '../../app-constants';
+import { QuestionItem } from 'interfaces/features/QuestionEntity';
+import axiosService from 'app/axios/axios-service';
+import { API_ENDPOINT } from 'app-constants';
+import { Pagination } from 'interfaces/common';
 
 const token = localStorage.getItem('TOKEN');
 
-export const getQuestions = ({ pageInfo }: any) => {
+export const getQuestions = (pageInfo: Pagination) => {
   const { current, pageSize, text_search } = pageInfo;
   return axiosService.get(
     `${API_ENDPOINT}/questions?page=${current}&limit=${pageSize}${
@@ -21,11 +23,11 @@ export const getQuestionsCourse = (id: string) => {
   return axiosService.get(`${API_ENDPOINT}/question/courses/${id}`);
 };
 
-export const createQuestion = (data: any) => {
+export const createQuestion = (data: QuestionItem) => {
   return axiosService.post(`${API_ENDPOINT}/question`, data, token);
 };
 
-export const updateQuestion = (data: any) => {
+export const updateQuestion = (data: QuestionItem) => {
   const { id } = data;
   return axiosService.patch(`${API_ENDPOINT}/question/${id}`, data, token);
 };

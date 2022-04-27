@@ -1,20 +1,20 @@
-import * as types from '../constants/ActionTypes';
+import * as types from 'app/constants/ActionTypes';
 import { CrudState } from 'interfaces/common';
-import { toastError, toastSuccess } from '../../common/helpers/toastHelper';
+import { toastError, toastSuccess } from 'common/helpers/toastHelper';
 
-const initialState:any = {
+const initialState: any = {
   data: [],
   totalDocs: 0,
   status: CrudState.NotSet,
 };
 
-const reducers = (state = initialState, action:any) => {
+const reducers = (state = initialState, action: any) => {
   switch (action.type) {
     case types.GET_CATEGORY_SUCCESS: {
       const { docs, totalDocs } = action.payload.data;
       return {
         data: docs,
-        totalDocs: totalDocs
+        totalDocs: totalDocs,
       };
     }
     case types.GET_CATEGORY_ERROR: {
@@ -27,26 +27,20 @@ const reducers = (state = initialState, action:any) => {
       return {
         data: [category, ...state.data],
         totalDocs: state.totalDocs + 1,
-        status: CrudState.Succeed
+        status: CrudState.Succeed,
       };
     }
     case types.CREATE_CATEGORY_ERROR: {
       toastError('Create Category Error');
       return {
         data: [...state.data],
-        status: CrudState.Failed
+        status: CrudState.Failed,
       };
     }
     case types.UPDATE_CATEGORY_SUCCESS: {
       toastSuccess('Update Category Success');
-      const data = action.payload.data.rows;
-
-      const _index = state.data.findIndex((ele:any) => ele._id === data._id);
-      state.data[_index] = data;
       return {
-        data: [...state.data],
-        totalDocs: state.totalDocs,
-        status : CrudState.Updated
+        status: CrudState.Updated,
       };
     }
     case types.UPDATE_CATEGORY_ERROR: {
@@ -54,16 +48,16 @@ const reducers = (state = initialState, action:any) => {
       return {
         data: [...state.data],
         status: CrudState.Failed,
-      }
+      };
     }
     case types.DELETE_CATEGORY_SUCCESS: {
       toastSuccess('Delete Category Success');
       const id = action.payload.id;
-      const _index = state.data.findIndex((ele:any) => ele._id === id);
+      const _index = state.data.findIndex((ele: any) => ele._id === id);
       state.data.splice(_index, 1);
       return {
         data: [...state.data],
-        totalDocs: state.totalDocs - 1
+        totalDocs: state.totalDocs - 1,
       };
     }
     case types.DELETE_CATEGORY_ERROR: {
@@ -74,7 +68,7 @@ const reducers = (state = initialState, action:any) => {
       const category = action.payload.data;
       return {
         data: [category],
-        status : CrudState.Succeed
+        status: CrudState.Succeed,
       };
     }
     case types.GET_CATEGORY_BY_ID_ERROR: {
@@ -82,7 +76,7 @@ const reducers = (state = initialState, action:any) => {
       return {
         data: [...state.data],
         status: CrudState.Failed,
-      }
+      };
     }
     default:
       return state;

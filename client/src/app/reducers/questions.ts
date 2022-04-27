@@ -35,15 +35,13 @@ const reducers = (state = initialState, action: any) => {
       toastError('Create Questions Error');
       return { ...state };
     }
+    case types.UPDATE_QUESTION_ERROR: {
+      toastSuccess('Update Questions Error');
+      return { ...state };
+    }
     case types.UPDATE_QUESTION_SUCCESS: {
       toastSuccess('Update Questions Success');
-      const data = action.payload.data.rows;
-
-      const _index = state.data.findIndex((ele: any) => ele._id === data._id);
-      state.data[_index] = data;
       return {
-        data: [...state.data],
-        totalDocs: state.totalDocs,
         status: CrudState.Updated,
       };
     }

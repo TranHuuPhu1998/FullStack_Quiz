@@ -1,15 +1,8 @@
-import React from 'react'
-import { Link , useHistory } from 'react-router-dom';
+import React from 'react';
+import AdminDashBoard from 'features/admin-dashboard';
 
-const DashBoard:React.FC = () => {
-  const history = useHistory();
-  return (
-    <div>
-      <Link to='/admin/course'>courses</Link>
-      <button onClick={() => history.push('/admin/users')}>User</button>
-      DashBoard
-    </div>
-  )
-}
+const DashBoard: React.FC = () => {
+  return <AdminDashBoard />;
+};
 
-export default DashBoard
+export default DashBoard;

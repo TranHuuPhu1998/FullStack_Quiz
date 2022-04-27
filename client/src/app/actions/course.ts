@@ -56,6 +56,9 @@ export const createCourseError = () => {
 export const updateCourse = (data: any) => {
   return {
     type: types.ACTION_UPDATE_COURSE,
+    payload: {
+      data,
+    },
   };
 };
 
@@ -68,7 +71,7 @@ export const updateCourseSuccess = (data: any) => {
   };
 };
 
-export const updateCourseError = (data: any) => {
+export const updateCourseError = () => {
   return {
     type: types.UPDATE_COURSE_ERROR,
   };
@@ -97,5 +100,31 @@ export const deleteCourseSuccess = (id: any) => {
 export const deleteCourseError = () => {
   return {
     type: types.DELETE_COURSE_ERROR,
+  };
+};
+
+// Get One Course
+
+export const getCourseById = (id: string) => {
+  return {
+    type: types.ACTION_GET_COURSE_BY_ID,
+    payload: {
+      id,
+    },
+  };
+};
+
+export const getCourseByIdSuccess = (data: any) => {
+  return {
+    type: types.GET_COURSE_BY_ID_SUCCESS,
+    payload: {
+      data,
+    },
+  };
+};
+
+export const getCourseByIdError = () => {
+  return {
+    type: types.GET_COURSE_BY_ID_ERROR,
   };
 };

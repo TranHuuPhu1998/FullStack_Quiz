@@ -27,11 +27,11 @@ const AdminQuestion: React.FC = () => {
   }, [dispatch, pagination]);
 
   const onEdit = (id: string) => {
-    return history.push(`${URL_PAGE.CATEGORY_EDIT}/${id}`);
+    return history.push(`${URL_PAGE.QUESTION_EDIT}/${id}`);
   };
 
   const onAdd = () => {
-    return history.push(URL_PAGE.CATEGORY_ADD);
+    return history.push(URL_PAGE.QUESTION_ADD);
   };
 
   const onDelete = (id: string) => {

@@ -28,12 +28,12 @@ import { call, takeLatest, put } from 'redux-saga/effects';
 import * as questionType from '../constants/ActionTypes';
 import { ResponseGenerator } from '../../interfaces/response-server';
 
-function* processGetQuestion({ payload }: any) {
-  const data = payload;
+function* processGetQuestion({ payload }: ReturnType<typeof payload>) {
+  const { pageInfo } = payload;
   yield put(showLoading());
 
   try {
-    const resp: ResponseGenerator = yield call(getQuestions, data);
+    const resp: ResponseGenerator = yield call(getQuestions, pageInfo);
     yield put(getQuestionsSuccess(resp.data.rows));
   } catch (err) {
     yield put(getQuestionsError());
@@ -42,7 +42,7 @@ function* processGetQuestion({ payload }: any) {
   }
 }
 
-function* processGetQuestionCategory({ payload }: any) {
+function* processGetQuestionCategory({ payload }: ReturnType<typeof payload>) {
   const { categoryId } = payload;
   yield put(showLoading());
   try {
@@ -88,6 +88,10 @@ function* processUpdateQuestion({ payload }: any) {
     const resp: ResponseGenerator = yield call(updateQuestion, data);
     yield put(updateQuestionSuccess(resp.data));
   } catch (error) {
+    console.log(
+      '🚀 ~ file: question-saga.ts ~ line 91 ~ function*processUpdateQuestion ~ error',
+      error
+    );
     yield put(updateQuestionError());
   } finally {
     yield put(hideLoading());
@@ -95,10 +99,6 @@ function* processUpdateQuestion({ payload }: any) {
 }
 
 function* processDeleteQuestion({ payload }: any) {
-  console.log(
-    '🚀 ~ file: question-saga.ts ~ line 99 ~ function*processDeleteQuestion ~ id',
-    payload
-  );
   const { id } = payload;
   yield put(showLoading());
   try {
