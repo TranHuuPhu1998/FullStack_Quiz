@@ -46,5 +46,16 @@
   "User_name": "User name",
   "Admin": "Admin",
   "User": "User",
-  "List_of_users": "List of users"
+  "List_of_users": "List of users",
+  "User_not_found": "WE ARE SORRY, BUT THE PAGE YOU REQUESTED WAS NOT FOUND",
+  "Contact_us": "Contact us",
+  "Leaning": "LEANING",
+  "Congratulations": "Congratulations on your successful test, please submit to check the results!",
+  "Congratulations_with": "Congratulations on your successful test with",
+  "Number_of_tabs": "The number of times to switch Tab is : {{numberSwapTab}} times",
+  "Point": "Point",
+  "Go_back_to_previous": "Go Back To Previous",
+  "Save_&_next_question": "Save & Next Question",
+  "Submit": "Submit",
+  "Question_list": "Question List:"
 }

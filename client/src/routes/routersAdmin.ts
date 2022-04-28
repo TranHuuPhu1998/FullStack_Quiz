@@ -24,14 +24,12 @@ const AddCoursePage = lazy(() => import('pages/admin/courses/add'));
 const EditCoursePage = lazy(() => import('pages/admin/courses/edit'));
 const Profile = lazy(() => import('pages/admin/profile'));
 const CourseUser = lazy(() => import('pages/admin/courses'));
-const Exercise = lazy(() => import('pages/user/exercise'));
-const Chat = lazy(() => import('pages/user/user-chat'));
-const Home = lazy(() => import('pages/welcome'));
 const HistoryExercise = lazy(() => import('pages/admin/history-exercise'));
 const CourseRanking = lazy(() => import('pages/admin/course-ranking'));
 const Questions = lazy(() => import('pages/admin/questions'));
 const AddQuestion = lazy(() => import('pages/admin/questions/add'));
 const EditQuestion = lazy(() => import('pages/admin/questions/edit'));
+const Home = lazy(() => import('pages/welcome'));
 
 const flattenNavURLs = [
   {
@@ -202,15 +200,6 @@ const flattenNavURLs = [
     key: 'edit-question',
   },
   {
-    path: '/exercise',
-    exact: true,
-    component: Exercise,
-    key: 'exercise',
-    name: 'Exercise',
-    icon: CodeOutlined,
-    show: false,
-  },
-  {
     path: '/courses',
     exact: true,
     component: CourseUser,
@@ -219,15 +208,7 @@ const flattenNavURLs = [
     icon: null,
     show: false,
   },
-  {
-    path: '/chat',
-    exact: true,
-    component: Chat,
-    key: 'chat',
-    name: 'Chat',
-    icon: WechatOutlined,
-    show: false,
-  },
+
   {
     path: '/',
     exact: true,

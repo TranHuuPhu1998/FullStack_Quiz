@@ -1,9 +1,16 @@
-import React from 'react'
+import React from 'react';
+import { Layout } from 'antd';
 
-const UserLayout = () => {
+const { Header, Content, Footer, Sider } = Layout;
+
+const UserLayout: React.FC = ({ children }) => {
   return (
-    <div>UserLayout</div>
-  )
-}
+    <Layout style={{ height: '100vh' }}>
+      <Header></Header>
+      <Content>{children}</Content>
+      <Footer></Footer>
+    </Layout>
+  );
+};
 
-export default UserLayout
+export default UserLayout;

@@ -15,6 +15,11 @@ export const STORAGE_KEYS = Object.freeze({
   IS_LOGGED_IN: 'isLoggedIn',
 });
 export const DEFAULT_PAGE_SIZE = 10;
+export const RULE = Object.freeze({
+  ADMIN: 'admin',
+  USER: 'user',
+});
+export const LOGIN_TYPE = 'LOGIN_TYPE';
 export const URL_PAGE = {
   DASHBOARD: '/admin',
   QUESTIONS: '/admin/questions',
@@ -27,4 +32,9 @@ export const URL_PAGE = {
   COURSES: '/admin/courses',
   COURSE_ADD: '/admin/course/add',
   COURSE_EDIT: '/admin/course/edit',
+};
+
+export const URL_PAGE_USER = {
+  COURSES: '/courses',
+  EXERCISE: '/exercise',
 };

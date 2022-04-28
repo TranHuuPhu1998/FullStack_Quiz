@@ -52,7 +52,7 @@ export const getQuestionByCategoryError = () => {
 
 // Get question by source
 
-export const getQuestionByCourse = ({ courseId }: any) => {
+export const getQuestionByCourse = (courseId: string) => {
   return {
     type: types.ACTION_GET_QUESTIONS_COURSE,
     payload: {

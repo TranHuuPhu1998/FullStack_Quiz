@@ -4,6 +4,9 @@ export interface QuestionItem {
   courseId: string;
   answers: AnswerItem[];
   id?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  user?: string;
 }
 
 export interface AnswerItem {

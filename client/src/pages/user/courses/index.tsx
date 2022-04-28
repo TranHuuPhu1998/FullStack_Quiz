@@ -1,11 +1,8 @@
-import React from 'react'
+import React from 'react';
+import UserCourses from 'features/user-courses';
 
-const Courses = () => {
-  return (
-    <div>
-      Courses
-    </div>
-  )
-}
+const UserCoursesPage: React.FC = () => {
+  return <UserCourses />;
+};
 
-export default Courses
+export default UserCoursesPage;

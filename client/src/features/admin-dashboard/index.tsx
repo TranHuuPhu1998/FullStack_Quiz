@@ -8,6 +8,8 @@ import HistoryIcon from 'assets/images/history.png';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import styled from 'styled-components';
+import AreaChartRender from 'features/admin-dashboard/AreaChart';
+import { InitData } from 'features/admin-dashboard/InitData';
 
 const CardAntd = styled.div`
   padding: 0.5rem 1rem;
@@ -18,6 +20,11 @@ const CardAntd = styled.div`
   border-radius: 0.4em;
   border: 1px solid #f0f0f0;
   box-shadow: 0 4px 20px 1px #0000000f, 0 1px 4px #00000014;
+`;
+
+const AreaChartContainer = styled(Col)`
+  margin-top: 4rem;
+  margin-left: -2rem;
 `;
 
 const AdminDashBoard: React.FC = () => {
@@ -120,6 +127,11 @@ const AdminDashBoard: React.FC = () => {
             </Row>
           </CardAntd>
         </Col>
+      </Row>
+      <Row style={{ height: '600px' }} className="w-100">
+        <AreaChartContainer span={24}>
+          <AreaChartRender data={InitData} />
+        </AreaChartContainer>
       </Row>
     </PageContentBase>
   );

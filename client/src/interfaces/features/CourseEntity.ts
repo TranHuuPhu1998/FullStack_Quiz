@@ -5,4 +5,5 @@ export interface CourseItem {
   imageBanner: string;
   categoryId: string;
   released: boolean;
+  category_name?: string;
 }

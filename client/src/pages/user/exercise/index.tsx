@@ -1,12 +1,8 @@
-import React from 'react'
+import React from 'react';
+import UserExecise from 'features/user-execise';
 
-const Exercise = () => {
-  return (
-    <div>
-      Exercise
-Exercise
-    </div>
-  )
-}
+const UserExecisePage: React.FC = () => {
+  return <UserExecise />;
+};
 
-export default Exercise
+export default UserExecisePage;
