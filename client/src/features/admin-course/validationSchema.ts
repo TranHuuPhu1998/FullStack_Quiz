@@ -21,6 +21,5 @@ export const EditCourseSchema = (t: TFunction) => {
       .required(t('Required!'))
       .min(2, t('Too Short!'))
       .max(200, t('Too Long!')),
-    released: Yup.boolean().required(t('Required')),
   });
 };

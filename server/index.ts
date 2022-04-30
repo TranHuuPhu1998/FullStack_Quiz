@@ -34,7 +34,6 @@ app.use('/api' , routes.chatGlobal)
 io.on("connection", (socket : any) => {
 
   socket.on("sendDataClient", async function(data:any) { // Handle khi có sự kiện tên là sendDataClient từ phía client
-    console.log(data);
     if(data) {
       const rows = new chatGlobal({
         userId: data.userId,
@@ -42,10 +41,10 @@ io.on("connection", (socket : any) => {
         time: data.time,
         user: data.user,
       });
-
+      
       await rows.save();
     }
-    io.emit("sendDataServer", { data });// phát sự kiện  có tên sendDataServer cùng với dữ liệu tin nhắn từ phía server
+    io.emit("sendDataServer", { data }); // phát sự kiện  có tên sendDataServer cùng với dữ liệu tin nhắn từ phía server
   })
 
   socket.on("disconnect", () => {

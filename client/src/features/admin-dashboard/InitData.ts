@@ -1,4 +1,4 @@
-export const InitData = [
+export const initialState = [
   {
     name: 'Jan',
     polygon: 33,

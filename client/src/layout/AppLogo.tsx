@@ -12,9 +12,8 @@ const AppLogo: React.FC = () => {
       <Space direction="vertical" size="small">
         <Divider type="vertical" />
         <Image
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer' ,padding: '0px 50px' }}
           src={fullLogoURL}
-          width={100}
           preview={false}
           onClick={() => history.push(URL_PAGE.DASHBOARD)}
         />

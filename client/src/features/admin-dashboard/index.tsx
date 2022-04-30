@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Col, Row, Tag, Typography } from 'antd';
 import PageContentBase from 'components/page-content/PageContentBase';
 import Image from 'assets/images/people.png';
@@ -9,7 +9,16 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import styled from 'styled-components';
 import AreaChartRender from 'features/admin-dashboard/AreaChart';
-import { InitData } from 'features/admin-dashboard/InitData';
+import { useDispatch , useSelector } from 'react-redux';
+import { RootState } from 'app/reducers';
+import { useTranslation } from 'react-i18next';
+import { getListCourse } from 'app/actions/course';
+import { getQuestions } from 'app/actions/question';
+import { getListUser } from 'app/actions/user';
+import { getCategory } from 'app/actions/category';
+import { PAGE_INFO_MAX } from 'app-constants';
+import { initialState} from 'features/admin-dashboard/InitData';
+
 
 const CardAntd = styled.div`
   padding: 0.5rem 1rem;
@@ -28,6 +37,24 @@ const AreaChartContainer = styled(Col)`
 `;
 
 const AdminDashBoard: React.FC = () => {
+  const dispatch = useDispatch();
+  const [t] = useTranslation();
+  const { totalDocs : totalUser } = useSelector((state: RootState) => state.userReducers);
+  const { totalDocs : totalCourse } = useSelector((state: RootState) => state.courseReducers);
+  const { totalDocs : totalQuestion } = useSelector((state: RootState) => state.questionReducers);
+  const { totalDocs : totalCategory } = useSelector((state: RootState) => state.categoryReducers);
+
+  const InitData = () => {
+    dispatch(getListCourse(PAGE_INFO_MAX));
+    dispatch(getListUser());
+    dispatch(getQuestions(PAGE_INFO_MAX));
+    dispatch(getCategory(PAGE_INFO_MAX));
+  }
+
+  useEffect(() => {
+    InitData()
+  },[])
+
   return (
     <PageContentBase>
       <Row gutter={[16, 16]} justify="space-between" align="middle">
@@ -46,10 +73,10 @@ const AdminDashBoard: React.FC = () => {
               </Col>
               <Col>
                 <Typography.Title className="text-secondary" level={3}>
-                  List user
+                  {t('List_user')}
                 </Typography.Title>
                 <Tag color="blue" className="w-100">
-                  1000
+                  {totalUser}
                 </Tag>
               </Col>
             </Row>
@@ -70,10 +97,10 @@ const AdminDashBoard: React.FC = () => {
               </Col>
               <Col>
                 <Typography.Title className="text-secondary" level={3}>
-                  List Question
+                  {t('List_question')}
                 </Typography.Title>
                 <Tag color="blue" className="w-100">
-                  1000
+                  {totalQuestion}
                 </Tag>
               </Col>
             </Row>
@@ -94,10 +121,10 @@ const AdminDashBoard: React.FC = () => {
               </Col>
               <Col>
                 <Typography.Title className="text-secondary" level={3}>
-                  List Courses
+                  {t('List_course')}
                 </Typography.Title>
                 <Tag color="blue" className="w-100">
-                  1000
+                  {totalCourse}
                 </Tag>
               </Col>
             </Row>
@@ -118,10 +145,10 @@ const AdminDashBoard: React.FC = () => {
               </Col>
               <Col>
                 <Typography.Title className="text-secondary" level={3}>
-                  History Leaning
+                  {t('List_category')}
                 </Typography.Title>
                 <Tag color="blue" className="w-100">
-                  1000
+                  {totalCategory}
                 </Tag>
               </Col>
             </Row>
@@ -130,7 +157,7 @@ const AdminDashBoard: React.FC = () => {
       </Row>
       <Row style={{ height: '600px' }} className="w-100">
         <AreaChartContainer span={24}>
-          <AreaChartRender data={InitData} />
+          <AreaChartRender data={initialState} />
         </AreaChartContainer>
       </Row>
     </PageContentBase>

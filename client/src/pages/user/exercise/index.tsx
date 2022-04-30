@@ -1,8 +1,8 @@
 import React from 'react';
-import UserExecise from 'features/user-execise';
+import UserExercise from 'features/user-execise';
 
-const UserExecisePage: React.FC = () => {
-  return <UserExecise />;
+const UserExercisePage: React.FC = () => {
+  return <UserExercise />;
 };
 
-export default UserExecisePage;
+export default UserExercisePage;

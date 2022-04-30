@@ -10,7 +10,7 @@ interface IProps {
   answers: AnswerItem[];
   currentQ: number;
   setYourAnswer: ({ answerSubmit, questionSubmit }: any) => void;
-  item: QuestionItemEntity & { category_name?: any };
+  item: QuestionItemEntity & { category?: any };
   yourAnswerSubmit: string;
   setIsSaveNext?: (value: any) => void;
 }
@@ -43,7 +43,7 @@ const QuestionItem: React.FC<IProps> = (props) => {
           <div className="d-flex justify-content-between">
             <h2 className="question-name">Question {index + 1}</h2>
             <h3>
-              <Typography.Text type="secondary">{item.category_name || 'Null'}</Typography.Text>
+              <Typography.Text type="secondary">{item.category.name || 'Null'}</Typography.Text>
             </h3>
           </div>
           <div className="question-content">

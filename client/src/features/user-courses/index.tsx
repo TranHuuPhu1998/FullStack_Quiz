@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getListCourse } from 'app/actions/course';
 import { PAGE_INFO_MAX, URL_PAGE_USER } from 'app-constants';
-import { Button, Col, Row, Tag, Typography } from 'antd';
+import { Badge, Button, Col, Row, Tag, Typography } from 'antd';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import styled from 'styled-components';
 import { CourseItem } from 'interfaces/features/CourseEntity';
@@ -49,37 +49,43 @@ const UserCourses: React.FC = () => {
       {data?.map((item: CourseItem & { _id?: string }, index: number) => {
         return (
           <Col key={index} xxl={8} xl={8} lg={12} md={24} sm={24} xs={24}>
-            <CardAntd>
-              <Row justify="space-between" align="middle">
-                <Col xxl={12} xl={24} lg={24} md={24} sm={24} xs={24}>
-                  <LazyLoadImage
-                    style={{ objectFit: 'contain' }}
-                    width={200}
-                    height={120}
-                    alt="people"
-                    effect="blur"
-                    src={item.imageBanner}
-                  />
-                </Col>
-                <Col xxl={12} xl={24} lg={24} md={24} sm={24} xs={24}>
-                  <Typography.Title className="text-secondary" level={3}>
-                    {trimmedString(item.name, 20) || 'No name'}
-                  </Typography.Title>
-                  <Tag color="blue" className="w-100">
-                    {trimmedString(item.category_name, 20) || 'No category'}
-                  </Tag>
-                </Col>
-              </Row>
-              <Row className="mt-4">
-                <Button
-                  onClick={() => onLeaning(item._id)}
-                  icon={<SendOutlined />}
-                  className="w-100"
-                >
-                  {t('Leaning')}
-                </Button>
-              </Row>
-            </CardAntd>
+            <Badge.Ribbon
+              text={item.released ? 'Public' : 'Process'}
+              color={item.released ? 'blue' : 'red'}
+            >
+              <CardAntd>
+                <Row justify="space-between" align="middle">
+                  <Col xxl={12} xl={24} lg={24} md={24} sm={24} xs={24} >
+                    <LazyLoadImage
+                      style={{ objectFit: 'cover', width: '100%' }}
+                      height={120}
+                      alt="people"
+                      effect="blur"
+                      src={item.imageBanner}
+                    />
+                  </Col>
+                  <Col xxl={12} xl={24} lg={24} md={24} sm={24} xs={24}>
+                    <Typography.Title className="text-secondary" level={3}>
+                      {trimmedString(item.name, 20) || 'No name'}
+                    </Typography.Title>
+                    <Tag color="blue" className="w-100">
+                      {trimmedString(item.category_name, 20) || 'No category'}
+                    </Tag>
+                  </Col>
+                </Row>
+                <Row className="mt-4">
+                  <Button
+                    disabled={!item.released}
+                    type="primary"
+                    onClick={() => onLeaning(item._id)}
+                    icon={<SendOutlined />}
+                    className="w-100"
+                  >
+                    {t('Leaning')}
+                  </Button>
+                </Row>
+              </CardAntd>
+            </Badge.Ribbon>
           </Col>
         );
       })}

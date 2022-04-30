@@ -1,10 +1,9 @@
 import React from 'react'
+import ChatGlobal from 'features/user-chat-global'
 
-const UserChat = () => {
+const UserChat:React.FC = () => {
   return (
-    <div>
-      UserChat
-    </div>
+    <ChatGlobal />
   )
 }
 

@@ -31,7 +31,6 @@ const EditCourse: React.FC = () => {
 
   const { data } = useSelector((state: RootState) => state.categoryReducers);
   const { data: courseData, status } = useSelector((state: RootState) => state.courseReducers);
-  console.log('🚀 ~ file: edit.tsx ~ line 34 ~ courseData', courseData);
 
   useEffect(() => {
     if (data?.length > 0) {

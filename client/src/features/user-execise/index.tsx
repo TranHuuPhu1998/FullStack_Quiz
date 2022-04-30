@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState } from 'app/reducers';
 import { Button, Col, Empty, Row, Typography } from 'antd';
-import ExerciseSuccess from 'features/user-execise/ExerciseSuccess';
 import ExerciseTotalScore from 'features/user-execise/ExerciseTotalScore';
 import QuestionItem from 'features/user-execise/QuestionItem';
 import { useTranslation } from 'react-i18next';
 
-const UserExecise: React.FC = () => {
+const UserExercise: React.FC = () => {
   const [t] = useTranslation();
   const [currentQ, setCurrentQ] = useState(0);
   const { courseId } = useParams<{ courseId: string }>();
@@ -23,7 +22,6 @@ const UserExecise: React.FC = () => {
 
   const dispatch = useDispatch();
   const questions = useSelector((state: RootState) => state.questionReducers);
-  console.log('🚀 ~ file: index.tsx ~ line 26 ~ questions', questions);
 
   useEffect(() => {
     if (courseId) {
@@ -75,7 +73,7 @@ const UserExecise: React.FC = () => {
 
     const dataHistory = {
       courseId: questions?.data?.at(0).courseId,
-      categoryId: questions?.data?.at(0).category,
+      categoryId: questions?.data?.at(0).category.id,
       score: point,
       lengthYourAnswer: yourAnswerSubmit?.length,
       lengthQuestion: questions?.totalDocs,
@@ -119,15 +117,6 @@ const UserExecise: React.FC = () => {
         </div>
       </Col>
       <Col className="inner-div">
-        {questions?.totalDocs > 0 ? (
-          <ExerciseSuccess
-            isSubmitQuestion={isSubmitQuestion}
-            currentQ={currentQ}
-            length={questions?.data?.length}
-          />
-        ) : (
-          <Empty />
-        )}
         <ExerciseTotalScore
           isSubmitQuestion={isSubmitQuestion}
           point={point}
@@ -184,13 +173,17 @@ const UserExecise: React.FC = () => {
           >
             {t('Save_&_next_question')}
           </Button>
-          <Button onClick={handleSubmitExercise} className="btn-custom submit-question">
-            {t('Submit')}
-          </Button>
+          {
+            !isSubmitQuestion && (
+              <Button onClick={handleSubmitExercise} className="btn-custom submit-question">
+              {t('Submit')}
+            </Button>
+            )
+          }
         </Row>
       </Col>
     </Row>
   );
 };
 
-export default UserExecise;
+export default UserExercise;

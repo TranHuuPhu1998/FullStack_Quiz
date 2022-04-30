@@ -57,5 +57,9 @@
   "Go_back_to_previous": "Go Back To Previous",
   "Save_&_next_question": "Save & Next Question",
   "Submit": "Submit",
-  "Question_list": "Question List:"
+  "Question_list": "Question List:",
+  "List_category": "List Category",
+  "List_course": "List Course",
+  "List_question": "List Question",
+  "List_user": "List User"
 }
