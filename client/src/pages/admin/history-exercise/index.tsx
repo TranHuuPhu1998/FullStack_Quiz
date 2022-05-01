@@ -1,10 +1,9 @@
 import React from 'react'
+import AdminHistory from 'features/admin-history'
 
-const HistoryExercise = () => {
+const HistoryExercise:React.FC = () => {
   return (
-    <div>
-      HistoryExercise
-    </div>
+    <AdminHistory/>
   )
 }
 

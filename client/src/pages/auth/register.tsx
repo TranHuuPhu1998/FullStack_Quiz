@@ -1,11 +1,10 @@
+import Register from 'features/auth-register'
 import React from 'react'
 
-const Register = () => {
+const RegisterPage:React.FC = () => {
   return (
-    <div>
-
-    </div>
+    <Register/>
   )
 }
 
-export default Register
+export default RegisterPage

@@ -61,5 +61,16 @@
   "List_category": "List Category",
   "List_course": "List Course",
   "List_question": "List Question",
-  "List_user": "List User"
+  "List_user": "List User",
+  "Welcome_to_the_learning_management_system": "Welcome to the learning management system",
+  "Login_to_the_dashboard": "Login to the Dashboard",
+  "Email_or_Email_address": "Email or Email address",
+  "Enter_your_password": "Enter your password",
+  "Remember_me": "Remember me",
+  "Login": "Login",
+  "Register_to_the_login": "Register to the login",
+  "Enter_your_retype_password": "Enter your retype password",
+  "Register": "Register",
+  "Enter_your_name": "Enter your name",
+  "Register_success": "Register success"
 }

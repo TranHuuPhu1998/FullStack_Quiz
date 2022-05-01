@@ -6,13 +6,19 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import routes from './routes/index';
 import path from 'path'
-const mongoose = require("mongoose");
 import chatGlobal from './models/chatGlobal';
 // middleware
 const app = express()
 
 const http = require('http').createServer(app)
-const io = require('socket.io')(http)
+const io = require('socket.io')(http, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+})
+
 
 app.use(express.json())
 app.use(express.urlencoded({extended : false}))
@@ -41,8 +47,9 @@ io.on("connection", (socket : any) => {
         time: data.time,
         user: data.user,
       });
-      
+    
       await rows.save();
+      // io.emit("getId" , rows._id);
     }
     io.emit("sendDataServer", { data }); // phát sự kiện  có tên sendDataServer cùng với dữ liệu tin nhắn từ phía server
   })

@@ -1,6 +1,7 @@
-import * as types from '../constants/ActionTypes';
+import { ILoginEntity } from 'interfaces/features/SignUpEntity';
+import * as types from 'app/constants/ActionTypes';
 
-export const signUp = (data:any) => {
+export const signUp = (data:ILoginEntity) => {
   return {
     type: types.SIGN_UP,
     payload: {

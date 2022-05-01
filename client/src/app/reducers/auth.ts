@@ -15,11 +15,13 @@ const reducers = (state = initialState, action: any) => {
       };
     }
     case types.SIGN_UP_SUCCESS: {
+      toastSuccess('Register success');
       return {
         ...state,
       };
     }
     case types.SIGN_UP_FAILED: {
+      toastSuccess('Register failed');
       return {
         ...state,
       };
